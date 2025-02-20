@@ -7,6 +7,12 @@ const Users = require('./models/users')
 // intialize the application
 const app = express()
 
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+
+// Serve static files from the 'public' directory
+app.use(express.static(__dirname + '/public'));
+
 // Routing path
 app.get('/', (req, res) => {
     res.render('../views/index.ejs');
@@ -31,4 +37,12 @@ mongoose
         console.error('could not connect to mongodb: ', err)
     })
 
-    // hi
+app.get('/', (req, res) => {
+    Users.find()
+        .then((result) => {
+            console.log(result)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
+})
