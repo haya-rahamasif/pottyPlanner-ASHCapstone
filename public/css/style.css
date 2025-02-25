@@ -1,7 +1,7 @@
 body {
-    background-color: darkgreen;
+    background-color: darkgreen; /*background color */
 }
-.button {
+.button { /*How buttons will look like. */
     background-color: #fffc33;
     border: none;
     color: white;
@@ -12,6 +12,6 @@ body {
     font-size: 16px;
 }
 body {
-    color: rgb(238, 255, 0);
+    color: rgb(238, 255, 0); /*Thus makes texts in body in this color. */
   }
-  h1 {text-align: center;}
+  h1 {text-align: center;} /*This line make h1 texts in center */
