@@ -23,7 +23,9 @@ app.listen(3000, () => {
     console.log('Server started on port 3000')
 })
 
-const dbURL = 'mongodb+srv://hayarahamasif:preach-immature-mouthful-smoky@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB'
+let password = encodeURIComponent("yellow+200")
+console.log(password)
+const dbURL = `mongodb+srv://hayarahamasif:${password}@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB`
 
 mongoose
     .connect(dbURL)
