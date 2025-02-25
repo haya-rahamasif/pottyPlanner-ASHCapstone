@@ -3,7 +3,19 @@ const ret = document.getElementById("timer");
 const startBtn = document.querySelector("#start-timer");
 let counter = 0;
 let interval;
+const express = require('express'); //test
+const app = express();
+const path = require('path');
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+}); //test
 function stop() {
   clearInterval(interval);
   startBtn.disabled = false;
