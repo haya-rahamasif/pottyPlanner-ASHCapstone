@@ -1,3 +1,13 @@
 body {
-    background-color: darkgreen;
+    background-color: #003092;
+}
+.btn-group button {
+    background-color: #00879E;
+    color: #FFAB5B;
+    padding: 10px 24px;
+    float: left;
+}
+
+.btn-group button:hover{
+    background-color: rgb(71, 93, 205);
 }
