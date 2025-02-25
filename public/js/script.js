@@ -1,11 +1,16 @@
 console.log("js loaded!")
+console.log("js loaded!");
 const ret = document.getElementById("timer");
 const startBtn = document.querySelector("#start-timer");
+const stopBtn = document.querySelector("#stop-timer");
+const resetBtn = document.querySelector("#reset-timer");
 let counter = 0;
 let interval;
+
 function stop() {
   clearInterval(interval);
   startBtn.disabled = false;
+  stopBtn.classList.remove("active");
 }
 
 function convertSec(cnt) {
@@ -26,12 +31,19 @@ function convertSec(cnt) {
 
 function start() {
   startBtn.disabled = true;
+  startBtn.classList.add("active");
+  stopBtn.classList.remove("active");
+  resetBtn.classList.remove("active");
   interval = setInterval(function() {
     ret.innerHTML = convertSec(counter++); // timer start counting here...
   }, 1000);
 }
+
 function reset() {
   startBtn.disabled = false;
   counter = 0; // Reset the counter to zero
   ret.innerHTML = convertSec(counter);
+  resetBtn.classList.add("active");
+  startBtn.classList.remove("active");
+  stopBtn.classList.remove("active");
 }
