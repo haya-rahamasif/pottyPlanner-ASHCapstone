@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+    <script src="/public/js/script.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="/public/js/script.js"></script>
     <title>potty planner</title>
 </head>
 <body>
+    <h1>Potty Planner</h1>
+    <h2>Student lists:</h2>
+    <div class="timer-display-id">
+        <h2>Timer </h2>
+        <p id="timer">00:00:00 </p>
+        <button id="start-timer" onclick="start()">Start </button>
+        <button id="stop-timer" onclick="stop()">Stop  </button>
+        <button id = "reset-timer" onclick ="reset()">Reset </button>
+      </div>
+      <script src="public/js/script.js"></script>
     <p>Potty Planner</p>
     <div class="btn-group" style="width:100%">
     <button style="width:25%">Period 1</button>

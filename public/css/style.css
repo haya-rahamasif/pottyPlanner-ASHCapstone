@@ -1,4 +1,25 @@
 body {
+    background-color: darkgreen; /*background color */
+}
+.button { /*How buttons will look like. */
+    background-color: #fffc33;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+body {
+    color: rgb(238, 255, 0); /*Thus makes texts in body in this color. */
+  }
+  h1 {text-align: center;} /*This line make h1 texts in center */
+  /* Add this CSS to handle the active class */
+button.active {
+    background-color: #007bff; 
+    color: white; 
+  }
     background-color: #003092;
 }
 .btn-group button {

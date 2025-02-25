@@ -5,5 +5,23 @@
     "express": "^4.21.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.1"
-  }
+  },
+  "name": "pottyplanner-ashcapstone",
+  "description": "",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haya-rahamasif/pottyPlanner-ASHCapstone.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haya-rahamasif/pottyPlanner-ASHCapstone/issues"
+  },
+  "homepage": "https://github.com/haya-rahamasif/pottyPlanner-ASHCapstone#readme"
 }
