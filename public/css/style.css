@@ -1,5 +1,48 @@
 body {
-    background-color: darkgreen; /*background color */
+    background-color: rgb(200, 202, 38);
+}
+html, body {
+  overflow-x: hidden; 
+  overscroll-behavior: none;
+}
+header {
+  position: fixed;
+  width: 100%;
+  background: linear-gradient(to right, #1cc7d0, #2ede98);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+  position: relative; 
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  max-width: 8%;
+  height: auto;
+}
+
+.logo a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.website-name {
+  font-size: 250%;
+  font-weight: bold;
+  white-space: nowrap;
+  font-family: cursive;  
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); 
 }
 *{
     margin: 0;
@@ -14,10 +57,9 @@ body {
     left: 0;
     height: 100%;
     width: 100%;
-    /*background: linear-gradient(-135deg, #c850c0, #4158d0);*/
-    /* background: linear-gradient(375deg, #1cc7d0, #2ede98); */
-   /* background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);*/
-    /* clip-path: circle(25px at calc(0% + 45px) 45px); */
+    background: linear-gradient(375deg, #1cc7d0, #2ede98); */
+    background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);*/
+    clip-path: circle(25px at calc(0% + 45px) 45px); */
     background: #000;
     clip-path: circle(25px at calc(100% - 45px) 45px);
     transition: all 0.3s ease-in-out;
@@ -80,11 +122,10 @@ body {
     content: "";
     background: #fff;
      background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
-    /*background: linear-gradient(375deg, #1cc7d0, #2ede98);*/
     width: 104%;
     height: 110%;
     left: -2%;
-    top: -5%; /* if the font is 'Oswald'*/
+    top: -5%; 
     border-radius: 50px;
     transform: scaleY(0);
     z-index: -1;
