@@ -18,11 +18,6 @@ app.get('/', (req, res) => {
     res.render('../views/index.ejs');
 });
 
-// Start the server
-app.listen(3000, () => {
-    console.log('Server started on port 3000')
-})
-
 const dbURL = 'mongodb+srv://hayarahamasif:preach-immature-mouthful-smoky@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB'
 
 mongoose
