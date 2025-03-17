@@ -1,8 +1,10 @@
-const express = require('express')
-const ejs = require('ejs')
-const mongoose = require('mongoose')
+import express from 'express'
+import ejs from 'ejs'
+import mongoose from 'mongoose'
 
-const Users = require('./models/users')
+import User from './models/users.js'
+import path from 'path';
+const __dirname = path.resolve();
 
 // intialize the application
 const app = express()
@@ -29,20 +31,24 @@ mongoose
     .connect(dbURL)
     .then((result) => {
         console.log('Connected to MongoDB')
-        app.listen(3000, () => {
-            console.log('server started on port 3000')
-        })
+        User.find()
+    .then((result) => {
+        console.log(` result -> ${result}`)
+    })
+    .catch((err) => {
+        console.error(err)
+    })
     })
     .catch((err) => {
         console.error('could not connect to mongodb: ', err)
     })
 
 app.get('/', (req, res) => {
-    Users.find()
-        .then((result) => {
-            console.log(result)
-        })
-        .catch((err) => {
-            console.error(err)
-        })
+    User.find({name: "john smith"})
+    .then((result) => {
+        console.log(` result -> ${result}`)
+    })
+    .catch((err) => {
+        console.error(err)
+    })
 })

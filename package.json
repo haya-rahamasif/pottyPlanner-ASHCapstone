@@ -4,5 +4,9 @@
     "express": "^4.21.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.1"
-  }
+  },
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "type": "module"
 }
