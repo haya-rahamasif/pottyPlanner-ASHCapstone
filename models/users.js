@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import type from 'os'
+
 
 // schema
 const testUserSchema = new mongoose.Schema(
@@ -18,6 +18,7 @@ const testUserSchema = new mongoose.Schema(
         }
     }
 )
+
 
 const User = mongoose.model('User', testUserSchema)
 export default User
