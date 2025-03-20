@@ -38,11 +38,15 @@ app.get('/', async (req, res) => {
         const firstUser = await Users.findOne({});
         console.log(firstUser);
 
-        res.render('../public/views/index.ejs');
+        res.render('../public/views/index.ejs', { users: result}); //Pass the data to the template
     } catch (err) {
         console.error(err);
         res.send('An error occurred.');
     }
+});
+
+app.get('/profiles', (req, res) => {
+    res.render('../public/views/profiles.ejs');
 });
 
 app.listen(3001, () => {
