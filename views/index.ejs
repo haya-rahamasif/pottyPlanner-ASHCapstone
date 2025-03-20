@@ -31,10 +31,35 @@
         let counter = 0;
         let interval;
 
+        const postData = data => {
+        const body = JSON.stringify(data);
+        return fetch('/timestamp', {
+            method: 'POST', // GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, cors, same-origin
+            cache: 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow', // manual, follow, error
+            referrer: 'no-referrer', // no-referrer, client
+            body
+        })
+            .then(response => response.json()) // parses JSON response into native JavaScript objects
+        }
+
         function stop() {
+            let time = ret.innerHTML
+            console.log(time)
             clearInterval(interval);
             startBtn.disabled = false;
             stopBtn.classList.remove("active");
+            postData({data: time})
+                .then(json => {
+                    console.log(json);
+                })
+                .catch(e => console.log(e));
+            
         }
 
         function convertSec(cnt) {
@@ -73,13 +98,6 @@
         }
     </script>
       <script src="public/js/script.js"></script>
-    <p>Period list: </p>
-    <div class="btn-group" style="width:100%">
-    <button style="width:25%">Period 1</button><br>
-    <button style="width:25%">Period 2</button><br>
-    <button style="width:25%">Period 3</button><br>
-    <button style="width:25%">Period 4</button><br>
-    </div>
 
     <input type="checkbox" id="active">
     <label for="active" class="menu-btn"><i class="fas fa-bars"></i></label>
