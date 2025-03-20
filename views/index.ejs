@@ -85,19 +85,47 @@
 <label style="text-emphasis-color: black;"style="background-color: white;" for="active" class="menu-btn">More</label>
     
     <div class="wrapper">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Gallery</a></li>
-        <li><a href="feedback.ejs">Feedback</a></li>
-      </ul>
-    </div>
-    <div class="content">
-      <div class="title">
-        Fullscreen Overlay Navigation Bar</div>
-      <p>
-        with HTML & CSS Neon Effect</p>
-    </div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#feedback" onclick="showFeedback()">Feedback</a></li>
+          </ul>
+          
+          <div class="content">
+            <div class="title">Fullscreen Overlay Navigation Bar</div>
+            <p>with HTML & CSS Neon Effect</p>
+          </div>
+          
+          <!-- Feedback Section -->
+          <div id="feedback-section" style="display: none;">
+            <h2>Feedback</h2>
+            <p>Welcome to the feedback page!</p>
+            <form>
+              <label style="color: white;"for="name">Name:</label>
+              <input type="text" id="name" name="name" required><br><br>
+              <label style="color:white" for="feedback">Your Feedback:</label><br>
+              <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea><br><br>
+              <button style="color:black"type="submit">Submit</button>
+            </form>
+            <button onclick="hideFeedback()">Back</button>
+          </div>
+          
+          <script>
+            function showFeedback() {
+              document.querySelector('.content').style.display = 'none'; // Hide main content
+              document.getElementById('feedback-section').style.display = 'block'; // Show feedback section
+            }
+          
+            function hideFeedback() {
+              document.querySelector('.content').style.display = 'block'; // Show main content
+              document.getElementById('feedback-section').style.display = 'none'; // Hide feedback section after sumbimiting answers
+            }
+          </script>
 </body>
 </html>
+
+
+
+
