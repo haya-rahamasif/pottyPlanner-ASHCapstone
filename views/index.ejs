@@ -89,7 +89,7 @@
         <li><a href="/" onclick="showHome()">Home</a></li>
         <li><a href="#about" onclick="showAbout()">About</a></li>
         <li><a href="#services" onclick="showServices()">Services</a></li>
-        <li><a href="#gallery" onclick="showGallery()">Gallery</a></li>
+        <li><a href="#stats" onclick="showStats()">Stats</a></li>
         <li><a href="#feedback" onclick="showFeedback()">Feedback</a></li>
       </ul>
       
@@ -133,11 +133,11 @@
         <button class="button button2" onclick="hideAbout()">Go back</button> <!--Go back button-->
       </div>
     </center>
-      <!--gallery section-->
+      <!--stats section-->
       <center>
-        <div id="Gallery-section" style="display: none;">
-        <h2 style="color:white;">Gallery</h2> <!--The gallery description-->
-        <button class="button button2" onclick="hideGallery()">Go back</button> <!--Go back button-->
+        <div id="stats-section" style="display: none;">
+        <h2 style="color:white;">Stats</h2> <!--The stats description-->
+        <button class="button button2" onclick="hideStats()">Go back</button> <!--Go back button-->
       </div>
       </center>
       <script>
@@ -170,17 +170,17 @@
           document.querySelector('.content').style.display = 'none'; // Hide main content
           document.getElementById('about-section').style.display = 'none'; // Hide about section
           document.getElementById('feedback-section').style.display = 'none'; // Hide feedback section
-          document.getElementById('Gallery-section').style.display = 'none'; // Hide gallery section
+          document.getElementById('stats-section').style.display = 'none'; // Hide Stats section
         }
-      function hideGallery() {
+      function hideStats() {
         document.getElementById('hide').classList.remove('hidden'); // Show menu
         document.querySelector('.content').style.display = 'block'; // Show main content
-        document.getElementById('Gallery-section').style.display = 'none'; // Hide gallery section
+        document.getElementById('stats-section').style.display = 'none'; // Hide stats section
       }
-      function showGallery() {
+      function showStats() {
         document.getElementById('hide').classList.add('hidden'); // Hide menu
         document.querySelector('.content').style.display = 'none'; // Hide main content
-        document.getElementById('Gallery-section').style.display = 'block'; // Show gallery section
+        document.getElementById('stats-section').style.display = 'block'; // Show stats section
       }
       </script>
 </div>
