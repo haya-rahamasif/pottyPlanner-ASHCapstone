@@ -85,46 +85,107 @@
 <label style="text-emphasis-color: black;"style="background-color: white;" for="active" class="menu-btn">More</label>
     
     <div class="wrapper">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#gallery">Gallery</a></li>
-            <li><a href="#feedback" onclick="showFeedback()">Feedback</a></li>
-          </ul>
-          
-          <div class="content">
-            <div class="title">Fullscreen Overlay Navigation Bar</div>
-            <p>with HTML & CSS Neon Effect</p>
-          </div>
-          
-          <!-- Feedback Section -->
-          <div id="feedback-section" style="display: none;">
-            <h2>Feedback</h2>
-            <p>Welcome to the feedback page!</p>
-            <form>
-              <label style="color: white;"for="name">Name:</label>
-              <input type="text" id="name" name="name" required><br><br>
-              <label style="color:white" for="feedback">Your Feedback:</label><br>
-              <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea><br><br>
-              <button style="color:black"type="submit">Submit</button>
-            </form>
-            <button onclick="hideFeedback()">Back</button>
-          </div>
-          
-          <script>
-            function showFeedback() {
-              document.querySelector('.content').style.display = 'none'; // Hide main content
-              document.getElementById('feedback-section').style.display = 'block'; // Show feedback section
-            }
-          
-            function hideFeedback() {
-              document.querySelector('.content').style.display = 'block'; // Show main content
-              document.getElementById('feedback-section').style.display = 'none'; // Hide feedback section after sumbimiting answers
-            }
-          </script>
+      <ul id="hide">
+        <li><a href="/" onclick="showHome()">Home</a></li>
+        <li><a href="#about" onclick="showAbout()">About</a></li>
+        <li><a href="#services" onclick="showServices()">Services</a></li>
+        <li><a href="#gallery" onclick="showGallery()">Gallery</a></li>
+        <li><a href="#feedback" onclick="showFeedback()">Feedback</a></li>
+      </ul>
+      
+      <div class="content">
+        <div class="title">Fullscreen Overlay Navigation Bar</div>
+        <p>with HTML & CSS Neon Effect</p>
+      </div>
+      
+      <style>
+        .button2 { width: 10%; }
+        #hide {
+          display: block;
+        }
+        #hide.hidden {
+          display: none;
+        }
+      </style>
+      
+      <!-- Feedback Section -->
+      <div id="feedback-section" style="display: none;">
+        <h2>Feedback</h2>
+        <p>Submit your feedback here!</p>
+        <form>
+          <center>
+          <label style="color: white;" for="name">Name:</label>
+          <input type="text" id="name" name="name" required><br><br>
+          <label style="color:white" for="feedback">Your Feedback:</label><br>
+          <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea><br><br>
+          <button class="button button2" style="color:black" type="submit">Submit</button>
+        </form>
+      
+      
+        <button class="button button2" onclick="hideFeedback()">Go back</button> <!--Go back button-->
+      </center>
+      </div>
+      
+      <!-- About Section -->
+       <center>
+      <div id="about-section" style="display: none;">
+        <h2 style="color:white;">About us...</h2> <!--The about us description-->
+        <button class="button button2" onclick="hideAbout()">Go back</button> <!--Go back button-->
+      </div>
+    </center>
+      <!--gallery section-->
+      <center>
+        <div id="Gallery-section" style="display: none;">
+        <h2 style="color:white;">Gallery</h2> <!--The gallery description-->
+        <button class="button button2" onclick="hideGallery()">Go back</button> <!--Go back button-->
+      </div>
+      </center>
+      <script>
+        function showFeedback() {
+          document.getElementById('hide').classList.add('hidden'); // Hide menu
+          document.querySelector('.content').style.display = 'none'; // Hide main content
+          document.getElementById('feedback-section').style.display = 'block'; // Show feedback section
+        }
+      
+        function hideFeedback() {
+          document.getElementById('hide').classList.remove('hidden'); // Show menu
+          document.querySelector('.content').style.display = 'block'; // Show main content
+          document.getElementById('feedback-section').style.display = 'none'; // Hide feedback section
+        }
+      
+        function showAbout() {
+          document.getElementById('hide').classList.add('hidden'); // Hide menu
+          document.querySelector('.content').style.display = 'none'; // Hide main content
+          document.getElementById('about-section').style.display = 'block'; // Show about section
+        }
+      
+        function hideAbout() {
+          document.getElementById('hide').classList.remove('hidden'); // Show menu
+          document.querySelector('.content').style.display = 'block'; // Show main content
+          document.getElementById('about-section').style.display = 'none'; // Hide about section
+        }
+      
+        function showHome() {
+          document.getElementById('hide').classList.add('hidden'); // Hide  menu
+          document.querySelector('.content').style.display = 'none'; // Hide main content
+          document.getElementById('about-section').style.display = 'none'; // Hide about section
+          document.getElementById('feedback-section').style.display = 'none'; // Hide feedback section
+          document.getElementById('Gallery-section').style.display = 'none'; // Hide gallery section
+        }
+      function hideGallery() {
+        document.getElementById('hide').classList.remove('hidden'); // Show menu
+        document.querySelector('.content').style.display = 'block'; // Show main content
+        document.getElementById('Gallery-section').style.display = 'none'; // Hide gallery section
+      }
+      function showGallery() {
+        document.getElementById('hide').classList.add('hidden'); // Hide menu
+        document.querySelector('.content').style.display = 'none'; // Hide main content
+        document.getElementById('Gallery-section').style.display = 'block'; // Show gallery section
+      }
+      </script>
+</div>
 </body>
-</html>
+</html>      
 
 
 
