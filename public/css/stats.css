@@ -1,0 +1,38 @@
+.topnav {
+    background-color: #4CC5CF;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.topnav .logo {
+    width: 100px;
+    height: auto;
+}
+
+.nav-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+body {
+    background-color: #A0E6EA;
+    font-family: 'Luminari', fantasy;
+    font-size: 20px;
+    margin: 0;
+    padding: 60px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 60px;
+}
