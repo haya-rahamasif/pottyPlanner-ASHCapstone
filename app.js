@@ -26,9 +26,10 @@ app.get('/timestamp', (req, res) => {
 
 app.use(express.json())
 app.post('/timestamp', (req, res) => {
-    // creates a instance of the user schema to make a new field (row of data) to add to the database
+    // creates a instance of the student schema to make a new field (row of data) to add to the database
     let time = req.body.data
-    let entry1 = new Student ({
+    console.log(time)
+    /*let entry1 = new Student ({
         studentName:"john smith",
         studentID:"0924",
         absenceP1:[time],
@@ -44,13 +45,13 @@ app.post('/timestamp', (req, res) => {
     })
     .catch((err) => {
         console.log(err)
-    })
+    })*/
 
     mongoose 
     .connect(dbURL) // connects to database
     .then((result) => {
         console.log('Connected to MongoDB')
-        User.find({studentID: '0'}) // finds all documents (columns) in the collection (table) and returns them. usually you can also specify a filter of some sort to only return specific data
+        Student.find({studentID: '0'}) // finds all documents (columns) in the collection (table) and returns them. usually you can also specify a filter of some sort to only return specific data
         .then((doc) => { // doc is the result that is returned from the .find() method
             console.log(doc)
         })

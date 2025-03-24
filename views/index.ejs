@@ -29,6 +29,8 @@
         const stopBtn = document.querySelector("#stop-timer");
         const resetBtn = document.querySelector("#reset-timer");
         let counter = 0;
+        let index = 0
+        let absences = []
         let interval;
 
         const postData = data => {
@@ -49,12 +51,13 @@
         }
 
         function stop() {
-            let time = ret.innerHTML
-            console.log(time)
+            let stopTimestamp = new Date()
+            let t2 = [stopTimestamp.getDate(), stopTimestamp.getMonth(), stopTimestamp.getFullYear(), stopTimestamp.getHours(), stopTimestamp.getMinutes(), stopTimestamp.getSeconds()]
+            absences.push(t2)
             clearInterval(interval);
             startBtn.disabled = false;
             stopBtn.classList.remove("active");
-            postData({data: time})
+            postData({data: absences})
                 .then(json => {
                     console.log(json);
                 })
@@ -86,6 +89,9 @@
             interval = setInterval(function() {
                 ret.innerHTML = convertSec(counter++); // timer start counting here...
             }, 1000);
+            let startTimestamp = new Date()
+            let t = [startTimestamp.getDate(), startTimestamp.getMonth(), startTimestamp.getFullYear(), startTimestamp.getHours(), startTimestamp.getMinutes(), startTimestamp.getSeconds()]
+            absences.push(t)
         }
 
         function reset() {
