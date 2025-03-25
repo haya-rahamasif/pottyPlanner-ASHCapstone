@@ -15,63 +15,6 @@
 </head>
 <body>
     <center> <h1>Potty Planner</h1></center>
-    <h2>Student lists:</h2>
-    <div class="timer-display-id">
-        <h2>Timer</h2>
-        <p id="timer">00:00:00 </p>
-        <button id="start-timer" onclick="start()">Start </button> 
-        <button id="stop-timer" onclick="stop()">Stop  </button> 
-        <button id = "reset-timer" onclick ="reset()">Reset </button>
-      </div>
-      <script>
-        const ret = document.getElementById("timer");
-        const startBtn = document.querySelector("#start-timer");
-        const stopBtn = document.querySelector("#stop-timer");
-        const resetBtn = document.querySelector("#reset-timer");
-        let counter = 0;
-        let interval;
-
-        function stop() {
-            clearInterval(interval);
-            startBtn.disabled = false;
-            stopBtn.classList.remove("active");
-        }
-
-        function convertSec(cnt) {
-            let sec = cnt % 60;
-            let min = Math.floor(cnt / 60);
-            if (sec < 10) {
-                if (min < 10) {
-                    return "0" + min + ":0" + sec;
-                } else {
-                    return min + ":0" + sec;
-                }
-            } else if ((min < 10) && (sec >= 10)) {
-                return "0" + min + ":" + sec;
-            } else {
-                return min + ":" + sec;
-            }
-        }
-
-        function start() {
-            startBtn.disabled = true;
-            startBtn.classList.add("active");
-            stopBtn.classList.remove("active");
-            resetBtn.classList.remove("active");
-            interval = setInterval(function() {
-                ret.innerHTML = convertSec(counter++); // timer start counting here...
-            }, 1000);
-        }
-
-        function reset() {
-            startBtn.disabled = false;
-            counter = 0; // Reset the counter to zero
-            ret.innerHTML = convertSec(counter);
-            resetBtn.classList.add("active");
-            startBtn.classList.remove("active");
-            stopBtn.classList.remove("active");
-        }
-    </script>
       <script src="public/js/script.js"></script>
       <p>Period list: </p>
       <ul id="hide1"></ul>
@@ -93,83 +36,108 @@
         <button onClick="showPeriod4()" style="width:25%">Period 4</button><br>
       </div>
       
-      <!-- Period1 Section -->
+      <!-- Period 1 Section -->
       <div id="period1-section" style="display: none;">
+       <center>
         <h2>Period 1</h2>
         <p>Student list: </p>
-        <button onClick="hidePeriod1()">Back</button>
+        <p>Bob</p>
+        <button onClick="hidePeriod1()">Close</button>
+        </center>
       </div>
       
       <!-- Period2 Section -->
       <div id="period2-section" style="display: none;">
+        <center>
         <h2>Period 2</h2>
         <p>Student list: </p>
-        <button onClick="hidePeriod2()">Back</button>
+        <p>John</p>
+        <button onClick="hidePeriod2()">Close</button>
+      </center>
       </div>
       
-      <!-- Period3 Section -->
+      <!-- Period 3 Section -->
       <div id="period3-section" style="display: none;">
-        <h2>Period 3</h2>
+        <center><h2>Period 3</h2>
         <p>Student list: </p>
-        <button onClick="hidePeriod3()">Back</button>
+        <p>Paul</p>
+        <button onClick="hidePeriod3()">Close</button>
+      </center>
       </div>
       
       <!-- Period4 Section -->
       <div id="period4-section" style="display: none;">
-        <h2>Period 4</h2>
+       <center><h2>Period 4</h2>
         <p>Student list: </p>
-        <button onClick="hidePeriod4()">Back</button>
+        <p>Sam</p>
+        <button onClick="hidePeriod4()">Close</button>
+        </center> 
       </div>
       
       <script>
-        function showPeriod1() {
-          document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.querySelector('.content').style.display = 'none'; // Hide main content
-          document.getElementById('period1-section').style.display = 'block'; // Show Period 1 section
+
+        function hideAllSections() {
+          document.querySelector('.content').style.display = 'none'; //Hide student list for certain period
+          document.getElementById('period1-section').style.display = 'none'; //Hide Period 1
+          document.getElementById('period2-section').style.display = 'none'; // Hide Period 2
+          document.getElementById('period3-section').style.display = 'none'; //Hide Period 3
+          document.getElementById('period4-section').style.display = 'none'; // Hide Period 4
         }
-        
+      
+
+        function showPeriod1() {
+          hideAllSections(); // Hide all sections first
+          document.getElementById('hide1').classList.add('hidden'); // Hide menu
+          document.getElementById('period1-section').style.display = 'block'; //Show Period 1 section
+        }
+
         function hidePeriod1() {
           document.getElementById('hide1').classList.remove('hidden'); // Show menu
-          document.querySelector('.content').style.display = 'block'; // Show main content
+          document.querySelector('.content').style.display = 'block'; //Show main content
           document.getElementById('period1-section').style.display = 'none'; // Hide Period 1 section
         }
       
+
         function showPeriod2() {
+          hideAllSections(); // Hide all sections first
           document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.querySelector('.content').style.display = 'none'; // Hide main content
-          document.getElementById('period2-section').style.display = 'block'; // Show Period 2 section
+          document.getElementById('period2-section').style.display = 'block'; //Show Period 2 section
         }
       
+ 
         function hidePeriod2() {
           document.getElementById('hide1').classList.remove('hidden'); // Show menu
-          document.querySelector('.content').style.display = 'block'; // Show main content
-          document.getElementById('period2-section').style.display = 'none'; // Hide Period 2 section
+          document.querySelector('.content').style.display = 'block'; //show main content
+          document.getElementById('period2-section').style.display = 'none'; //hide Period 2 section
         }
       
+
         function showPeriod3() {
+          hideAllSections(); // Hide all sections first
           document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.querySelector('.content').style.display = 'none'; // Hide main content
-          document.getElementById('period3-section').style.display = 'block'; // Show Period 3 section
+          document.getElementById('period3-section').style.display = 'block'; //show Period 3 section
         }
       
+
         function hidePeriod3() {
           document.getElementById('hide1').classList.remove('hidden'); // Show menu
           document.querySelector('.content').style.display = 'block'; // Show main content
           document.getElementById('period3-section').style.display = 'none'; // Hide Period 3 section
         }
       
+
         function showPeriod4() {
+          hideAllSections(); // Hide all sections first
           document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.querySelector('.content').style.display = 'none'; // Hide main content
           document.getElementById('period4-section').style.display = 'block'; // Show Period 4 section
         }
-      
+
         function hidePeriod4() {
           document.getElementById('hide1').classList.remove('hidden'); // Show menu
           document.querySelector('.content').style.display = 'block'; // Show main content
           document.getElementById('period4-section').style.display = 'none'; // Hide Period 4 section
         }
-      </script>      
+      </script>           
     <input type="checkbox" id="active">
 <label style="text-emphasis-color: black;"style="background-color: white;" for="active" class="menu-btn">More</label>
     
@@ -218,7 +186,7 @@
       <!-- About Section -->
        <center>
       <div id="about-section" style="display: none;">
-        <h2 style="color:white;">About us...</h2> <!--The about us description-->
+        <h2 style="color:white;">About us...</h2> <!-- About us description-->
         <button class="button button2" onclick="hideAbout()">Go back</button> <!--Go back button-->
       </div>
     </center>
