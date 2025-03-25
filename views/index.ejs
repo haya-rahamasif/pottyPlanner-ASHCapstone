@@ -92,36 +92,56 @@
     </div>
     <!-- Period1 Section -->
     <div id="period1-section" style="display: none;">
-      <h2>Period 1</h2>
-      <p>Student list: </p>
-<script>
-  function showPeriod1 () {
-    document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.querySelector('.content').style.display = 'none'; // Hide main content
-          document.getElementById('period1-section').style.display = 'block'; // Show feedback section
-  }
-  function hidePeriod1 () {
-    document.getElementById('hide1').classList.remove('hidden'); // Show menu
-          document.querySelector('.content').style.display = 'block'; // Show main content
-          document.getElementById('period1-section').style.display = 'none'; // Hide feedback section
-  }
-  function showPeriod2 () {
-
-  }
-  function hidePeriod2 () {
-
-  }
-  function showPeriod3 () {
-
-  }
-  function hidePeriod3 () {
-
-  }
-  function showPeriod4 () {
-
-  }
-  function hidePeriod4 () {
-</script>
+      <<p>Period list: </p>
+      <ul id="hide1"></ul>
+      <style>
+        .button2 { width: 10%; }
+        #hide1 {
+          display: block;
+        }
+        #hide1.hidden {
+          display: none;
+        }
+      </style>
+      <div class="btn-group" style="width:100%">
+        <button onclick="showPeriod1()" style="width:25%">Period 1</button><br>
+        <button onclick="showPeriod2()" style="width:25%">Period 2</button><br>
+        <button onclick="showPeriod3()" style="width:25%">Period 3</button><br>
+        <button onclick="showPeriod4()" style="width:25%">Period 4</button><br>
+      </div>
+      <!-- Period1 Section -->
+      <div id="period1-section" style="display: none;">
+        <h2>Period 1</h2>
+        <p>Student list: </p>
+        <button onclick="hidePeriod1()">Back</button>
+      </div>
+      
+      <script>
+        function showPeriod1() {
+          document.getElementById('hide1').classList.add('hidden'); // Hide menu
+          document.querySelector('.content')?.style.display = 'none'; // Hide main content
+          document.getElementById('period1-section').style.display = 'block'; // Show Period 1 section
+        }
+        
+        function hidePeriod1() {
+          document.getElementById('hide1').classList.remove('hidden'); // Show menu
+          document.querySelector('.content')?.style.display = 'block'; // Show main content
+          document.getElementById('period1-section').style.display = 'none'; // Hide Period 1 section
+        }
+        
+        // Placeholder functions for other periods
+        function showPeriod2() {
+          alert('Period 2 function not implemented yet');
+        }
+        
+        function showPeriod3() {
+          alert('Period 3 function not implemented yet');
+        }
+        
+        function showPeriod4() {
+          alert('Period 4 function not implemented yet');
+        }
+      </script>
     <input type="checkbox" id="active">
 <label style="text-emphasis-color: black;"style="background-color: white;" for="active" class="menu-btn">More</label>
     
