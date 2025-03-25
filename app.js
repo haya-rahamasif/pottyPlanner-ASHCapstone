@@ -33,10 +33,10 @@ app.get('/', async (req, res) => {
             password: 'asdf',
         });
 
-        await user_1.save();
+   /*     await user_1.save();
 
         const firstUser = await Users.findOne({});
-        console.log(firstUser);
+        console.log(firstUser); */
 
         res.render('../public/views/index.ejs', { users: result}); //Pass the data to the template
     } catch (err) {

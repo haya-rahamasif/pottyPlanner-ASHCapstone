@@ -1,6 +1,8 @@
 body {
-    background-color: rgb(200, 202, 38);
+    background-color: rgb(118, 193, 231);
+    padding-top: 100px; /* Added space for the fixed header */
 }
+
 html, body {
   overflow-x: hidden; 
   overscroll-behavior: none;
@@ -14,7 +16,8 @@ header {
   align-items: center;
   padding: 10px;
   gap: 20px;
-  position: relative; 
+  z-index: 1000; 
+  top: 0;
 }
 
 .logo {
@@ -57,6 +60,7 @@ header {
     left: 0;
     height: 100%;
     width: 100%;
+    z-index: 1001;
     background: linear-gradient(375deg, #1cc7d0, #2ede98); */
     background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);*/
     clip-path: circle(25px at calc(0% + 45px) 45px); */
@@ -69,7 +73,7 @@ header {
   }
   .menu-btn{
     position: absolute;
-    z-index: 2;
+    z-index: 1002;
     right: 20px;
     /* left: 20px; */
     top: 20px;
@@ -168,3 +172,98 @@ header {
       filter: hue-rotate(360deg);
     }
   }
+
+  .StudentsTable {
+    text-align: center;
+    width: 80%;
+    margin: 5% auto;
+    border-spacing: 20px;
+    border-collapse: separate;
+    table-layout: fixed;
+  }
+
+  .StudentsTable td {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000;
+    border-radius: 8px;
+    background-color:#b5e2ff;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    padding: 10px;
+    width: 150px;
+  }
+
+  .StudentsTable td:hover {
+    transform: scale(1.1); /* Makes the cell grow slightly */
+    background-color: #9cd3ff; /* Changes color */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 10px rgba(255, 0, 166, 0.8);
+}
+
+  .container {
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+  }
+
+  .box-images {
+    display: flex;
+    justify-content: center;  
+    align-items: center;     
+    width: 100%;
+  }
+  
+  .box-images img {
+    width: 30%;
+    height: auto;
+    border-radius: 100%;
+  }
+
+  .button-timer {
+    font-size: 30px;
+    font-weight: 500;
+    padding: 5px 30px;
+    color: #fff;
+    border-radius: 50px;
+    background: #000;
+    position: relative;
+    line-height: 50px;
+    transition: all 0.3s ease;
+    border: none; /* Remove default border */
+    cursor: pointer; /* Add pointer cursor */
+}
+
+.button-timer:after {
+    position: absolute;
+    content: "";
+    background: #fff;
+    background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+    width: 104%;
+    height: 110%;
+    left: -2%;
+    top: -5%;
+    border-radius: 50px;
+    transform: scaleY(0);
+    z-index: -1;
+    animation: rotate 1.5s linear infinite;
+    transition: transform 0.3s ease;
+}
+
+.button-timer:hover:after {
+    transform: scaleY(1);
+}
+
+.button-timer:hover {
+    color: #fff;
+}
+
+@keyframes rotate {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+  
