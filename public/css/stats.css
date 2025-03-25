@@ -6,7 +6,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 0 20px;
+    padding: 0px;
 }
 
 .topnav .logo {
@@ -19,6 +19,7 @@
     display: flex;
     justify-content: center;
     position: relative;
+    padding-right: 100px;
 }
 
 body {
@@ -26,13 +27,32 @@ body {
     font-family: 'Luminari', fantasy;
     font-size: 20px;
     margin: 0;
-    padding: 60px;
 }
 
-.stats {
+.graphs {
     display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-evenly; 
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    margin-top: 40px; 
     justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-top: 60px;
+}
+
+.graph {
+    width: 90%;
+    border: 1px solid #ccc; 
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    gap: 20px;
+}
+
+.besiding {
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    margin: 10px; 
+
+.gtext {
+    text-align: center;
+    margin-top: 10px;
 }
