@@ -73,27 +73,9 @@
         }
     </script>
       <script src="public/js/script.js"></script>
-    <p>Period list: </p>
-    <ul id="hide1"></ul>
-    <style>
-      .button2 { width: 10%; }
-      #hide1 {
-        display: block;
-      }
-      #hide1.hidden {
-        display: none;
-      }
-    </style>
-    <div class="btn-group" style="width:100%">
-    <button onClick="showPeriod1" style="width:25%">Period 1</button><br>
-    <button onClick="showPeriod2" style="width:25%">Period 2</button><br>
-    <button onClick="showPeriod3" style="width:25%">Period 3</button><br>
-    <button onClick="showPeriod4" style="width:25%">Period 4</button><br>
-    </div>
-    <!-- Period1 Section -->
-    <div id="period1-section" style="display: none;">
-      <<p>Period list: </p>
+      <p>Period list: </p>
       <ul id="hide1"></ul>
+      
       <style>
         .button2 { width: 10%; }
         #hide1 {
@@ -103,45 +85,91 @@
           display: none;
         }
       </style>
+      
       <div class="btn-group" style="width:100%">
-        <button onclick="showPeriod1()" style="width:25%">Period 1</button><br>
-        <button onclick="showPeriod2()" style="width:25%">Period 2</button><br>
-        <button onclick="showPeriod3()" style="width:25%">Period 3</button><br>
-        <button onclick="showPeriod4()" style="width:25%">Period 4</button><br>
+        <button onClick="showPeriod1()" style="width:25%">Period 1</button><br>
+        <button onClick="showPeriod2()" style="width:25%">Period 2</button><br>
+        <button onClick="showPeriod3()" style="width:25%">Period 3</button><br>
+        <button onClick="showPeriod4()" style="width:25%">Period 4</button><br>
       </div>
+      
       <!-- Period1 Section -->
       <div id="period1-section" style="display: none;">
         <h2>Period 1</h2>
         <p>Student list: </p>
-        <button onclick="hidePeriod1()">Back</button>
+        <button onClick="hidePeriod1()">Back</button>
+      </div>
+      
+      <!-- Period2 Section -->
+      <div id="period2-section" style="display: none;">
+        <h2>Period 2</h2>
+        <p>Student list: </p>
+        <button onClick="hidePeriod2()">Back</button>
+      </div>
+      
+      <!-- Period3 Section -->
+      <div id="period3-section" style="display: none;">
+        <h2>Period 3</h2>
+        <p>Student list: </p>
+        <button onClick="hidePeriod3()">Back</button>
+      </div>
+      
+      <!-- Period4 Section -->
+      <div id="period4-section" style="display: none;">
+        <h2>Period 4</h2>
+        <p>Student list: </p>
+        <button onClick="hidePeriod4()">Back</button>
       </div>
       
       <script>
         function showPeriod1() {
           document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.querySelector('.content')?.style.display = 'none'; // Hide main content
+          document.querySelector('.content').style.display = 'none'; // Hide main content
           document.getElementById('period1-section').style.display = 'block'; // Show Period 1 section
         }
         
         function hidePeriod1() {
           document.getElementById('hide1').classList.remove('hidden'); // Show menu
-          document.querySelector('.content')?.style.display = 'block'; // Show main content
+          document.querySelector('.content').style.display = 'block'; // Show main content
           document.getElementById('period1-section').style.display = 'none'; // Hide Period 1 section
         }
-        
-        // Placeholder functions for other periods
+      
         function showPeriod2() {
-          alert('Period 2 function not implemented yet');
+          document.getElementById('hide1').classList.add('hidden'); // Hide menu
+          document.querySelector('.content').style.display = 'none'; // Hide main content
+          document.getElementById('period2-section').style.display = 'block'; // Show Period 2 section
         }
-        
+      
+        function hidePeriod2() {
+          document.getElementById('hide1').classList.remove('hidden'); // Show menu
+          document.querySelector('.content').style.display = 'block'; // Show main content
+          document.getElementById('period2-section').style.display = 'none'; // Hide Period 2 section
+        }
+      
         function showPeriod3() {
-          alert('Period 3 function not implemented yet');
+          document.getElementById('hide1').classList.add('hidden'); // Hide menu
+          document.querySelector('.content').style.display = 'none'; // Hide main content
+          document.getElementById('period3-section').style.display = 'block'; // Show Period 3 section
         }
-        
+      
+        function hidePeriod3() {
+          document.getElementById('hide1').classList.remove('hidden'); // Show menu
+          document.querySelector('.content').style.display = 'block'; // Show main content
+          document.getElementById('period3-section').style.display = 'none'; // Hide Period 3 section
+        }
+      
         function showPeriod4() {
-          alert('Period 4 function not implemented yet');
+          document.getElementById('hide1').classList.add('hidden'); // Hide menu
+          document.querySelector('.content').style.display = 'none'; // Hide main content
+          document.getElementById('period4-section').style.display = 'block'; // Show Period 4 section
         }
-      </script>
+      
+        function hidePeriod4() {
+          document.getElementById('hide1').classList.remove('hidden'); // Show menu
+          document.querySelector('.content').style.display = 'block'; // Show main content
+          document.getElementById('period4-section').style.display = 'none'; // Hide Period 4 section
+        }
+      </script>      
     <input type="checkbox" id="active">
 <label style="text-emphasis-color: black;"style="background-color: white;" for="active" class="menu-btn">More</label>
     
