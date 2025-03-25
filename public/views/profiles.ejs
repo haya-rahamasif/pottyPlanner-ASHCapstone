@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-    <script src="public/js/script.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
     <title>potty planner</title>
-    <script src="/public/js/script.js"></script>
-    <head>
-        <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-      </head>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <header>
+<header>
     <div class="logo">
       <a href="/"><img src="/images/logo.png"></a>
     </div>
@@ -31,52 +24,64 @@
       </ul>
     </div>
   </header>
-
-<table class="StudentsTable"> 
-  
-  <tr>
-    <td>
-      <div class="box-images">
-        <img src="/images/soccer.webp">
-      </div>
-      <div class="container">
-      <h1> Student A </h1> 
-      </div> 
-      <button class= "button-timer" type="button">Start!</button>
-    </td>
-    <td> 
-      <div class="box-images">
-        <img src="/images/soccer.webp">
-      </div>
-      <div class="container">
-      <h1> Student B </h1> 
-      </div> 
-      <button class= "button-timer" type="button">Start!</button>
-    </td>
-  </tr>
-   
-  <tr>
-    <td>
-      <div class="box-images">
-        <img src="/images/soccer.webp">
-      </div>
-      <div class="container">
-      <h1> Student C </h1> 
-      </div> 
-      <button class= "button-timer" type="button">Start!</button>
-    </td>
-    <td> 
-      <div class="box-images">
-        <img src="/images/soccer.webp">
-      </div>
-      <div class="container">
-      <h1> Student D </h1> 
-      </div> 
-      <button class= "button-timer" type="button">Start!</button>
-    </td>
-  </tr> 
-
+  <table class="StudentsTable">
+    <tr>
+        <td>
+            <div class="box-images">
+                <img src="/images/soccer.webp">
+            </div>
+            <div class="container">
+                <h1>Student A</h1>
+            </div>
+            <div class="time" id="time0">
+                <span class="hr">00</span>:<span class="min">00</span>:<span class="sec">00</span>:<span class="count">00</span>
+            </div>
+            <button class="button-timer" id="start0">Start</button>
+        </td>
+        <td>
+            <div class="box-images">
+                <img src="/images/soccer.webp">
+            </div>
+            <div class="container">
+                <h1>Student B</h1>
+            </div>
+            <div class="time" id="time1">
+                <span class="hr">00</span>:<span class="min">00</span>:<span class="sec">00</span>:<span class="count">00</span>
+            </div>
+            <button class="button-timer" id="start1">Start</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="box-images">
+                <img src="/images/soccer.webp">
+            </div>
+            <div class="container">
+                <h1>Student C</h1>
+            </div>
+            <div class="time" id="time2">
+                <span class="hr">00</span>:<span class="min">00</span>:<span class="sec">00</span>:<span class="count">00</span>
+            </div>
+            <button class="button-timer" id="start2">Start</button>
+        </td>
+        <td>
+            <div class="box-images">
+                <img src="/images/soccer.webp">
+            </div>
+            <div class="container">
+                <h1>Student D</h1>
+            </div>
+            <div class="time" id="time3">
+                <span class="hr">00</span>:<span class="min">00</span>:<span class="sec">00</span>:<span class="count">00</span>
+            </div>
+            <button class="button-timer" id="start3">Start</button>
+        </td>
+    </tr>
 </table>  
 
+<script src="/js/script.js"></script>
+<div class="addStudentbutton">
+<button class="button-addstudent" id="addStudent">Add Student</button>
+</div>
 </body>
 </html>
