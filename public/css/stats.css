@@ -20,6 +20,7 @@
     justify-content: center;
     position: relative;
     padding-right: 100px;
+    margin-right: 20px;
 }
 
 body {
@@ -46,13 +47,14 @@ body {
     gap: 20px;
 }
 
-.besiding {
-    display: flex; 
-    flex-direction: column;
-    align-items: center; 
-    margin: 10px; 
+
+.h2{
+    margin-left: 50px;
+}
 
 .gtext {
     text-align: center;
     margin-top: 10px;
+    margin-right: 90px;
+    margin-bottom: 30px;
 }

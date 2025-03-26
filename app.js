@@ -24,6 +24,11 @@ app.get('/stats', (req, res) => {
     res.render('../views/stats.ejs');
 });
 
+app.get('/login', (req, res) => {
+    res.render('../views/login.ejs');
+});
+
+
 // Start the server
 app.listen(3000, () => {
     console.log('Server started on port 3000')

@@ -1,0 +1,9 @@
+body {
+    background-color: #79B4B7; /* Teal background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+}
