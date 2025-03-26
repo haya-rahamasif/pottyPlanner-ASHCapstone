@@ -11,8 +11,6 @@ const app = express()
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
-
-// Serve static files from the 'public' directory
 app.use(express.static(__dirname + '/public'));
 
 // Routing path

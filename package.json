@@ -9,5 +9,17 @@
   "scripts": {
     "dev": "nodemon app.js"
   },
-  "type": "module"
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haya-rahamasif/pottyPlanner-ASHCapstone.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/haya-rahamasif/pottyPlanner-ASHCapstone/issues"
+  },
+  "homepage": "https://github.com/haya-rahamasif/pottyPlanner-ASHCapstone#readme"
 }

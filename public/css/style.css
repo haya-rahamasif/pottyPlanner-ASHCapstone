@@ -1,5 +1,50 @@
 body {
-    background-color: darkgreen; /*background color */
+    background-color: rgb(118, 193, 231);
+    padding-top: 100px; 
+}
+
+html, body {
+  overflow-x: hidden; 
+  overscroll-behavior: none;
+}
+header {
+  position: fixed;
+  width: 100%;
+  background: linear-gradient(to right, #1cc7d0, #2ede98);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+  z-index: 1000; 
+  top: 0;
+}
+
+.logo {
+  align-items: center;
+}
+
+.logo img {
+  max-width: 8%;
+  height: auto;
+}
+
+.logo a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.website-name {
+  font-size: 250%;
+  font-weight: bold;
+  white-space: nowrap;
+  font-family: cursive;  
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); 
 }
 *{
     margin: 0;
@@ -14,10 +59,10 @@ body {
     left: 0;
     height: 100%;
     width: 100%;
-    /*background: linear-gradient(-135deg, #c850c0, #4158d0);*/
-    /* background: linear-gradient(375deg, #1cc7d0, #2ede98); */
-   /* background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);*/
-    /* clip-path: circle(25px at calc(0% + 45px) 45px); */
+    z-index: 1001;
+    background: linear-gradient(375deg, #1cc7d0, #2ede98); */
+    background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);*/
+    clip-path: circle(25px at calc(0% + 45px) 45px); */
     background: #000;
     clip-path: circle(25px at calc(100% - 45px) 45px);
     transition: all 0.3s ease-in-out;
@@ -27,7 +72,7 @@ body {
   }
   .menu-btn{
     position: absolute;
-    z-index: 2;
+    z-index: 1002;
     right: 20px;
     /* left: 20px; */
     top: 20px;
@@ -39,9 +84,6 @@ body {
     font-size: 20px;
     color: #fff;
     cursor: pointer;
-    /*background: linear-gradient(-135deg, #c850c0, #4158d0);*/
-    /* background: linear-gradient(375deg, #1cc7d0, #2ede98); */
-   /* background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%); */
     background: #000;
     transition: all 0.3s ease-in-out;
   }
@@ -80,11 +122,10 @@ body {
     content: "";
     background: #fff;
      background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
-    /*background: linear-gradient(375deg, #1cc7d0, #2ede98);*/
     width: 104%;
     height: 110%;
     left: -2%;
-    top: -5%; /* if the font is 'Oswald'*/
+    top: -5%; 
     border-radius: 50px;
     transform: scaleY(0);
     z-index: -1;
@@ -127,3 +168,150 @@ body {
       filter: hue-rotate(360deg);
     }
   }
+
+  .StudentsTable {
+    text-align: center;
+    width: 80%;
+    margin: 5% auto;
+    border-spacing: 20px;
+    border-collapse: separate;
+    table-layout: fixed;
+  }
+
+  .StudentsTable td {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background-color:#b5e2ff;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    padding: 10px;
+    width: 150px;
+    border-radius: 10px;
+  }
+
+  .StudentsTable td:hover {
+    transform: scale(1.1); /* Makes the cell grow slightly */
+    background-color: #9cd3ff; /* Changes color */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 10px rgba(255, 0, 166, 0.8);
+}
+
+  .container {
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+  }
+
+  .box-images {
+    display: flex;
+    justify-content: center;  
+    align-items: center;     
+    width: 100%;
+  }
+  
+  .box-images img {
+    width: 30%;
+    height: auto;
+    border-radius: 100%;
+  }
+
+  .button-timer {
+    font-size: 20px;
+    font-weight: 500;
+    padding: 5px 30px;
+    color: #fff;
+    border-radius: 50px;
+    background: #000;
+    position: relative;
+    line-height: 30px;
+    transition: all 0.3s ease;
+    border: none; 
+    cursor: pointer; 
+}
+
+.button-timer:after {
+    position: absolute;
+    content: "";
+    background: #fff;
+    background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+    width: 104%;
+    height: 110%;
+    left: -2%;
+    top: -5%;
+    border-radius: 50px;
+    transform: scaleY(0);
+    z-index: -1;
+    animation: rotate 1.5s linear infinite;
+    transition: transform 0.3s ease;
+}
+
+.button-timer:hover:after {
+    transform: scaleY(1);
+}
+
+.button-timer:hover {
+    color: #fff;
+}
+
+@keyframes rotate {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+.digit {
+  font-size: 150px;
+  color: #fff;
+}
+
+.txt {
+  font-size: 30px;
+  color: #fffcd6;
+}
+
+.button-addstudent {
+  align-items: center;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 5px 30px;
+  color: #fff;
+  border-radius: 50px;
+  background: #000;
+  position: relative;
+  line-height: 40px;
+  transition: all 0.3s ease;
+  border: none; 
+  cursor: pointer; 
+}
+
+.button-addstudent:after {
+  position: absolute;
+  content: "";
+  background: #fff;
+  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  width: 104%;
+  height: 110%;
+  left: -2%;
+  top: -5%;
+  border-radius: 50px;
+  transform: scaleY(0);
+  z-index: -1;
+  animation: rotate 1.5s linear infinite;
+  transition: transform 0.3s ease;
+}
+
+.button-addstudent:hover:after {
+  transform: scaleY(1);
+}
+
+.button-addstudent:hover {
+  color: #fff;
+}
+
+.addStudentbutton {
+  text-align: center;
+  margin: 20px;
+}
