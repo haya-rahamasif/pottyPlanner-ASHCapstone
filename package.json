@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "appwrite": "^17.0.1",
     "ejs": "^3.1.10",
     "expres": "^0.0.5",
     "express": "^4.21.2",
