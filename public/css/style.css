@@ -85,7 +85,14 @@ header {
     cursor: pointer;
     background: rgb(72, 140, 151);
     transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
+  
+  .menu-btn:hover {
+    background-color: rgb(181, 226, 255);
+  }
+
+
   #active:checked ~ .menu-btn{
     color: #fff;
   }
@@ -383,7 +390,7 @@ header {
   text-align: center;
   justify-content: center;
   align-items: center;
-  background-color:#b5e2ff;
+  background-color:rgb(181, 226, 255);
   transition: transform 0.3s ease, background-color 0.3s ease;
   padding: 10px;
   width: 150px;
@@ -419,5 +426,13 @@ header {
 
 .login-button, .learn-morebutton, .welcome-text {
   position: absolute;
+}
+
+.login-button, .learn-morebutton {
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.login-button:hover, .learn-morebutton:hover {
+  background-color: rgb(181, 226, 255);
 }
 
