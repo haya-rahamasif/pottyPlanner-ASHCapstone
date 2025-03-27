@@ -1,0 +1,60 @@
+.topnav {
+    background-color: rgb(76, 197, 207);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0px;
+}
+
+.topnav .logo {
+    width: 100px;
+    height: auto;
+}
+
+.nav-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding-right: 100px;
+    margin-right: 20px;
+}
+
+body {
+    background-color: #A0E6EA;
+    font-family: 'Luminari', fantasy;
+    font-size: 20px;
+    margin: 0;
+}
+
+.graphs {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-evenly; 
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    margin-top: 40px; 
+    justify-content: center;
+}
+
+.graph {
+    width: 90%;
+    border: 1px solid #ccc; 
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    gap: 20px;
+}
+
+
+.h2{
+    margin-left: 50px;
+}
+
+.gtext {
+    text-align: center;
+    margin-top: 10px;
+    margin-right: 90px;
+    margin-bottom: 30px;
+}

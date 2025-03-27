@@ -49,6 +49,14 @@ app.get('/profiles', (req, res) => {
     res.render('../public/views/profiles.ejs');
 });
 
+app.get('/stats', (req, res) => {
+    res.render('../public/views/stats.ejs');
+});
+
+app.get('/login', (req, res) => {
+    res.render('../public/views/login.ejs');
+});
+
 app.listen(3001, () => {
     console.log('Server started on port 3001');
 });
