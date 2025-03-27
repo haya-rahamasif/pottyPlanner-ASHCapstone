@@ -3,6 +3,10 @@ body {
     padding-top: 100px; 
 }
 
+.favicon{
+  width: 500%;
+}
+
 html, body {
   overflow-x: hidden; 
   overscroll-behavior: none;
@@ -435,4 +439,3 @@ header {
 .login-button:hover, .learn-morebutton:hover {
   background-color: rgb(181, 226, 255);
 }
-

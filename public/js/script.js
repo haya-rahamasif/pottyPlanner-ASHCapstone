@@ -125,3 +125,14 @@ document.addEventListener('DOMContentLoaded', function () {
         columnToggle++;
     });
 });
+
+//Scrolling to the Learn More Section
+document.addEventListener('DOMContentLoaded', function() {
+    const learnMoreButton = document.getElementById('learn-more-button');
+    const learnMoreSection = document.getElementById('learn-more-section');
+
+    learnMoreButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default button behavior
+        learnMoreSection.scrollIntoView({ behavior: 'smooth' }); // Scroll smoothly
+    });
+});
