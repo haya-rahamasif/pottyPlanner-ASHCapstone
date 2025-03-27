@@ -90,12 +90,32 @@ header {
     background: rgb(72, 140, 151);
     transition: all 0.3s ease-in-out;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 10px;
   }
   
   .menu-btn:hover {
     background-color: rgb(181, 226, 255);
   }
 
+  .menu-btn svg {
+    width: 30px; 
+    height: 30px; 
+    fill: white;
+    stroke: white;
+    position: relative; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+}
+
+.menu-btn img {
+    width: 30px; 
+    height: 30px; 
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
   #active:checked ~ .menu-btn{
     color: #fff;
@@ -438,4 +458,41 @@ header {
 
 .login-button:hover, .learn-morebutton:hover {
   background-color: rgb(181, 226, 255);
+}
+
+.homepage-learnmore {
+  text-align: center;
+  background-color: rgb(72, 140, 151);
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5% auto;
+}
+
+.homepage-learnmore h1 {
+  color: white;
+  font-size: 40px;
+}
+
+.learn-more-content {
+  display: flex; 
+  align-items: center; 
+}
+
+.learn-more-text {
+  width: 50%; 
+  text-align: justify;
+  font-family: 'Open Sans', sans-serif;
+  color: rgb(72, 140, 151);
+  font-size: 22px;
+  padding-right: 20px; 
+  margin: 1%;
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.learn-more-image {
+  width: 50%; 
+  height: auto;
+  display: block;
+  border-radius: 5%;
 }
