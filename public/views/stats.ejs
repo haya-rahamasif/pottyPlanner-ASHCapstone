@@ -4,39 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Potty Planner: Stats</title>
+    <link rel="stylesheet" href="/css/stats.css">
 </head>
 <body>
-    <link rel="stylesheet" href="/css/stats.css">
     
-    <div class="topnav">
-        <a href= "/"><img src="/images/logo.png" alt="Potty Planner Logo" class="logo"></a>
-        <div class="nav-content">
-            <h1>Stats</h1>
+    <header>
+        <div class="logo">
+            <a href="/"><img src="/images/logo.png"></a>
         </div>
-      </div>
-
-      <div class="h2">
-        <br><br><br><br><br> <h2>Stats of [students name]</h2>
-      </div>
-
-    <div class="graphs">
-        <div class="w">
-                <a href= "/stats"><img src="/images/graph1.png" alt="GraphUno" class="graph"></a>
-                <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-         </div>
-        <div class="besiding">
-                <a href= "/stats"><img src="/images/graph2.png" alt="GraphDos" class="graph"></a>
-                <figcaption class="gtext">Total Time Out: [time out]</figcaption>
+        <div class="website-name">Potty Planner</div>
+        <input type="checkbox" id="active">
+        <label for="active" class="menu-btn">Menu</label>
+        <div class="wrapper">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profiles">Students</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/stats">Stats</a></li>
+                <li><a href="#">Feedback</a></li>
+            </ul>
         </div>
-         <div class="w">
-                <a href= "/stats"><img src="/images/graph3.png" alt="GraphTres" class="graph"></a>
-                <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-         </div>
-         <div class="besiding"> 
-                <a href= "/stats"><img src="/images/graph4.png" alt="GraphQuatro" class="graph"></a>
-                <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-        </div>  
-    </div>
+    </header>
+
+    <table class="graphsTable">
+        <tr>
+            <td>
+                <div class="box-images">
+                    <img src="/images/graph1.png">
+                </div>
+                <div class="container">
+                    <h1>Student A</h1>
+                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
+                </div>
+            </td>
+            <td>
+                <div class="box-images">
+                    <img src="/images/graph2.png">
+                </div>
+                <div class="container">
+                    <h1>Student B</h1>
+                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="box-images">
+                    <img src="/images/graph3.png">
+                </div>
+                <div class="container">
+                    <h1>Student C</h1>
+                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
+                </div>
+            </td>
+            <td>
+                <div class="box-images">
+                    <img src="/images/graph4.png">
+                </div>
+                <div class="container">
+                    <h1>Student D</h1>
+                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
+                </div>
+            </td>
+        </tr>
 
 </body>
 </html>
