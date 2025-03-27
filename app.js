@@ -11,25 +11,20 @@ let id = 0
 const app = express()
 
 function checkWhichPeriod(startTime) {
-    if (startTime[3] >= 8 && startTime[4] >=20) {
-        if (startTime[3] <= 9 && startTime[4] <= 45){
-            return 1
-        }
-    } else if (startTime[3] >= 9 && startTime[4] <= 55){
-        if (startTime[4] >=5 && startTime[3] <= 11){
-            return 2
-        }
-    } else if (startTime[3] >= 11 && startTime[4] <= 55){
-        if (startTime[4] <=10 && startTime[3] <= 1){
-            return 3
-        }
-    } else if (startTime[3] >= 1 && startTime[4] <= 15){
-        if (startTime[3] >=2 && startTime[4] <= 30){
-            return 4
-        }
-    } else {
+    let time = new Date (`1/1/1999 ${startTime[3]}:${startTime[4]}:${startTime[5]}`)
+    if (time > new Date ("1/1/1999 8:20:0") && new Date ("1/1/1999 9:45:00") > time) {
+        return 1
+    }
+    if (time > new Date ("1/1/1999 9:50:0") && new Date ("1/1/1999 11:05:0") > time){
         return 2
     }
+    if (time > new Date ("1/1/1999 11:55:0") && new Date ("1/1/1999 13:10:0") > time){
+        return 3
+    }
+    if (time > new Date ("1/1/1999 13:15:0") && new Date ("1/1/1999 14:30:0") > time){
+        return 4
+    }
+    return 2 // REMOVE LINE AFTER TESTING!!
 }
 
 // Set EJS as the view engine
@@ -122,40 +117,43 @@ app.post('/timestamp', (req, res) => {
                     })
                 absence = []
             } else {
+                console.log(`updating ${time[0]}'s profile`)
                 let absence = [time[1], time[2]]
-                switch(checkWhichPeriod(startTime)) {
+                switch(checkWhichPeriod(absence[1])) {
                     case 1:
-                        console.log("period 1 update")
-                        Student.find({studentName: time[0]}).lean()
-                        .then ((doc) => {
-                            var doc = doc.toJSON()
-                            doc
-                        })
-                        .catch ((err) => {
+                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
+                        .then((doc) => {console.log(doc)})
+                        .catch((err) => {
                             console.log(err)
                         })
+                        console.log(`added absence to ${time[0]}'s profile in p1`)
                         break
                     case 2:
-                        Student.findOneAndUpdate({studentName: time[0]}, { $set: {"absenceP2.$.absence": absence}}, {
-                            new: true})
+                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
+                        .then((doc) => {console.log(doc)})
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                        console.log(`added absence to ${time[0]}'s profile in p2`)
                         break
                     case 3:
-                        Student.findOneAndUpdate({studentName: time[0]}, { $set: {"absenceP3.$.absence": absence}}, {
-                            new: true})
+                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
+                        .then((doc) => {console.log(doc)})
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                        console.log(`added absence to ${time[0]}'s profile in p3`)
                         break
                     case 4:
-                        Student.findOneAndUpdate({studentName: time[0]}, { $set: {"absenceP4.$.absence": absence}}, {
-                            new: true})
+                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
+                        .then((doc) => {console.log(doc)})
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                        console.log(`added absence to ${time[0]}'s profile in p4`)
                         break
                 }
                 absence = []
-                Student.find({studentName: time[0]})
-                .then((doc) => {
-                    console.log(doc)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
             }
         })
         .catch((err) => {
