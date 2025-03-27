@@ -2,9 +2,29 @@ let timers = [];
 let intervals = [];
 let buttonStates = [];
 let columnToggle = 0;
-let idCounter = 4; 
+let idCounter = 0; 
+let absence = []
+let classList = Array;
 
-function addEventListeners(index) {
+const postData = data => {
+  const body = JSON.stringify(data);
+  return fetch('/timestamp', {
+      method: 'POST', // GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, cors, same-origin
+      cache: 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, same-origin, omit
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      redirect: 'follow', // manual, follow, error
+      referrer: 'no-referrer', // no-referrer, client
+      body
+  })
+      .then(response => response.json()) // parses JSON response into native JavaScript objects
+  }
+
+
+function timerFunc(index) {
     let startBtn = document.getElementById('start' + index);
     let timeDiv = document.getElementById('time' + index);
 
@@ -20,11 +40,30 @@ function addEventListeners(index) {
             stopWatch(index);
             startBtn.textContent = 'Stop';
             buttonStates[index] = 1;
+            let studentName = classList[index]
+            absence.push(studentName)
+            let startTimestamp = new Date()
+            let t = [startTimestamp.getDate(), startTimestamp.getMonth(), startTimestamp.getFullYear(), startTimestamp.getHours(), startTimestamp.getMinutes(), startTimestamp.getSeconds()]
+            absence.push(t)
+        
+
         } else if (buttonStates[index] === 1) {
             timers[index] = false;
             clearInterval(intervals[index]);
             startBtn.textContent = 'Reset';
             buttonStates[index] = 2;
+
+            // collecting timestamp data to send to server side
+            let stopTimestamp = new Date()
+            let t2 = [stopTimestamp.getDate(), stopTimestamp.getMonth(), stopTimestamp.getFullYear(), stopTimestamp.getHours(), stopTimestamp.getMinutes(), stopTimestamp.getSeconds()]
+            absence.push(t2)
+            console.log(absence)
+            postData({data: absence})
+                .then(json => {
+                    console.log(json);
+                })
+                .catch(e => console.log(e));
+            absence = []
         } else if (buttonStates[index] === 2) {
             timers[index] = false;
             clearInterval(intervals[index]);
@@ -89,13 +128,8 @@ function resetTimer(index) {
     updateDisplay(index, 0, 0, 0, 0);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    for(let i = 0; i < 4; i++){
-        addEventListeners(i);
-    }
-
-    document.getElementById('addStudent').addEventListener('click', function () {
-        let table = document.querySelector('.StudentsTable');
+function addStudent(name) {
+    let table = document.querySelector('.StudentsTable');
         let newRow;
         let newCell;
 
@@ -112,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <img src="/images/soccer.webp">
           </div>
           <div class="container">
-            <h1> New Student </h1> 
+            <h1> ${name} </h1> 
           </div>
           <div class="time" id="time${idCounter}">
             <span class="hr">00</span>:<span class="min">00</span>:<span class="sec">00</span>:<span class="count">00</span>
@@ -120,8 +154,41 @@ document.addEventListener('DOMContentLoaded', function () {
           <button class="button-timer" id="start${idCounter}">Start</button>
         `;
 
-        addEventListeners(idCounter);
+        timerFunc(idCounter);
         idCounter++;
         columnToggle++;
+}
+
+function viewStudents() {
+    console.log("displaying students")
+    const [file] = document.querySelector("input[type=file]").files;
+    const reader = new FileReader();
+  
+    reader.addEventListener(
+      "load",
+      () => {
+        // this will then display a text file
+        let names = String(reader.result)
+        classList = names.split("\n")
+        for (let i=0; i < classList.length; i++) {
+            addStudent(classList[i])
+        }
+      },
+      false,
+    );
+  
+    if (file) {
+      reader.readAsText(file);
+    }
+  }
+
+document.addEventListener('DOMContentLoaded', function () {
+    for(let i = 0; i < 4; i++){
+        timerFunc(i);
+    }
+
+    document.getElementById('addStudent').addEventListener('click', function () {
+        let name = prompt("Name of student?")
+        addStudent(name)
     });
 });

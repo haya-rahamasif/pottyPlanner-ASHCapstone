@@ -5,17 +5,45 @@ import mongoose from 'mongoose'
 import Student from './models/students.js'
 import path from 'path';
 const __dirname = path.resolve();
+let id = 0
 
 // intialize the application
 const app = express()
+
+function checkWhichPeriod(startTime) {
+    if (startTime[3] >= 8 && startTime[4] >=20) {
+        if (startTime[3] <= 9 && startTime[4] <= 45){
+            return 1
+        }
+    } else if (startTime[3] >= 9 && startTime[4] <= 55){
+        if (startTime[4] >=5 && startTime[3] <= 11){
+            return 2
+        }
+    } else if (startTime[3] >= 11 && startTime[4] <= 55){
+        if (startTime[4] <=10 && startTime[3] <= 1){
+            return 3
+        }
+    } else if (startTime[3] >= 1 && startTime[4] <= 15){
+        if (startTime[3] >=2 && startTime[4] <= 30){
+            return 4
+        }
+    } else {
+        return 2
+    }
+}
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
-// Routing path
+// Routing path to render main page
 app.get('/', (req, res) => {
-    res.render('../views/index.ejs');
+    res.render('../public/views/index.ejs');
+});
+
+// routing path to render profile page
+app.get('/profiles', (req, res) => {
+    res.render('../public/views/profiles.ejs');
 });
 
 app.get('/timestamp', (req, res) => {
@@ -27,25 +55,12 @@ app.post('/timestamp', (req, res) => {
     // creates a instance of the student schema to make a new field (row of data) to add to the database
     let time = req.body.data
     console.log(time)
-    let startTime = time[0]
+    let startTime = time[1]
 
-    if (startTime[3] >= 8 && startTime[4] >=20) {
-        if (startTime[3] <= 9 && startTime[4] <= 45){
-            console.log('p1 absence')
-        }
-    } else if (startTime[3] >= 9 && startTime[4] <= 55){
-        if (startTime[4] >=5 && startTime[3] <= 11){
-            console.log('p2 absence')
-        }
-    } else if (startTime[3] >= 11 && startTime[4] <= 55){
-        if (startTime[4] <=10 && startTime[3] <= 1){
-            console.log('p3 absence')
-        }
-    } else if (startTime[3] >= 1 && startTime[4] <= 15){
-        if (startTime[3] >=2 && startTime[4] <= 30){
-            console.log('p4 absence')
-        }
-    }
+    
+    
+
+ 
 
     /*let entry = new Student ({
         studentName:"john smith",
@@ -63,15 +78,85 @@ app.post('/timestamp', (req, res) => {
     })
     .catch((err) => {
         console.log(err)
-    })
+    })*/
 
     mongoose 
     .connect(dbURL) // connects to database
     .then((result) => {
-        console.log('Connected to MongoDB')
-        Student.find({studentID: '0924'}) // finds all documents (columns) in the collection (table) and returns them. usually you can also specify a filter of some sort to only return specific data
+        console.log('Connected to MongoDB', `now looking for ${time[0]}`)
+        Student.find({studentName: time[0]}) // finds all documents (columns) in the collection (table) and returns them. usually you can also specify a filter of some sort to only return specific data
         .then((doc) => { // doc is the result that is returned from the .find() method
-            doc.
+            if (String(doc).length == 0) {
+                console.log("student not existing in db")
+                let entry = new Student ({
+                    studentName: time[0],
+                    studentID: id,
+                    absenceP1:[],
+                    absenceP2:[],
+                    absenceP3:[],
+                    absenceP4:[]
+                })
+                let absence = [time[1], time[2]]
+                id++
+                switch(checkWhichPeriod(startTime)) {
+                    case 1:
+                        entry.absenceP1 = [absence]
+                        break
+                    case 2:
+                        entry.absenceP2 = [absence]
+                        break
+                    case 3:
+                        entry.absenceP3 = [absence]
+                        break
+                    case 4:
+                        entry.absenceP4 = [absence]
+                        break
+                }
+                entry 
+                    .save()
+                    .then((doc) => {
+                        console.log('student saved')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+                absence = []
+            } else {
+                let absence = [time[1], time[2]]
+                switch(checkWhichPeriod(startTime)) {
+                    case 1:
+                        console.log("period 1 update")
+                        Student.find({studentName: time[0]}).lean()
+                        .then ((doc) => {
+                            var doc = doc.toJSON()
+                            doc
+                        })
+                        .catch ((err) => {
+                            console.log(err)
+                        })
+                        break
+                    case 2:
+                        Student.findOneAndUpdate({studentName: time[0]}, { $set: {"absenceP2.$.absence": absence}}, {
+                            new: true})
+                        break
+                    case 3:
+                        Student.findOneAndUpdate({studentName: time[0]}, { $set: {"absenceP3.$.absence": absence}}, {
+                            new: true})
+                        break
+                    case 4:
+                        Student.findOneAndUpdate({studentName: time[0]}, { $set: {"absenceP4.$.absence": absence}}, {
+                            new: true})
+                        break
+                }
+                absence = []
+                Student.find({studentName: time[0]})
+                .then((doc) => {
+                    console.log(doc)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
         })
         .catch((err) => {
             console.log(err)
@@ -79,7 +164,7 @@ app.post('/timestamp', (req, res) => {
     })
     .catch((err) => {
         console.error('could not connect to mongodb: ', err)
-    })*/
+    })
     
 })
 
