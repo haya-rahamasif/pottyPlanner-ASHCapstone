@@ -188,5 +188,17 @@ app.listen(3001, () => {
 const dbURL = 'mongodb+srv://hayarahamasif:preach-immature-mouthful-smoky@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB'
 
 
+/*
+entry1 
+    .save()
+    .then((doc) => {
+        console.log(doc)
+    })
+    .catch((err) => {
+        console.log(err)
+    })*/
+
+
+
 app.get('/', (req, res) => { // this code will only run if it receives a web request from the client side
 })
