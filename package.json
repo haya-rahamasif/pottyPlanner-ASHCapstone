@@ -6,13 +6,10 @@
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.1"
   },
-  "name": "pottyplanner-ashcapstone",
-  "description": "",
-  "version": "1.0.0",
-  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon app.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/haya-rahamasif/pottyPlanner-ASHCapstone.git"
