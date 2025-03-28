@@ -6,6 +6,7 @@
     <title>PottyPlanner</title>
     <link rel="icon" class="favicon" type="image/x-icon" href="/images/logo.png">
     <link rel="stylesheet" href="/css/stats.css">
+    <script src="/js/script.js"></script>
 </head>
 <body>
     
@@ -28,6 +29,11 @@
             </ul>
         </div>
     </header>
+
+    <div class="file-input">
+        <p>Please upload a .txt file of your class list of names, each seperated by a new line to see their class absence data</p>
+        <input type="file" onchange="viewStudentAbsences()" />
+    </div>
 
     <table class="graphsTable">
         <tr>

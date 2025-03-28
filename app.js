@@ -53,9 +53,10 @@ app.get('/feedback', (req, res) => {
     res.render('../public/views/feedback.ejs');
 });
 
-
-app.get('/timestamp', (req, res) => {
-    res.render("timestamp route")
+app.post('/viewAbsences', (req, res) => {
+    let names = req.body.data
+    console.log('in view absence route')
+    console.log(names)
 })
 
 app.use(express.json())

@@ -23,6 +23,47 @@ const postData = data => {
       .then(response => response.json()) // parses JSON response into native JavaScript objects
   }
 
+  const postClassList = data => {
+    const body = JSON.stringify(data);
+    return fetch('/viewAbsences', {
+        method: 'POST', // GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, cors, same-origin
+        cache: 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        redirect: 'follow', // manual, follow, error
+        referrer: 'no-referrer', // no-referrer, client
+        body
+    })
+        .then(response => response.json()) // parses JSON response into native JavaScript objects
+    }
+
+function viewStudentAbsences() {
+    const [file] = document.querySelector("input[type=file]").files;
+    const reader = new FileReader();
+
+    reader.addEventListener(
+      "load",
+      () => {
+        // this will then display a text file
+        let names = String(reader.result)
+        let classList = names.split("\n")
+        postClassList({data: classList})
+                .then(json => {
+                    console.log(json);
+                })
+                .catch(e => console.log(e));
+      },
+      false,
+    );
+  
+    if (file) {
+      reader.readAsText(file);
+    }
+
+}
 
 function timerFunc(index) {
     let startBtn = document.getElementById('start' + index);
@@ -186,11 +227,6 @@ document.addEventListener('DOMContentLoaded', function () {
     for(let i = 0; i < 4; i++){
         timerFunc(i);
     }
-
-    document.getElementById('addStudent').addEventListener('click', function () {
-        let name = prompt("Name of student?")
-        addStudent(name)
-    });
 });
 
 //Scrolling to the Learn More Section

@@ -117,6 +117,20 @@ header {
     transform: translate(-50%, -50%);
 }
 
+.file-input {
+  width: 100%;
+  margin-top: 5%;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.file-input p {
+  font-size: 20px;
+  color: #fff;
+  padding-bottom: 20px;
+}
+
   #active:checked ~ .menu-btn{
     color: #fff;
   }
