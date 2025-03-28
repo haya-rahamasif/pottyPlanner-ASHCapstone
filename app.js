@@ -181,8 +181,9 @@ app.post('/timestamp', (req, res) => {
 })
 
 // Start the server
-app.listen(3500, () => {
-    console.log('Server started on port 3500')
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+    console.log('Server started on port ${PORT}')
 })
 
 const dbURL = 'mongodb+srv://hayarahamasif:preach-immature-mouthful-smoky@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB'
