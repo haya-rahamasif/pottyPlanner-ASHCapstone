@@ -159,7 +159,7 @@ app.post('/timestamp', (req, res) => {
 })
 
 // Start the server
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 9000
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
 })
