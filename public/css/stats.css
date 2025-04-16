@@ -54,16 +54,16 @@ header {
     font-family: 'Lato', sans-serif;
     font-family: 'Oswald', sans-serif;
   }
-  .wrapper{
+  .wrapper {
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     z-index: 1001;
-    background: rgb(76, 197, 207); */
-    background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);*/
-    clip-path: circle(25px at calc(0% + 45px) 45px); */
+    background: rgb(76, 197, 207); 
+    background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);
+    clip-path: circle(25px at calc(0% + 45px) 45px); 
     background: #000;
     clip-path: circle(25px at calc(100% - 45px) 45px);
     transition: all 0.3s ease-in-out;

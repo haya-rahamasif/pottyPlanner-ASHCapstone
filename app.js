@@ -24,7 +24,6 @@ function checkWhichPeriod(startTime) {
     if (time > new Date ("1/1/1999 13:15:0") && new Date ("1/1/1999 14:30:0") > time){
         return 4
     }
-    return 2 // REMOVE LINE AFTER TESTING!!
 }
 
 // Set EJS as the view engine
@@ -66,29 +65,6 @@ app.post('/timestamp', (req, res) => {
     console.log(time)
     let startTime = time[1]
 
-    
-    
-
- 
-
-    /*let entry = new Student ({
-        studentName:"john smith",
-        studentID:"0924",
-        absenceP1:[time],
-        absenceP2:["0"],
-        absenceP3:["0"],
-        absenceP4:["0"]
-    })
-
-    entry 
-    .save()
-    .then((doc) => {
-        console.log(doc)
-    })
-    .catch((err) => {
-        console.log(err)
-    })*/
-
     mongoose 
     .connect(dbURL) // connects to database
     .then((result) => {
@@ -105,6 +81,8 @@ app.post('/timestamp', (req, res) => {
                     absenceP3:[],
                     absenceP4:[]
                 })
+                /*let sTimestamp = new Date (`${time[1][0]}`)
+                let eTimestamp = dont delete, gonna change data upload format*/
                 let absence = [time[1], time[2]]
                 id++
                 switch(checkWhichPeriod(startTime)) {
@@ -183,7 +161,7 @@ app.post('/timestamp', (req, res) => {
 // Start the server
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-    console.log('Server started on port ${PORT}')
+    console.log(`Server started on port ${PORT}`)
 })
 
 const dbURL = 'mongodb+srv://hayarahamasif:preach-immature-mouthful-smoky@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB'
