@@ -250,3 +250,8 @@ header {
     margin-right: 90px;
     margin-bottom: 30px;
 }
+
+input[type=checkbox] {
+  display: none;
+}
+

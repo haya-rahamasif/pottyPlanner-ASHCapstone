@@ -1,244 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-    <script src="public/js/script.js"></script>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>PottyPlanner</title>
-    <script src="/public/js/script.js"></script>
-    <head>
-        <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-      </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback - PottyPlanner</title>
+  
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script defer src="/js/script.js"></script>
+
+  <style>
+    .button2 {
+      width: 10%;
+    }
+  </style>
 </head>
+
 <body>
-    <center> <h1>Potty Planner</h1></center>
-      <h1>Period list: </h1>
-      <ul id="hide1"></ul>
-      
-      <style>
-        .button2 { width: 10%; }
-        #hide1 {
-          display: block;
-        }
-        #hide1.hidden {
-          display: none;
-        }
-      </style>
-      
-      <div class="btn-group" style="width:100%">
-        <button onClick="showPeriod1()" style="height:50px"style="width:300px">Period 1</button><br><br>
-        <button onClick="showPeriod2()" style="height:50px"style="width:25%">Period 2</button><br><br>
-        <button onClick="showPeriod3()" style="height:50px"style="width:25%">Period 3</button><br><br>
-        <button onClick="showPeriod4()" style="height:50px"style="width:25%">Period 4</button><br><br>
-      </div>
-      
-      <!-- Period 1 Section -->
-      <div id="period1-section" style="display: none;">
-       <center>
-        <h2>Period 1</h2>
-        <p>Student list: </p>
-        <p>Bob</p>
-        <button style="width:15%"onClick="hidePeriod1()">Close</button>
-        </center>
-      </div>
-      
-      <!-- Period2 Section -->
-      <div id="period2-section" style="display: none;">
-        <center>
-        <h2>Period 2</h2>
-        <p>Student list: </p>
-        <p>John</p>
-        <button style="width:15%"onClick="hidePeriod2()">Close</button>
-      </center>
-      </div>
-      
-      <!-- Period 3 Section -->
-      <div id="period3-section" style="display: none;">
-        <center><h2>Period 3</h2>
-        <p>Student list: </p>
-        <p>Paul</p>
-        <button style="width:15%"onClick="hidePeriod3()">Close</button>
-      </center>
-      </div>
-      
-      <!-- Period4 Section -->
-      <div id="period4-section" style="display: none;">
-       <center><h2>Period 4</h2>
-        <p>Student list: </p>
-        <p>Sam</p>
-        <button style="width:15%"onClick="hidePeriod4()">Close</button>
-        </center> 
-      </div>
-      
-      <script>
-
-        function hideAllSections() {
-          document.querySelector('.content').style.display = 'none'; //Hide student list for certain period
-          document.getElementById('period1-section').style.display = 'none'; //Hide Period 1
-          document.getElementById('period2-section').style.display = 'none'; // Hide Period 2
-          document.getElementById('period3-section').style.display = 'none'; //Hide Period 3
-          document.getElementById('period4-section').style.display = 'none'; // Hide Period 4
-        }
-      
-
-        function showPeriod1() {
-          hideAllSections(); // Hide all sections first
-          document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.getElementById('period1-section').style.display = 'block'; //Show Period 1 section
-        }
-
-        function hidePeriod1() {
-          document.getElementById('hide1').classList.remove('hidden'); // Show menu
-          document.querySelector('.content').style.display = 'block'; //Show main content
-          document.getElementById('period1-section').style.display = 'none'; // Hide Period 1 section
-        }
-      
-
-        function showPeriod2() {
-          hideAllSections(); // Hide all sections first
-          document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.getElementById('period2-section').style.display = 'block'; //Show Period 2 section
-        }
-      
- 
-        function hidePeriod2() {
-          document.getElementById('hide1').classList.remove('hidden'); // Show menu
-          document.querySelector('.content').style.display = 'block'; //show main content
-          document.getElementById('period2-section').style.display = 'none'; //hide Period 2 section
-        }
-      
-
-        function showPeriod3() {
-          hideAllSections(); // Hide all sections first
-          document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.getElementById('period3-section').style.display = 'block'; //show Period 3 section
-        }
-      
-
-        function hidePeriod3() {
-          document.getElementById('hide1').classList.remove('hidden'); // Show menu
-          document.querySelector('.content').style.display = 'block'; // Show main content
-          document.getElementById('period3-section').style.display = 'none'; // Hide Period 3 section
-        }
-      
-
-        function showPeriod4() {
-          hideAllSections(); // Hide all sections first
-          document.getElementById('hide1').classList.add('hidden'); // Hide menu
-          document.getElementById('period4-section').style.display = 'block'; // Show Period 4 section
-        }
-
-        function hidePeriod4() {
-          document.getElementById('hide1').classList.remove('hidden'); // Show menu
-          document.querySelector('.content').style.display = 'block'; // Show main content
-          document.getElementById('period4-section').style.display = 'none'; // Hide Period 4 section
-        }
-      </script>           
-    <input type="checkbox" id="active">
-<label style="text-emphasis-color: black;"style="background-color: white;" for="active" class="menu-btn">More</label>
-    
-    <div class="wrapper">
-      <ul id="hide">
-        <li><a href="/" onclick="showHome()">Home</a></li>
-        <li><a href="#about" onclick="showAbout()">About</a></li>
-        <li><a href="#services" onclick="showServices()">Services</a></li>
-        <li><a href="#stats" onclick="showStats()">Stats</a></li>
-        <li><a href="#feedback" onclick="showFeedback()">Feedback</a></li>
+  <header>
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Potty Planner Logo"></a>
+    </div>
+    <div class="website-name">Potty Planner</div>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/profiles">Students</a></li>
+        <li><a href="/stats">Stats</a></li>
       </ul>
-      
-      <div class="content">
-        <div class="title">Fullscreen Overlay Navigation Bar</div>
-        <p>with HTML & CSS Neon Effect</p>
-      </div>
-      
-      <style>
-        .button2 { width: 10%; }
-        #hide {
-          display: block;
-        }
-        #hide.hidden {
-          display: none;
-        }
-      </style>
-      
-      <!-- Feedback Section -->
-      <div id="feedback-section" style="display: none;">
-        <h2>Feedback</h2>
-        <p>Submit your feedback here!</p>
-        <form>
-          <center>
-          <label style="color: white;" for="name">Name:</label>
+    </nav>
+  </header>
+
+  <main>
+    <section id="feedback-section">
+      <br>
+      <br>
+      <br>
+      <h2>Feedback</h2>
+      <p>Submit your feedback here!</p>
+
+      <form onsubmit="submitFeedback(event)">
+        <center>
+          <label style="color: black;" for="name">Name:</label><br>
           <input type="text" id="name" name="name" required><br><br>
-          <label style="color:white" for="feedback">Your Feedback:</label><br>
+
+          <label style="color: black;" for="feedback">Your Feedback:</label><br>
           <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea><br><br>
-          <button class="button button2" style="color:black" type="submit">Submit</button>
-        </form>
-      
-      
-        <button class="button button2" onclick="hideFeedback()">Go back</button> <!--Go back button-->
-      </center>
-      </div>
-      
-      <!-- About Section -->
-       <center>
-      <div id="about-section" style="display: none;">
-        <h2 style="color:white;">About us...</h2> <!-- About us description-->
-        <button class="button button2" onclick="hideAbout()">Go back</button> <!--Go back button-->
-      </div>
-    </center>
-      <!--stats section-->
+
+          <button class="button button2" style="color: black;" type="submit">Submit</button>
+        </center>
+      </form>
+
       <center>
-        <div id="stats-section" style="display: none;">
-        <h2 style="color:white;">Stats</h2> <!--The stats description-->
-        <button class="button button2" onclick="hideStats()">Go back</button> <!--Go back button-->
-      </div>
+        <br><button class="button button2" onclick="goBack()">Go Back</button>
       </center>
-      <script>
-        function showFeedback() {
-          document.getElementById('hide').classList.add('hidden'); // Hide menu
-          document.querySelector('.content').style.display = 'none'; // Hide main content
-          document.getElementById('feedback-section').style.display = 'block'; // Show feedback section
-        }
-      
-        function hideFeedback() {
-          document.getElementById('hide').classList.remove('hidden'); // Show menu
-          document.querySelector('.content').style.display = 'block'; // Show main content
-          document.getElementById('feedback-section').style.display = 'none'; // Hide feedback section
-        }
-      
-        function showAbout() {
-          document.getElementById('hide').classList.add('hidden'); // Hide menu
-          document.querySelector('.content').style.display = 'none'; // Hide main content
-          document.getElementById('about-section').style.display = 'block'; // Show about section
-        }
-      
-        function hideAbout() {
-          document.getElementById('hide').classList.remove('hidden'); // Show menu
-          document.querySelector('.content').style.display = 'block'; // Show main content
-          document.getElementById('about-section').style.display = 'none'; // Hide about section
-        }
-      
-        function showHome() {
-          document.getElementById('hide').classList.add('hidden'); // Hide  menu
-          document.querySelector('.content').style.display = 'none'; // Hide main content
-          document.getElementById('about-section').style.display = 'none'; // Hide about section
-          document.getElementById('feedback-section').style.display = 'none'; // Hide feedback section
-          document.getElementById('stats-section').style.display = 'none'; // Hide Stats section
-        }
-      function hideStats() {
-        document.getElementById('hide').classList.remove('hidden'); // Show menu
-        document.querySelector('.content').style.display = 'block'; // Show main content
-        document.getElementById('stats-section').style.display = 'none'; // Hide stats section
-      }
-      function showStats() {
-        document.getElementById('hide').classList.add('hidden'); // Hide menu
-        document.querySelector('.content').style.display = 'none'; // Hide main content
-        document.getElementById('stats-section').style.display = 'block'; // Show stats section
-      }
-      </script>
-</div>
+    </section>
+  </main>
+
+  <script>
+    function submitFeedback(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const feedback = document.getElementById('feedback').value;
+
+      alert(`Thank you, ${name}, for your feedback!\n\n"${feedback}"`);
+      document.querySelector('form').reset();
+    }
+
+    function goBack() {
+      window.location.href = '/';
+    }
+  </script>
 </body>
 </html>
