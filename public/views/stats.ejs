@@ -36,45 +36,66 @@
         <input type="checkbox" id="zoomCheck">
         <label for="zoomCheck">
     <table class="graphsTable">
+        <h1>Current Date and Time:</h1>
+  <p id="datetime"></p>
+
+<script>
+  function updateDateTime() {
+    const now = new Date();
+    const currentDateTime = now.toLocaleString();
+    document.getElementById('datetime').textContent = currentDateTime;
+  }
+
+  // Initial call to display time immediately
+  updateDateTime();
+
+  // Update the time every 1 second (1000 milliseconds)
+  setInterval(updateDateTime, 1000);
+</script>
+
         <tr>
             <td>
                 <div class="box-images">
-                    <img src="/images/graph1.png">
+                    <img src="/images/Minutes.png">
                 </div>
                 <div class="container">
                     <h1>Student A</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
+                    <a href="/moreStats.ejs"> 
+                    <figcaption class="gtext">Click to see more</figcaption>
                 </div>
             </td>
             <td>
                 <div class="box-images">
-                    <img src="/images/graph2.png">
+                    <img src="/images/Minutes.png">
                 </div>
                 <div class="container">
                     <h1>Student B</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
+                    <a href="/moreStats.ejs"> 
+                    <figcaption class="gtext">Click to see more</figcaption>
                 </div>
             </td>
         </tr>
         <tr>
             <td>
                 <div class="box-images">
-                    <img src="/images/graph3.png">
+                    <img src="/images/Minutes.png">
                 </div>
                 <div class="container">
                     <h1>Student C</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
+                    <a href="/moreStats.ejs"> 
+                    <figcaption class="gtext">Click to see more</figcaption>
                 </div>
             </td>
             <td>
                 <div class="box-images">
-                    <img src="/images/graph4.png">
+    <a href="/moreStats.ejs"> 
+                    <img src="/images/Minutes.png">
                 </div>
                 <div class="container">
                 </label>
             </div>
                     <h1>Student D</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
+                    <figcaption class="gtext">Click to see more</figcaption>
                 </div>
             </td>
         </tr>

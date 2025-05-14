@@ -239,3 +239,6 @@ document.addEventListener('DOMContentLoaded', function() {
         learnMoreSection.scrollIntoView({ behavior: 'smooth' }); // Scroll smoothly
     });
 });
+
+
+
