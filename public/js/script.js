@@ -6,6 +6,8 @@ let idCounter = 0;
 let absence = []
 let classList = Array;
 
+const appVariable = require('./app');
+
 const postData = data => {
   const body = JSON.stringify(data);
   return fetch('/timestamp', {
@@ -63,6 +65,7 @@ function viewStudentAbsences() {
       reader.readAsText(file);
     }
 
+    console.log(appVariable.entry)
 }
 
 function timerFunc(index) {
