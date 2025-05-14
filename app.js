@@ -52,6 +52,11 @@ app.get('/feedback', (req, res) => {
     res.render('../public/views/feedback.ejs');
 });
 
+app.get('/moreStats', (req, res) => {
+  res.render('../public/views/moreStats.ejs');
+});
+
+
 app.post('/viewAbsences', (req, res) => {
     let names = req.body.data
     console.log('in view absence route')
