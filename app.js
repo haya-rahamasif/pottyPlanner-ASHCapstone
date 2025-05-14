@@ -37,29 +37,48 @@ function checkWhichPeriod(startTime) {
 
 dotenv.config()
 
+const dbURL = 'mongodb+srv://hayarahamasif:preach-immature-mouthful-smoky@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB'
+
+mongoose.connect(dbURL)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('MongoDB connection error:', err))
+
+
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
-// Routing path to render main page
+//login
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'mysecret',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: dbURL }),
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
+  }))
+
+app.use((req, res, next) => {
+    res.locals.userId = req.session.userId || null
+    next()
+})
+
+// Routing path to render main page (accessible by everyone)
 app.get('/', (req, res) => {
     res.render('../public/views/index.ejs');
 });
 
-/* routing path to render profile page
-app.get('/profiles', (req, res) => {
+// Protect Routes for authenticated users only
+app.get('/profiles', isAuthenticated, (req, res) => {
     res.render('../public/views/profiles.ejs');
 });
 
-app.get('/stats', (req, res) => {
+app.get('/stats', isAuthenticated, (req, res) => {
     res.render('../public/views/stats.ejs');
 });
 
-app.get('/feedback', (req, res) => {
+app.get('/feedback', isAuthenticated, (req, res) => {
     res.render('../public/views/feedback.ejs');
 });
-
-*/
 
 app.get('/register', (req, res) => {
     res.render('../public/views/register.ejs', { error: null })
@@ -182,12 +201,6 @@ app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
 })
 
-const dbURL = 'mongodb+srv://hayarahamasif:preach-immature-mouthful-smoky@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB'
-
-
-app.get('/', (req, res) => { // this code will only run if it receives a web request from the client side
-})
-
 //Register form
 
 app.use(express.urlencoded({ extended: true }))
@@ -201,22 +214,14 @@ app.post('/register', async (req, res) => {
     }
 
     const newUser = new User({ email, password })
+
     await newUser.save()
     res.redirect('/login')
   } catch (err) {
-    console.error(err)
+    console.error('Registration error:', err)
     res.render('../public/views/register.ejs', { error: 'Something went wrong. Try again.' })
   }
 })
-
-//Login start session
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'mysecret',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: dbURL }),
-    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
-  }))
 
 // Login helper
 function isAuthenticated(req, res, next) {
@@ -225,23 +230,6 @@ function isAuthenticated(req, res, next) {
   }
 
 // Add Register + Login POST Routes
-
-app.use(express.urlencoded({ extended: true })) // for form data
-
-app.post('/register', async (req, res) => {
-  const { email, password } = req.body
-  try {
-    const exists = await User.findOne({ email })
-    if (exists) return res.render('../public/views/login.ejs', { error: 'Email already registered' })
-
-    const user = new User({ email, password })
-    await user.save()
-    res.redirect('/login')
-  } catch (err) {
-    console.error(err)
-    res.render('../public/views/login.ejs', { error: 'Error registering user' })
-  }
-})
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body
