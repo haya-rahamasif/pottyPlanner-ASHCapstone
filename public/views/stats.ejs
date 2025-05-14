@@ -21,20 +21,20 @@
         </label>
         <div class="wrapper">
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/profiles">Students</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/stats">Stats</a></li>
-                <li><a href="#">Feedback</a></li>
+                <li><a href="/profiles">profile</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/">Log out</a></li>
             </ul>
         </div>
     </header>
-
     <div class="file-input">
+        <br>
         <p>Please upload a .txt file of your class list of names, each seperated by a new line to see their class absence data</p>
         <input type="file" onchange="viewStudentAbsences()" />
     </div>
-
+    <div class="container">
+        <input type="checkbox" id="zoomCheck">
+        <label for="zoomCheck">
     <table class="graphsTable">
         <tr>
             <td>
@@ -71,6 +71,8 @@
                     <img src="/images/graph4.png">
                 </div>
                 <div class="container">
+                </label>
+            </div>
                     <h1>Student D</h1>
                     <figcaption class="gtext">Total Time Out: [time out]</figcaption>
                 </div>
