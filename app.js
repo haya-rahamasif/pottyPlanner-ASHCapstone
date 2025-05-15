@@ -4,11 +4,15 @@ import mongoose from 'mongoose'
 
 import Student from './models/students.js'
 import path from 'path';
+import { start } from 'repl';
 const __dirname = path.resolve();
 let id = 0
 
+//export default entries
+
 // intialize the application
 const app = express()
+app.use(express.json())
 
 function checkWhichPeriod(startTime) {
     let time = new Date (`1/1/1999 ${startTime[3]}:${startTime[4]}:${startTime[5]}`)
@@ -56,14 +60,30 @@ app.post('/viewAbsences', (req, res) => {
     let names = req.body.data
     console.log('in view absence route')
     console.log(names)
+
+    mongoose
+    .connect(dbURL)
+    .then((result) => {
+        let entries = []
+        for (let i=0; i<names.length-1;i++) {
+            let singleName = names[i]
+            Student.find({studentName: singleName}) // finding info on each student
+            .then((doc) => {
+                entries.push(doc)
+            })
+        }
+        // not working currently
+        module.exports = {
+            entries
+        }
+    })
+
 })
 
-app.use(express.json())
+
 app.post('/timestamp', (req, res) => {
     // creates a instance of the student schema to make a new field (row of data) to add to the database
     let time = req.body.data
-    console.log(time)
-    let startTime = time[1]
 
     mongoose 
     .connect(dbURL) // connects to database
@@ -71,6 +91,13 @@ app.post('/timestamp', (req, res) => {
         console.log('Connected to MongoDB', `now looking for ${time[0]}`)
         Student.find({studentName: time[0]}) // finds all documents (columns) in the collection (table) and returns them. usually you can also specify a filter of some sort to only return specific data
         .then((doc) => { // doc is the result that is returned from the .find() method
+                let startTime = time[1]
+                let endTime = time[2]
+                // storing timestamps as Date Objects
+                let eTimestamp2 = new Date (endTime[2], endTime[1], endTime[0], endTime[3], endTime[4], endTime[5])
+                let eTimestamp1 = new Date (startTime[2], startTime[1], startTime[0], startTime[3], startTime[4], startTime[5])
+                let absence = [eTimestamp1, eTimestamp2]
+                console.log(time[0], absence)
             if (String(doc).length == 0) {
                 console.log("student not existing in db")
                 let entry = new Student ({
@@ -83,7 +110,7 @@ app.post('/timestamp', (req, res) => {
                 })
                 /*let sTimestamp = new Date (`${time[1][0]}`)
                 let eTimestamp = dont delete, gonna change data upload format*/
-                let absence = [time[1], time[2]]
+                
                 id++
                 switch(checkWhichPeriod(startTime)) {
                     case 1:
@@ -110,8 +137,7 @@ app.post('/timestamp', (req, res) => {
                 absence = []
             } else {
                 console.log(`updating ${time[0]}'s profile`)
-                let absence = [time[1], time[2]]
-                switch(checkWhichPeriod(absence[1])) {
+                switch(checkWhichPeriod(startTime)) {
                     case 1:
                         Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
                         .then((doc) => {console.log(doc)})
