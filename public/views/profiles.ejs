@@ -19,20 +19,29 @@
         <img src="/images/ham-menu.svg" alt="Menu Icon">
     </label>
     <div class="wrapper">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/profiles">Students</a></li>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/stats">Stats</a></li>
-        <li><a href="#">Feedback</a></li>
-      </ul>
+            <ul>
+            <li><a href="/">Home</a></li>
+            <% if (userId) { %>
+                <li><a href="/profiles">Students</a></li>
+                <li><a href="/stats">Stats</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/logout">Logout</a></li>
+            <% } else { %>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            <% } %>
+            </ul>
     </div>
   </header>
   <div class="file-input">
     <p>Please upload a .txt file of your class list of names, each seperated by a new line</p>
     <input type="file" onchange="viewStudents()" accept=".txt"/>
   </div>
-  <table class="StudentsTable">
-  </table>  
+<table class="StudentsTable">
+  <% students.forEach(student => { %>
+    <tr><td><%= student %></td></tr>
+  <% }) %>
+</table>
+  
 </body>
 </html>

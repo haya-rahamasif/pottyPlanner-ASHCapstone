@@ -68,9 +68,14 @@ app.get('/', (req, res) => {
 });
 
 // Protect Routes for authenticated users only
-app.get('/profiles', isAuthenticated, (req, res) => {
-    res.render('../public/views/profiles.ejs');
+app.get('/profiles', isAuthenticated, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render('../public/views/profiles.ejs', {
+    students: user.students || [],
+    userId: req.session.userId
+  });
 });
+
 
 app.get('/stats', isAuthenticated, (req, res) => {
     res.render('../public/views/stats.ejs');
@@ -256,9 +261,14 @@ app.get('/logout', (req, res) => {
 
 // Protect Routes
 
-app.get('/profiles', isAuthenticated, (req, res) => {
-    res.render('../public/views/profiles.ejs');
+app.get('/profiles', isAuthenticated, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render('../public/views/profiles.ejs', {
+    students: user.students || [],
+    userId: req.session.userId
   });
+});
+
   
   app.get('/stats', isAuthenticated, (req, res) => {
     res.render('../public/views/stats.ejs');
@@ -267,4 +277,19 @@ app.get('/profiles', isAuthenticated, (req, res) => {
   app.get('/feedback', isAuthenticated, (req, res) => {
     res.render('../public/views/feedback.ejs');
   });
-  
+
+
+app.post('/upload-students', isAuthenticated, async (req, res) => {
+  const { students } = req.body; // Array of names
+
+  try {
+    const user = await User.findById(req.session.userId);
+    user.students = students;
+    await user.save();
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('Error saving students:', err);
+    res.status(500).json({ success: false, message: 'Failed to save students' });
+  }
+});
+
