@@ -1,167 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-       <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PottyPlanner</title>
+    <title>PottyPlanner - More Stats</title>
     <link rel="icon" class="favicon" type="image/x-icon" href="/images/logo.png">
     <link rel="stylesheet" href="/css/stats.css">
     <script src="/js/script.js"></script>
-</head>
 
-<header>
-    <div class="logo">
-      <a href="/"><img src="/images/logo.png"></a>
-    </div>
-    <div class="website-name" >Potty Planner</div>
-    <input type="checkbox" id="active">
-    <label for="active" class="menu-btn">
-        <img src="/images/ham-menu.svg" alt="Menu Icon">
-    </label>
-    <div class="wrapper">
-      <ul>
-        <li><a href="/profiles">Profile</a></li>
-        <li><a href="/feedback">Feedback</a></li>
-        <li><a href="/">Log out</a></li>
-      </ul>
-    </div>
-  </header>
- <style>
-      
-        h3 a {
-            display: inline-block;      
-            padding: 10px 20px;       
-            background-color: white;    
-            border: 2px solid #007BFF; 
-            border-radius: 5px;         
-            text-decoration: none;      
-            color: #007BFF;             
-            font-weight: bold;          
+    <style>
+        /* Body and html setup */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-y: auto; /* Enable vertical scrolling */
+            overflow-x: hidden; /* Disable horizontal scrolling */
+            font-family: Arial, sans-serif;
         }
 
-        h3 a:hover {
-            background-color: #007BFF; 
-            color: white;              
+        /* Main container for stacking content vertically */
+        .container {
+            padding: 20px;
+        }
+
+        /* Styling for header section */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header .logo img {
+            width: 50px;
+        }
+
+        header .website-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Styling for links */
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        /* Styling for buttons */
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin: 10px 0;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        /* Styling for section headers */
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        /* Styling for images */
+        .img-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Styling for datetime display */
+        #datetime {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        /* Styling for saved times list */
+        #savedTimes {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        #savedTimes li {
+            padding: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
         }
     </style>
-
-<body>
-    <br>
-    <center><h1>More stats</h1></center>
-    <style>
-    .btn {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #f0f0f0;
-      border: 2px solid #ccc;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.2s, transform 0.1s;
-      margin: 5px;
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .btn.active {
-      background-color: #007bff;
-      color: white;
-      border-color: #0056b3;
-    }
-  </style>
 </head>
+
 <body>
 
-<h1>Current Date and Time:</h1>
-<p id="datetime"></p>
+    <header>
+        <div class="logo">
+            <a href="/"><img src="/images/logo.png" alt="Logo"></a>
+        </div>
+        <div class="website-name">Potty Planner</div>
+        <input type="checkbox" id="active">
+        <label for="active" class="menu-btn">
+            <img src="/images/ham-menu.svg" alt="Menu Icon">
+        </label>
+        <div class="wrapper">
+            <ul>
+                <li><a href="/profiles">Profile</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/">Log out</a></li>
+            </ul>
+        </div>
+    </header>
 
-<button class="btn" id="playBtn" onclick="handleButtonClick('play')">Play</button>
-<button class="btn" id="pauseBtn" onclick="handleButtonClick('pause')">Pause</button>
-<button class="btn" onclick="saveSession()">Save Time</button>
+    <div class="container">
+    
+        <!-- Section for More Stats -->
+        <section>
+          <br>
+          <br>
+            <center><h1>Student: <%= studentName %></h1></center>
+ <!-- Rendered dynamically by EJS -->
 
-<ul id="savedTimes"></ul>
 
-<script>
-  let intervalId = null;
-  let startTime = null;
+            <h3>Week 1</h3>
+            <div class="img-container">
+                <img src="/images/Minutes.png" width="400" height="400">
+            </div>
+        </section>
 
-  function updateDateTime() {
-    const now = new Date();
-    const currentDateTime = now.toLocaleString();
-    document.getElementById('datetime').textContent = currentDateTime;
-  }
+        <!-- Section for Week 2 -->
+        <section>
+            <h3>Week 2</h3>
+            <div class="img-container">
+                <img src="/images/Minutes.png" width="400" height="400">
+            </div>
+        </section>
 
-  function startTimer() {
-    if (!intervalId) {
-      startTime = new Date(); 
-      updateDateTime(); 
-      intervalId = setInterval(updateDateTime, 1000);
-    }
-  }
+        <!-- Section for Week 3 -->
+        <section>
+            <h3>Week 3</h3>
+            <div class="img-container">
+                <img src="/images/Minutes.png" width="400" height="400">
+            </div>
+        </section>
 
-  function pauseClock() {
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = null;
-    }
-  }
+        <!-- Section for More Stats and Controls -->
+        <section>
+            <h3><a href="/stats">Go back</a></h3>
 
-  function saveSession() {
-    if (!startTime) {
-      alert("Clock hasn't been started.");
-      return;
-    }
+            <h3>Current Date and Time:</h3>
+            <p id="datetime"></p>
 
-    const endTime = new Date();
-    const durationMs = endTime - startTime;
-    const durationMin = Math.floor(durationMs / 60000);
-    const durationSec = Math.floor((durationMs % 60000) / 1000);
+            <button class="btn" id="playBtn" onclick="handleButtonClick('play')">Start</button>
+            <button class="btn" id="pauseBtn" onclick="handleButtonClick('pause')">Pause</button>
+            <button class="btn" onclick="saveSession()">Save Time</button>
 
-    const li = document.createElement('li');
-    li.textContent = `Start: ${startTime.toLocaleTimeString()} – End: ${endTime.toLocaleTimeString()} | Duration: ${durationMin} min ${durationSec} sec`;
-    document.getElementById('savedTimes').appendChild(li);
+            <ul id="savedTimes"></ul>
 
-    startTime = null;
-    pauseClock();
+            <script>
+                let intervalId = null;
+                let startTime = null;
 
-    // Remove active state from all buttons
-    document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
-  }
+                function updateDateTime() {
+                    const now = new Date();
+                    const currentDateTime = now.toLocaleString();
+                    document.getElementById('datetime').textContent = currentDateTime;
+                }
 
-  function handleButtonClick(action) {
-    // Remove active from all buttons first
-    document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+                function startTimer() {
+                    if (!intervalId) {
+                        startTime = new Date();
+                        updateDateTime();
+                        intervalId = setInterval(updateDateTime, 1000);
+                    }
+                }
 
-    // Add active class to clicked button
-    if (action === 'play') {
-      document.getElementById('playBtn').classList.add('active');
-      startTimer();
-    } else if (action === 'pause') {
-      document.getElementById('pauseBtn').classList.add('active');
-      pauseClock();
-    }
-  }
+                function pauseClock() {
+                    if (intervalId) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+                }
 
-  updateDateTime();
-  setInterval(updateDateTime, 1000);
-</script>
+                function saveSession() {
+                    if (!startTime) {
+                        alert("Clock hasn't been started.");
+                        return;
+                    }
 
-   <h3>Student 1 name: </h3>
-   <style>
-    .img_deg
-    {
-      position: center;
+                    const endTime = new Date();
+                    const durationMs = endTime - startTime;
+                    const durationMin = Math.floor(durationMs / 60000);
+                    const durationSec = Math.floor((durationMs % 60000) / 1000);
 
-    }
-   </style>
-<h3>Week 1</h3>
- <img class="img_deg" src="/images/Minutes.png" width="400" height="400">
- <h3>Week 2</h3>
-  <img src="/images/Minutes.png" width="400" height="400">
-  <h3>Week 3</h3>
-  <img src="/images/Minutes.png" width="400" height="400">
-  <h2>and so on</h2>
-    <h3><a href="/stats">Go back</a></h3>
+                    const li = document.createElement('li');
+                    li.textContent = `Start: ${startTime.toLocaleTimeString()} – End: ${endTime.toLocaleTimeString()} | Duration: ${durationMin} min ${durationSec} sec`;
+                    document.getElementById('savedTimes').appendChild(li);
+
+                    startTime = null;
+                    pauseClock();
+
+                    // Remove active state from all buttons
+                    document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+                }
+
+                function handleButtonClick(action) {
+                    document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+
+                    if (action === 'play') {
+                        document.getElementById('playBtn').classList.add('active');
+                        startTimer();
+                    } else if (action === 'pause') {
+                        document.getElementById('pauseBtn').classList.add('active');
+                        pauseClock();
+                    }
+                }
+
+                updateDateTime();
+                setInterval(updateDateTime, 1000);
+            </script>
+        </section>
+    </div>
+
+    <!-- Dynamic name update script -->
+    <script>
+        // Function to update the student's name dynamically
+        function updateStudentName(newName) {
+            const studentNameElement = document.getElementById('studentName');
+            if (studentNameElement) {
+                studentNameElement.textContent = newName;
+            }
+        }
+
+        // Simulating the update process (replace with actual logic)
+        setTimeout(() => {
+            updateStudentName('Updated Student Name');
+        }, 5000);  // 5 seconds after page load
+    </script>
+
 </body>
 </html>

@@ -1,108 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>
+  <meta charset="UTF-8">
+  <title>PottyPlanner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/images/logo.png">
+  <link rel="stylesheet" href="/css/stats.css">
+  <style>
     body {
-        background-image: url('/images/Hallway.png');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
+      background-image: url('/images/Hallway.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
-</style>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PottyPlanner</title>
-    <link rel="icon" class="favicon" type="image/x-icon" href="/images/logo.png">
-    <link rel="stylesheet" href="/css/stats.css">
-    <script src="/js/script.js"></script>
+    .student-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .student-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 10px;
+      padding: 5px;
+      width: 80%;  /* Control the width of the input field */
+      background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent background */
+      border: 1px solid #fff;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .box-images img {
+      width: 300px;
+      height: auto;
+    }
+
+    .remove-btn {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .remove-btn:hover {
+      background-color: darkred;
+    }
+
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <a href="/"><img src="/images/logo.png"></a>
-        </div>
-        <div class="website-name">Potty Planner</div>
-        <input type="checkbox" id="active">
-        <label for="active" class="menu-btn">
-            <img src="/images/ham-menu.svg" alt="Menu Icon">
-        </label>
-        <div class="wrapper">
-            <ul>
-                <li><a href="/profiles">profile</a></li>
-                <li><a href="/feedback">Feedback</a></li>
-                <li><a href="/">Log out</a></li>
-            </ul>
-        </div>
-    </header>
-    <div class="file-input">
-        <br>
+  <header>
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Logo"></a>
     </div>
-    <div class="container">
-        <input type="checkbox" id="zoomCheck">
-        <label for="zoomCheck">
-    <table class="graphsTable">
-         <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+    <div class="website-name">Potty Planner</div>
+    <input type="checkbox" id="active">
+    <label for="active" class="menu-btn">
+      <img src="/images/ham-menu.svg" alt="Menu Icon">
+    </label>
+    <div class="wrapper">
+      <ul>
+        <li><a href="/profiles">Profile</a></li>
+        <li><a href="/feedback">Feedback</a></li>
+        <li><a href="/">Log out</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div style="text-align:center; margin: 20px;">
+    
+    </div>
+<style>
+  .custom-button {
+    font-size: 18px; /* Increase font size */
+    padding: 15px 30px; /* Make the button larger with padding */
+    background-color: #4CAF50; /* Set background color */
+    color: white; /* Set text color */
+    border: none; /* Remove border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Add a pointer cursor */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  }
+
+  .custom-button:hover {
+    background-color: #45a049; /* Darker shade when hovering */
+  }
+
+  .custom-button:focus {
+    outline: none; /* Remove outline on focus */
+  }
+</style>
+
+<button class="custom-button" onclick="addStudent()">Add Student</button>
+
+    <table class="graphsTable" id="studentTable"></table>
 
 
- <center><u style="color:cyan"><h1 style="color:white">This week</h1></u></center>
-   
-<div style="text-align:center; margin: 20px;">
-    <button onclick="addStudent()">Add Student</button>
-</div>
+  <script>
+    let studentCount = 0;
 
-<table class="graphsTable" id="studentTable"></table>
+    // Load students from localStorage on page load
+    window.onload = function () {
+      const storedStudents = JSON.parse(localStorage.getItem("students")) || [];
+      storedStudents.forEach((student, index) => {
+        studentCount++;
+        addStudent(true, student.name, studentCount, student.id);
+      });
+    };
 
-<script>
-let studentCount = 0;
+    // Add a new student or load a student from localStorage
+    function addStudent(fromStorage = false, name = null, id = null) {
+      if (!fromStorage) {
+        studentCount++;
+        id = studentCount;
+        name = "Change name here"; // Placeholder for new student
+      }
 
-function addStudent() {
-    studentCount++;
-    const studentLetter = String.fromCharCode(64 + studentCount); // A, B, C, D...
+      const table = document.getElementById("studentTable");
+      const newCell = document.createElement("td");
 
-    // Create a new table cell (student)
-    const newCell = document.createElement("td");
+      newCell.innerHTML = `
+        <div class="student-container">
+          <!-- Name input field placed above the image -->
+          <input type="text" id="studentName${id}" value="${name}" class="student-name" 
+                 oninput="updateStudentName(${id})" placeholder="Change name here" />
+          <div class="box-images">
+            <img src="/images/Minutes.png" alt="Student Icon">
+          </div>
+          <a href="/moreStats" class="gtext" onclick="openMoreStats(${id})">Click here to see timer</a>
 
-    // Add the structure for the student (with editable name)
-    newCell.innerHTML = `
-        <div class="box-images">
-            <img src="/images/Minutes.png" alt="Student Icon" style="width: 300px; height: auto;">
+          <button class="remove-btn" onclick="removeStudent(${id})">Remove</button>
         </div>
-        <div class="container">
-            <!-- Editable student name -->
-            <input type="text" id="studentName${studentCount}" value="Student ${studentLetter}" class="student-name" 
-                oninput="updateStudentName(${studentCount})" />
-            <a href="/moreStats" class="gtext">Click here to see timer</a>
-        </div>
-    `;
+      `;
 
-    const table = document.getElementById("studentTable");
-
-    // If there are no rows or the last row already has 2 cells, create a new row
-    if (table.rows.length == 0 || table.rows[table.rows.length - 1].cells.length == 2) {
+      // Check if there's an open row to append this student
+      if (table.rows.length == 0 || table.rows[table.rows.length - 1].cells.length == 2) {
         const newRow = table.insertRow();
         newRow.appendChild(newCell);
-    } else {
+      } else {
         table.rows[table.rows.length - 1].appendChild(newCell);
+      }
+
+      if (!fromStorage) {
+        saveStudentsToLocalStorage();
+      }
     }
-}
 
-// Function to handle live updates to the student name
-function updateStudentName(studentId) {
-    const inputElement = document.getElementById(`studentName${studentId}`);
-    const updatedName = inputElement.value;
-    
-    // You can do additional things here (e.g., saving the name to a database, etc.)
-    console.log(`Updated name for Student ${studentId}: ${updatedName}`);
-}
-</script>
+    // Update the name of the student in localStorage
+    function updateStudentName(id) {
+      const input = document.getElementById(`studentName${id}`);
+      const name = input.value;
 
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+      while (students.length < id) {
+        students.push({ name: "" });
+      }
+      students[id - 1] = { name };
+      localStorage.setItem("students", JSON.stringify(students));
+    }
 
+    // Remove a student from the table and localStorage
+    function removeStudent(id) {
+      const row = document.getElementById("studentTable").rows;
+      // Find the row for this student ID and remove it
+      for (let i = 0; i < row.length; i++) {
+        if (row[i].cells[0].querySelector(`#studentName${id}`)) {
+          row[i].remove();
+          break;
+        }
+      }
 
+      // Remove student from localStorage
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+      students = students.filter((student, index) => index !== id - 1); // Remove by ID
+      localStorage.setItem("students", JSON.stringify(students));
+
+      // Rebuild table after removal
+      rebuildTable();
+    }
+
+    // Rebuild the table after removal or on load
+    function rebuildTable() {
+      const students = JSON.parse(localStorage.getItem("students")) || [];
+      studentCount = 0; // Reset student count
+
+      // Clear existing table
+      const table = document.getElementById("studentTable");
+      table.innerHTML = "";
+
+      // Add all students back
+      students.forEach((student, index) => {
+        studentCount++;
+        addStudent(true, student.name, studentCount, student.id);
+      });
+    }
+
+    // Save the student list to localStorage
+    function saveStudentsToLocalStorage() {
+      const students = [];
+      const inputs = document.querySelectorAll('.student-name');
+      inputs.forEach(input => {
+        students.push({ name: input.value });
+      });
+      localStorage.setItem("students", JSON.stringify(students));
+    }
+  </script>
 
 </body>
 </html>
+
