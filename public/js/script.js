@@ -6,7 +6,7 @@ let idCounter = 0;
 let absence = []
 let classList = Array;
 
-//import {entries} from '/home/hayaraham-asif/pottyPlanner-ASHCapstone/app.js'
+const appVariable = require('./app');
 
 const postData = data => {
   const body = JSON.stringify(data);
@@ -65,8 +65,7 @@ function viewStudentAbsences() {
       reader.readAsText(file);
     }
 
-    const entries = require('/hayaraham-asif/pottyPlanner-ASHCapstone/app')
-    console.log(entries.entries)
+    console.log(appVariable.entry)
 }
 
 function timerFunc(index) {
