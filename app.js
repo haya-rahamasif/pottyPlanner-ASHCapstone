@@ -4,8 +4,7 @@ import mongoose from 'mongoose'
 
 import Student from './models/students.js'
 import path from 'path';
-import { start } from 'repl';
-import { start } from 'repl';
+//import { start } from 'repl';
 const __dirname = path.resolve();
 let id = 0
 
@@ -13,7 +12,6 @@ let id = 0
 
 // intialize the application
 const app = express()
-app.use(express.json())
 app.use(express.json())
 
 function checkWhichPeriod(startTime) {
@@ -63,6 +61,7 @@ app.post('/viewAbsences', (req, res) => {
     console.log('in view absence route')
     console.log(names)
 
+    try {
     mongoose
     .connect(dbURL)
     .then((result) => {
@@ -72,13 +71,20 @@ app.post('/viewAbsences', (req, res) => {
             Student.find({studentName: singleName}) // finding info on each student
             .then((doc) => {
                 entries.push(doc)
+                console.log(entries)
             })
+            
         }
-        // not working currently
-        module.exports = {
-            entries
-        }
+
+        const data = {message: entries}
+        res.json(data)
+
     })
+    }
+    catch (err) {
+        console.log(`error: ${err}`)
+    }
+    
 
 })
 

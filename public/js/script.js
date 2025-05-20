@@ -6,8 +6,6 @@ let idCounter = 0;
 let absence = []
 let classList = Array;
 
-const appVariable = require('./app');
-
 const postData = data => {
   const body = JSON.stringify(data);
   return fetch('/timestamp', {
@@ -42,6 +40,10 @@ const postData = data => {
         .then(response => response.json()) // parses JSON response into native JavaScript objects
     }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function viewStudentAbsences() {
     const [file] = document.querySelector("input[type=file]").files;
     const reader = new FileReader();
@@ -65,7 +67,16 @@ function viewStudentAbsences() {
       reader.readAsText(file);
     }
 
-    console.log(appVariable.entry)
+    sleep(1000)
+
+    fetch('/viewAbsences')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message)
+    })
+    .catch(error => {
+        console.log(error)
+    })
 }
 
 function timerFunc(index) {
