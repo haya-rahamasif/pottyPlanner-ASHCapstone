@@ -9,22 +9,19 @@
     <script src="/js/script.js"></script>
 
     <style>
-        /* Body and html setup */
         html, body {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow-y: auto; /* Enable vertical scrolling */
-            overflow-x: hidden; /* Disable horizontal scrolling */
+            overflow-y: auto;
+            overflow-x: hidden;
             font-family: Arial, sans-serif;
         }
 
-        /* Main container for stacking content vertically */
         .container {
             padding: 20px;
         }
 
-        /* Styling for header section */
         header {
             text-align: center;
             margin-bottom: 30px;
@@ -39,7 +36,6 @@
             font-weight: bold;
         }
 
-        /* Styling for links */
         a {
             color: #007BFF;
             text-decoration: none;
@@ -50,7 +46,6 @@
             color: #0056b3;
         }
 
-        /* Styling for buttons */
         .btn {
             padding: 10px 20px;
             font-size: 16px;
@@ -72,12 +67,10 @@
             border-color: #0056b3;
         }
 
-        /* Styling for section headers */
         h1, h2, h3 {
             text-align: center;
         }
 
-        /* Styling for images */
         .img-container {
             text-align: center;
             margin-bottom: 30px;
@@ -88,14 +81,12 @@
             height: auto;
         }
 
-        /* Styling for datetime display */
         #datetime {
             text-align: center;
             margin-bottom: 20px;
             font-size: 18px;
         }
 
-        /* Styling for saved times list */
         #savedTimes {
             list-style-type: none;
             padding-left: 0;
@@ -109,9 +100,7 @@
         }
     </style>
 </head>
-
 <body>
-
     <header>
         <div class="logo">
             <a href="/"><img src="/images/logo.png" alt="Logo"></a>
@@ -131,22 +120,18 @@
     </header>
 
     <div class="container">
-    
-        <!-- Section for More Stats -->
         <section>
-          <br>
-          <br>
-            <center><h1>Student: <%= studentName %></h1></center>
- <!-- Rendered dynamically by EJS -->
+            <br><br>
+            <center><h1>Student: <span id="studentName"><%= studentName %></span></h1></center>
+        </section>
 
-
+        <section>
             <h3>Week 1</h3>
             <div class="img-container">
                 <img src="/images/Minutes.png" width="400" height="400">
             </div>
         </section>
 
-        <!-- Section for Week 2 -->
         <section>
             <h3>Week 2</h3>
             <div class="img-container">
@@ -154,7 +139,6 @@
             </div>
         </section>
 
-        <!-- Section for Week 3 -->
         <section>
             <h3>Week 3</h3>
             <div class="img-container">
@@ -162,10 +146,8 @@
             </div>
         </section>
 
-        <!-- Section for More Stats and Controls -->
         <section>
             <h3><a href="/stats">Go back</a></h3>
-
             <h3>Current Date and Time:</h3>
             <p id="datetime"></p>
 
@@ -174,87 +156,97 @@
             <button class="btn" onclick="saveSession()">Save Time</button>
 
             <ul id="savedTimes"></ul>
-
-            <script>
-                let intervalId = null;
-                let startTime = null;
-
-                function updateDateTime() {
-                    const now = new Date();
-                    const currentDateTime = now.toLocaleString();
-                    document.getElementById('datetime').textContent = currentDateTime;
-                }
-
-                function startTimer() {
-                    if (!intervalId) {
-                        startTime = new Date();
-                        updateDateTime();
-                        intervalId = setInterval(updateDateTime, 1000);
-                    }
-                }
-
-                function pauseClock() {
-                    if (intervalId) {
-                        clearInterval(intervalId);
-                        intervalId = null;
-                    }
-                }
-
-                function saveSession() {
-                    if (!startTime) {
-                        alert("Clock hasn't been started.");
-                        return;
-                    }
-
-                    const endTime = new Date();
-                    const durationMs = endTime - startTime;
-                    const durationMin = Math.floor(durationMs / 60000);
-                    const durationSec = Math.floor((durationMs % 60000) / 1000);
-
-                    const li = document.createElement('li');
-                    li.textContent = `Start: ${startTime.toLocaleTimeString()} – End: ${endTime.toLocaleTimeString()} | Duration: ${durationMin} min ${durationSec} sec`;
-                    document.getElementById('savedTimes').appendChild(li);
-
-                    startTime = null;
-                    pauseClock();
-
-                    // Remove active state from all buttons
-                    document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
-                }
-
-                function handleButtonClick(action) {
-                    document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
-
-                    if (action === 'play') {
-                        document.getElementById('playBtn').classList.add('active');
-                        startTimer();
-                    } else if (action === 'pause') {
-                        document.getElementById('pauseBtn').classList.add('active');
-                        pauseClock();
-                    }
-                }
-
-                updateDateTime();
-                setInterval(updateDateTime, 1000);
-            </script>
         </section>
     </div>
 
-    <!-- Dynamic name update script -->
     <script>
-        // Function to update the student's name dynamically
+        let intervalId = null;
+        let startTime = null;
+
+        function updateDateTime() {
+            const now = new Date();
+            const currentDateTime = now.toLocaleString();
+            document.getElementById('datetime').textContent = currentDateTime;
+        }
+
+        function startTimer() {
+            if (!intervalId) {
+                startTime = new Date();
+                updateDateTime();
+                intervalId = setInterval(updateDateTime, 1000);
+            }
+        }
+
+        function pauseClock() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        function saveSession() {
+            if (!startTime) {
+                alert("Clock hasn't been started.");
+                return;
+            }
+
+            const endTime = new Date();
+            const durationMs = endTime - startTime;
+            const durationMin = Math.floor(durationMs / 60000);
+            const durationSec = Math.floor((durationMs % 60000) / 1000);
+
+            const li = document.createElement('li');
+            li.textContent = `Start: ${startTime.toLocaleTimeString()} – End: ${endTime.toLocaleTimeString()} | Duration: ${durationMin} min ${durationSec} sec`;
+            document.getElementById('savedTimes').appendChild(li);
+
+            // Save to server
+            const studentName = document.getElementById('studentName').textContent;
+            fetch('/timestamp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    data: [studentName, startTime.toLocaleTimeString(), endTime.toLocaleTimeString()]
+                })
+            }).then(response => response.json()).catch(err => console.error('Error saving timestamp:', err));
+
+            startTime = null;
+            pauseClock();
+            document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        function handleButtonClick(action) {
+            document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+
+            if (action === 'play') {
+                document.getElementById('playBtn').classList.add('active');
+                startTimer();
+            } else if (action === 'pause') {
+                document.getElementById('pauseBtn').classList.add('active');
+                pauseClock();
+            }
+        }
+
+        // Update student name from localStorage or query parameter
         function updateStudentName(newName) {
             const studentNameElement = document.getElementById('studentName');
-            if (studentNameElement) {
+            if (studentNameElement && newName) {
                 studentNameElement.textContent = newName;
             }
         }
 
-        // Simulating the update process (replace with actual logic)
-        setTimeout(() => {
-            updateStudentName('Updated Student Name');
-        }, 5000);  // 5 seconds after page load
+        // Get student name from query parameter or localStorage
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            let studentName = urlParams.get('studentName') || 'Unknown Student';
+            const storedStudents = JSON.parse(localStorage.getItem('students')) || [];
+            const student = storedStudents.find(s => s.name === decodeURIComponent(studentName));
+            if (student) {
+                studentName = student.name;
+            }
+            updateStudentName(decodeURIComponent(studentName));
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        };
     </script>
-
 </body>
 </html>

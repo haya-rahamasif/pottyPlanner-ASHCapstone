@@ -25,8 +25,8 @@
       color: #fff;
       margin-bottom: 10px;
       padding: 5px;
-      width: 80%;  /* Control the width of the input field */
-      background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent background */
+      width: 80%;
+      background-color: rgba(0, 0, 0, 0.5);
       border: 1px solid #fff;
       border-radius: 5px;
       margin-top: 10px;
@@ -50,10 +50,27 @@
       background-color: darkred;
     }
 
+    .custom-button {
+      font-size: 18px;
+      padding: 15px 30px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .custom-button:hover {
+      background-color: #45a049;
+    }
+
+    .custom-button:focus {
+      outline: none;
+    }
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">
       <a href="/"><img src="/images/logo.png" alt="Logo"></a>
@@ -73,35 +90,11 @@
   </header>
 
   <div class="container">
-
     <div style="text-align:center; margin: 20px;">
-    
+      <button class="custom-button" onclick="addStudent()">Add Student</button>
     </div>
-<style>
-  .custom-button {
-    font-size: 18px; /* Increase font size */
-    padding: 15px 30px; /* Make the button larger with padding */
-    background-color: #4CAF50; /* Set background color */
-    color: white; /* Set text color */
-    border: none; /* Remove border */
-    border-radius: 8px; /* Rounded corners */
-    cursor: pointer; /* Add a pointer cursor */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-  }
-
-  .custom-button:hover {
-    background-color: #45a049; /* Darker shade when hovering */
-  }
-
-  .custom-button:focus {
-    outline: none; /* Remove outline on focus */
-  }
-</style>
-
-<button class="custom-button" onclick="addStudent()">Add Student</button>
-
     <table class="graphsTable" id="studentTable"></table>
-
+  </div>
 
   <script>
     let studentCount = 0;
@@ -111,16 +104,16 @@
       const storedStudents = JSON.parse(localStorage.getItem("students")) || [];
       storedStudents.forEach((student, index) => {
         studentCount++;
-        addStudent(true, student.name, studentCount, student.id);
+        addStudent(true, student.name, studentCount, index + 1);
       });
     };
 
     // Add a new student or load a student from localStorage
-    function addStudent(fromStorage = false, name = null, id = null) {
+    function addStudent(fromStorage = false, name = null, count = null, id = null) {
       if (!fromStorage) {
         studentCount++;
         id = studentCount;
-        name = "Change name here"; // Placeholder for new student
+        name = "Change name here";
       }
 
       const table = document.getElementById("studentTable");
@@ -128,20 +121,17 @@
 
       newCell.innerHTML = `
         <div class="student-container">
-          <!-- Name input field placed above the image -->
           <input type="text" id="studentName${id}" value="${name}" class="student-name" 
                  oninput="updateStudentName(${id})" placeholder="Change name here" />
           <div class="box-images">
             <img src="/images/Minutes.png" alt="Student Icon">
           </div>
-          <a href="/moreStats" class="gtext" onclick="openMoreStats(${id})">Click here to see timer</a>
-
+          <a href="/moreStats" class="gtext" onclick="openMoreStats(${id}, event)">Click here to see timer</a>
           <button class="remove-btn" onclick="removeStudent(${id})">Remove</button>
         </div>
       `;
 
-      // Check if there's an open row to append this student
-      if (table.rows.length == 0 || table.rows[table.rows.length - 1].cells.length == 2) {
+      if (table.rows.length === 0 || table.rows[table.rows.length - 1].cells.length === 2) {
         const newRow = table.insertRow();
         newRow.appendChild(newCell);
       } else {
@@ -162,43 +152,38 @@
       while (students.length < id) {
         students.push({ name: "" });
       }
-      students[id - 1] = { name };
+      students[id - 1] = { name, id };
       localStorage.setItem("students", JSON.stringify(students));
     }
 
     // Remove a student from the table and localStorage
     function removeStudent(id) {
-      const row = document.getElementById("studentTable").rows;
-      // Find the row for this student ID and remove it
-      for (let i = 0; i < row.length; i++) {
-        if (row[i].cells[0].querySelector(`#studentName${id}`)) {
-          row[i].remove();
+      const table = document.getElementById("studentTable");
+      for (let i = 0; i < table.rows.length; i++) {
+        const cell = table.rows[i].cells[0];
+        if (cell.querySelector(`#studentName${id}`)) {
+          table.deleteRow(i);
           break;
         }
       }
 
-      // Remove student from localStorage
       let students = JSON.parse(localStorage.getItem("students")) || [];
-      students = students.filter((student, index) => index !== id - 1); // Remove by ID
+      students = students.filter((_, index) => index !== id - 1);
       localStorage.setItem("students", JSON.stringify(students));
 
-      // Rebuild table after removal
       rebuildTable();
     }
 
     // Rebuild the table after removal or on load
     function rebuildTable() {
       const students = JSON.parse(localStorage.getItem("students")) || [];
-      studentCount = 0; // Reset student count
-
-      // Clear existing table
+      studentCount = 0;
       const table = document.getElementById("studentTable");
       table.innerHTML = "";
 
-      // Add all students back
       students.forEach((student, index) => {
         studentCount++;
-        addStudent(true, student.name, studentCount, student.id);
+        addStudent(true, student.name, studentCount, index + 1);
       });
     }
 
@@ -206,13 +191,19 @@
     function saveStudentsToLocalStorage() {
       const students = [];
       const inputs = document.querySelectorAll('.student-name');
-      inputs.forEach(input => {
-        students.push({ name: input.value });
+      inputs.forEach((input, index) => {
+        students.push({ name: input.value, id: index + 1 });
       });
       localStorage.setItem("students", JSON.stringify(students));
     }
-  </script>
 
+    // Navigate to moreStats with student name
+    function openMoreStats(id, event) {
+      event.preventDefault();
+      const input = document.getElementById(`studentName${id}`);
+      const studentName = encodeURIComponent(input.value || "Change name here");
+      window.location.href = `/moreStats?studentName=${studentName}`;
+    }
+  </script>
 </body>
 </html>
-
