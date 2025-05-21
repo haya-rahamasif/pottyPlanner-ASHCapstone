@@ -3,7 +3,7 @@ import ejs from 'ejs'
 import mongoose from 'mongoose'
 
 import Student from './models/students.js'
-import path from 'path';
+import path, { resolve } from 'path';
 //import { start } from 'repl';
 const __dirname = path.resolve();
 let id = 0
@@ -56,30 +56,34 @@ app.get('/feedback', (req, res) => {
     res.render('../public/views/feedback.ejs');
 });
 
-app.post('/viewAbsences', (req, res) => {
+app.post('/viewAbsences', async (req, res) => {
     let names = req.body.data
     console.log('in view absence route')
     console.log(names)
 
     try {
-    mongoose
+    await mongoose
     .connect(dbURL)
     .then((result) => {
-        let entries = []
-        for (let i=0; i<names.length-1;i++) {
+        return new Promise((resolve, reject) => {
+            let entries = []
+            for (let i=0; i<names.length-1;i++) {
             let singleName = names[i]
             Student.find({studentName: singleName}) // finding info on each student
             .then((doc) => {
                 entries.push(doc)
                 console.log(entries)
             })
-            
-        }
+            }
 
-        const data = {message: entries}
-        res.json(data)
+            resolve(entries)
+        })
 
     })
+
+    const data = {message: entries}
+    res.json(data)
+
     }
     catch (err) {
         console.log(`error: ${err}`)

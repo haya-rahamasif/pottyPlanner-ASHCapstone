@@ -44,7 +44,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function viewStudentAbsences() {
+async function viewStudentAbsences() {
     const [file] = document.querySelector("input[type=file]").files;
     const reader = new FileReader();
 
@@ -67,9 +67,7 @@ function viewStudentAbsences() {
       reader.readAsText(file);
     }
 
-    sleep(1000)
-
-    fetch('/viewAbsences')
+    await fetch('/viewAbsences')
     .then(response => response.json())
     .then(data => {
         console.log(data.message)
