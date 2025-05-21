@@ -33,6 +33,7 @@ const postData = data => {
         headers: {
             'Content-Type': 'application/json',
         },
+        body: JSON.stringify(data),
         redirect: 'follow', // manual, follow, error
         referrer: 'no-referrer', // no-referrer, client
         body
@@ -56,7 +57,7 @@ function viewStudentAbsences() {
         let classList = names.split("\n")
         postClassList({data: classList})
                 .then(json => {
-                    console.log(json);
+                    console.log(json.message);
                 })
                 .catch(e => console.log(e));
       },
@@ -66,15 +67,6 @@ function viewStudentAbsences() {
     if (file) {
       reader.readAsText(file);
     }
-
-    fetch('/viewAbsences')
-    .then(response => response.json())
-    .then(data => {
-        console.log('all student absneces -> ', data.message)
-    })
-    .catch(error => {
-        console.log(error)
-    })
 }
 
 function timerFunc(index) {
