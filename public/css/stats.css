@@ -272,6 +272,7 @@ header div {
     margin-bottom: 30px;
 }
 
+
 @media (max-width: 480px) {
     header {
       padding: 5px 10px;
@@ -324,3 +325,9 @@ header div {
     clip-path: circle(25px at calc(90% + 15px) 35px); 
 }
 }
+
+input[type=checkbox] {
+  display: none;
+}
+
+

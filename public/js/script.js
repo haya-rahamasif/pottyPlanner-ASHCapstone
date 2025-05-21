@@ -40,7 +40,11 @@ const postData = data => {
         .then(response => response.json()) // parses JSON response into native JavaScript objects
     }
 
-function viewStudentAbsences() {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function viewStudentAbsences() {
     const [file] = document.querySelector("input[type=file]").files;
     const reader = new FileReader();
 
@@ -63,6 +67,14 @@ function viewStudentAbsences() {
       reader.readAsText(file);
     }
 
+    await fetch('/viewAbsences')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message)
+    })
+    .catch(error => {
+        console.log(error)
+    })
 }
 
 function timerFunc(index) {
