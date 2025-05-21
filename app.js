@@ -14,10 +14,6 @@ import dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
 import User from './models/User.js'
 
-=======
-import path, { resolve } from 'path';
-//import { start } from 'repl';
-
 const __dirname = path.resolve();
 let id = 0
 
