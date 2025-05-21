@@ -514,3 +514,33 @@ header div {
   display: block;
   border-radius: 5%;
 }
+
+
+
+
+
+
+
+
+.students-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.student-card {
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  background: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.student-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}

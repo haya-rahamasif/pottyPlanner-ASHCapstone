@@ -247,16 +247,15 @@ async function viewStudents() {
   if (!file) return;
 
   const text = await file.text();
-  const names = text.split('\\n').map(name => name.trim()).filter(Boolean);
+  const names = text.split('\n').map(name => name.trim()).filter(Boolean);
 
-  // Save to backend
   await fetch('/upload-students', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ students: names })
   });
 
-  // Optionally re-render the table immediately
-  const table = document.querySelector('.StudentsTable');
-  table.innerHTML = names.map(name => `<tr><td>${name}</td></tr>`).join('');
+  // Refresh the page to see updated list in correct layout
+  window.location.reload();
 }
+

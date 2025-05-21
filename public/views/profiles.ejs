@@ -33,15 +33,36 @@
             </ul>
     </div>
   </header>
-  <div class="file-input">
-    <p>Please upload a .txt file of your class list of names, each seperated by a new line</p>
-    <input type="file" onchange="viewStudents()" accept=".txt"/>
-  </div>
+<div class="file-input">
+  <p>Please upload a .txt file of your class list of names, each separated by a new line</p>
+  <input type="file" onchange="viewStudents()" accept=".txt"/>
+</div>
+
 <table class="StudentsTable">
-  <% students.forEach(student => { %>
-    <tr><td><%= student %></td></tr>
-  <% }) %>
+  <% for (let i = 0; i < students.length; i++) { %>
+    <% if (i % 2 === 0) { %>
+      <tr>
+    <% } %>
+      <td>
+        <div class="box-images">
+          <img src="/images/soccer.webp">
+        </div>
+        <div class="container">
+          <h1><%= students[i] %></h1>  <!-- IMPORTANT: No .name if it's just a string -->
+        </div>
+        <div class="time" id="time<%= i %>">
+          <span class="hr">00</span>:<span class="min">00</span>:<span class="sec">00</span>:<span class="count">00</span>
+        </div>
+        <button class="button-timer" id="start<%= i %>">Start</button>
+      </td>
+    <% if (i % 2 === 1 || i === students.length - 1) { %>
+      </tr>
+    <% } %>
+  <% } %>
 </table>
+
+
+
   
 </body>
 </html>
