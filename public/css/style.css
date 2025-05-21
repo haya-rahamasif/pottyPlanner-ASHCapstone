@@ -49,7 +49,7 @@ header div {
   font-size: 250%;
   font-weight: bold;
   white-space: nowrap;
-  font-family: cursive;  
+  font-family: Raleway, sans-serif;  
   position: absolute;
   left: 50%;
   transform: translateX(-50%); 
