@@ -3,8 +3,21 @@ import ejs from 'ejs'
 import mongoose from 'mongoose'
 
 import Student from './models/students.js'
+
+import path from 'path';
+
+
+// Login
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
+import dotenv from 'dotenv'
+import bcrypt from 'bcrypt'
+import User from './models/User.js'
+
+=======
 import path, { resolve } from 'path';
 //import { start } from 'repl';
+
 const __dirname = path.resolve();
 let id = 0
 
@@ -30,30 +43,63 @@ function checkWhichPeriod(startTime) {
     }
 }
 
+dotenv.config()
+
+const dbURL = 'mongodb+srv://hayarahamasif:preach-immature-mouthful-smoky@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB'
+
+mongoose.connect(dbURL)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('MongoDB connection error:', err))
+
+
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
-// Routing path to render main page
+//login
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'mysecret',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: dbURL }),
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
+  }))
+
+app.use((req, res, next) => {
+    res.locals.userId = req.session.userId || null
+    next()
+})
+
+// Routing path to render main page (accessible by everyone)
 app.get('/', (req, res) => {
     res.render('../public/views/index.ejs');
 });
 
-// routing path to render profile page
-app.get('/profiles', (req, res) => {
-    res.render('../public/views/profiles.ejs');
+// Protect Routes for authenticated users only
+app.get('/profiles', isAuthenticated, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render('../public/views/profiles.ejs', {
+    students: user.students || [],
+    userId: req.session.userId
+  });
 });
 
-app.get('/stats', (req, res) => {
+
+app.get('/stats', isAuthenticated, (req, res) => {
     res.render('../public/views/stats.ejs');
 });
 
-app.get('/login', (req, res) => {
-    res.render('../public/views/login.ejs');
+app.get('/feedback', isAuthenticated, (req, res) => {
+    res.render('../public/views/feedback.ejs');
 });
 
-app.get('/feedback', (req, res) => {
-    res.render('../public/views/feedback.ejs');
+app.get('/register', (req, res) => {
+    res.render('../public/views/register.ejs', { error: null })
+  })  
+  
+
+app.get('/login', (req, res) => {
+    res.render('../public/views/login.ejs');
 });
 
 app.post('/viewAbsences', async (req, res) => {
@@ -197,13 +243,95 @@ app.post('/timestamp', (req, res) => {
 })
 
 // Start the server
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 9000
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
 })
 
-const dbURL = 'mongodb+srv://hayarahamasif:preach-immature-mouthful-smoky@pottyplannerdb.jg0o8.mongodb.net/?retryWrites=true&w=majority&appName=pottyPlannerDB'
+//Register form
 
+app.use(express.urlencoded({ extended: true }))
 
-app.get('/', (req, res) => { // this code will only run if it receives a web request from the client side
+app.post('/register', async (req, res) => {
+  const { email, password } = req.body
+  try {
+    const existingUser = await User.findOne({ email })
+    if (existingUser) {
+      return res.render('../public/views/register.ejs', { error: 'Email already in use' })
+    }
+
+    const newUser = new User({ email, password })
+
+    await newUser.save()
+    res.redirect('/login')
+  } catch (err) {
+    console.error('Registration error:', err)
+    res.render('../public/views/register.ejs', { error: 'Something went wrong. Try again.' })
+  }
 })
+
+// Login helper
+function isAuthenticated(req, res, next) {
+    if (req.session.userId) return next()
+    res.redirect('/login')
+  }
+
+// Add Register + Login POST Routes
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body
+  try {
+    const user = await User.findOne({ email })
+    if (!user) return res.render('../public/views/login.ejs', { error: 'Invalid credentials' })
+
+    const match = await bcrypt.compare(password, user.password)
+    if (!match) return res.render('../public/views/login.ejs', { error: 'Invalid credentials' })
+
+    req.session.userId = user._id
+    res.redirect('/profiles')
+  } catch (err) {
+    console.error(err)
+    res.render('../public/views/login.ejs', { error: 'Login failed' })
+  }
+})
+
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/login')
+  })
+})
+
+// Protect Routes
+
+app.get('/profiles', isAuthenticated, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render('../public/views/profiles.ejs', {
+    students: user.students || [],
+    userId: req.session.userId
+  });
+});
+
+  
+  app.get('/stats', isAuthenticated, (req, res) => {
+    res.render('../public/views/stats.ejs');
+  });
+  
+  app.get('/feedback', isAuthenticated, (req, res) => {
+    res.render('../public/views/feedback.ejs');
+  });
+
+
+app.post('/upload-students', isAuthenticated, async (req, res) => {
+  const { students } = req.body; // Array of names
+
+  try {
+    const user = await User.findById(req.session.userId);
+    user.students = students;
+    await user.save();
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('Error saving students:', err);
+    res.status(500).json({ success: false, message: 'Failed to save students' });
+  }
+});
+

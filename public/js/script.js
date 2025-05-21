@@ -251,3 +251,23 @@ document.addEventListener('DOMContentLoaded', function() {
         learnMoreSection.scrollIntoView({ behavior: 'smooth' }); // Scroll smoothly
     });
 });
+
+// For Retaining the Student List for every profile 
+async function viewStudents() {
+  const fileInput = document.querySelector('input[type=file]');
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const text = await file.text();
+  const names = text.split('\n').map(name => name.trim()).filter(Boolean);
+
+  await fetch('/upload-students', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ students: names })
+  });
+
+  // Refresh the page to see updated list in correct layout
+  window.location.reload();
+}
+

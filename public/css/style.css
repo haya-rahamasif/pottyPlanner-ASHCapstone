@@ -49,7 +49,7 @@ header div {
   font-size: 250%;
   font-weight: bold;
   white-space: nowrap;
-  font-family: cursive;  
+  font-family: Raleway, sans-serif;  
   position: absolute;
   left: 50%;
   transform: translateX(-50%); 
@@ -115,7 +115,7 @@ header div {
 .menu-btn img {
     width: 30px; 
     height: 30px; 
-    position: relative;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -513,4 +513,154 @@ header div {
   height: auto;
   display: block;
   border-radius: 5%;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 60px; /* Adjust padding for smaller screens */
+  }
+
+  header {
+    padding: 5px 10px;
+    height: 60px;
+  }
+
+  .logo img {
+    max-width: 15%; /* Make logo larger on small screens */
+  }
+
+  .website-name {
+    font-size: 150%; /* Decrease website name size */
+  }
+
+  .menu-btn {
+    top: 10px;
+    right: 10px;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .menu-btn img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .wrapper {
+    font-size: 24px; 
+    padding: 5px 20px;
+    line-height: 40px;
+    clip-path: circle(25px at calc(90% + 15px) 35px); 
+  }
+
+  .homepage-visual {
+    height: auto; 
+    padding-bottom: 20px;
+  }
+
+  .parallax-image {
+    background-attachment: scroll; 
+    height: 60vh;
+  }
+
+  .login-button {
+    position: static; 
+    width: 80%;
+    height: auto;
+    transform: translate(0, 0);
+    margin: 20px auto 10px; 
+    padding: 15px 25px;
+    font-size: 24px;
+    display: block;
+    left: auto;
+  }
+
+  .welcome-text {
+    position: static;
+    font-size: 28px;
+    transform: translate(0, 0);
+    margin: 20px auto;
+    width: 80%;
+    padding: 15px;
+  }
+
+  .learn-morebutton {
+    position: static;
+    width: 80%;
+    height: auto;
+    transform: translate(0, 0);
+    margin: 10px auto 20px;
+    padding: 15px 25px;
+    font-size: 24px;
+    display: block; 
+    right: auto;
+  }
+
+  .homepage-learnmore h1 {
+    font-size: 30px;
+  }
+
+  .Learn-more-section {
+    width: 95%;
+    margin: 5% auto;
+    border-spacing: 10px;
+  }
+
+  .Learn-more-section td {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px; 
+  }
+
+  .learn-more-content {
+    flex-direction: column; 
+    align-items: stretch; 
+
+  .learn-more-text {
+    width: 100%;
+    font-size: 18px;
+    padding-right: 0; 
+    margin-bottom: 15px;
+  }
+
+  .learn-more-image {
+    width: 100%;
+    margin-bottom: 15px; 
+  }
+  .menu-btn {
+    right: 10px;
+    top: 10px;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    padding: 5px;
+  }
+    margin-right: 20px;
+  }
+}
+
+.students-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.student-card {
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  background: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.student-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
