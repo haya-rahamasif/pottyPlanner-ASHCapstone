@@ -19,20 +19,50 @@
         <img src="/images/ham-menu.svg" alt="Menu Icon">
     </label>
     <div class="wrapper">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/profiles">Students</a></li>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/stats">Stats</a></li>
-        <li><a href="#">Feedback</a></li>
-      </ul>
+            <ul>
+            <li><a href="/">Home</a></li>
+            <% if (userId) { %>
+                <li><a href="/profiles">Students</a></li>
+                <li><a href="/stats">Stats</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/logout">Logout</a></li>
+            <% } else { %>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            <% } %>
+            </ul>
     </div>
   </header>
-  <div class="file-input">
-    <p>Please upload a .txt file of your class list of names, each seperated by a new line</p>
-    <input type="file" onchange="viewStudents()" accept=".txt"/>
-  </div>
-  <table class="StudentsTable">
-  </table>  
+<div class="file-input">
+  <p>Please upload a .txt file of your class list of names, each separated by a new line</p>
+  <input type="file" onchange="viewStudents()" accept=".txt"/>
+</div>
+
+<table class="StudentsTable">
+  <% for (let i = 0; i < students.length; i++) { %>
+    <% if (i % 2 === 0) { %>
+      <tr>
+    <% } %>
+      <td>
+        <div class="box-images">
+          <img src="/images/soccer.webp">
+        </div>
+        <div class="container">
+          <h1><%= students[i] %></h1>  <!-- IMPORTANT: No .name if it's just a string -->
+        </div>
+        <div class="time" id="time<%= i %>">
+          <span class="hr">00</span>:<span class="min">00</span>:<span class="sec">00</span>:<span class="count">00</span>
+        </div>
+        <button class="button-timer" id="start<%= i %>">Start</button>
+      </td>
+    <% if (i % 2 === 1 || i === students.length - 1) { %>
+      </tr>
+    <% } %>
+  <% } %>
+</table>
+
+
+
+  
 </body>
 </html>
