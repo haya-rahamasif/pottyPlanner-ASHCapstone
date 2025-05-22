@@ -236,10 +236,14 @@ function viewStudents() {
   }
 
 document.addEventListener('DOMContentLoaded', function () {
-    for(let i = 0; i < 4; i++){
+    for(let i = 0; i < 50; i++){
         timerFunc(i);
     }
 });
+
+window.onload = function() {
+    console.log(classList)
+}
 
 //Scrolling to the Learn More Section
 document.addEventListener('DOMContentLoaded', function() {
@@ -252,11 +256,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// For Retaining the Student List for every profile 
+/*For Retaining the Student List for every profile 
 async function viewStudents() {
   const fileInput = document.querySelector('input[type=file]');
   const file = fileInput.files[0];
   if (!file) return;
+
+  console.log('func called')
 
   const text = await file.text();
   const names = text.split('\n').map(name => name.trim()).filter(Boolean);
@@ -269,5 +275,5 @@ async function viewStudents() {
 
   // Refresh the page to see updated list in correct layout
   window.location.reload();
-}
+}*/
 
