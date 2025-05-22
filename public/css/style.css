@@ -11,6 +11,7 @@ html, body {
   overflow-x: hidden; 
   overscroll-behavior: none;
 }
+
 header {
   position: fixed;
   width: 100%;
@@ -53,32 +54,23 @@ header div {
   position: absolute;
   left: 50%;
   transform: translateX(-50%); 
+  color: white;
+  text-shadow:
+  -1px -1px 0 #1f7e81,
+  1px -1px 0 #1f7e81,
+  -1px 1px 0 #1f7e81,
+  1px 1px 0 #1f7e81;  
 }
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Lato', sans-serif;
     font-family: 'Oswald', sans-serif;
-  }
-  .wrapper{
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 1001;
-    background: rgb(76, 197, 207); 
-    background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);
-    clip-path: circle(25px at calc(0% + 45px) 45px); 
-    background: rgb(76, 197, 207);
-    clip-path: circle(25px at calc(100% - 45px) 45px);
-    transition: all 0.3s ease-in-out;
-  }
-  #active:checked ~ .wrapper{
-    clip-path: circle(75%);
-  }
-  .menu-btn{
+}
+
+.menu-btn{
     position: absolute;
     z-index: 1002;
     right: 20px;
@@ -95,13 +87,18 @@ header div {
     transition: all 0.3s ease-in-out;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     padding: 10px;
-  }
-  
-  .menu-btn:hover {
-    background-color: rgb(181, 226, 255);
-  }
+}
 
-  .menu-btn svg {
+@font-face {
+  font-family: 'Cooper Bt';
+  src: url('/public/Fonts/CooperLtBT-Bold.ttf') format('truetype');
+}
+
+.menu-btn:hover {
+    background-color: rgb(181, 226, 255);
+}
+
+.menu-btn svg {
     width: 30px; 
     height: 30px; 
     fill: white;
@@ -121,39 +118,33 @@ header div {
     transform: translate(-50%, -50%);
 }
 
-.file-input {
-  width: 100%;
-  margin-top: 5%;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+.wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+    background: rgb(76, 197, 207); 
+    background: linear-gradient(-45deg, #2776eb 0%, #8c23d2 100%);
+    clip-path: circle(25px at calc(100% - 45px) 45px);
+    transition: all 0.3s ease-in-out;
 }
-
-.file-input p {
-  font-size: 20px;
-  color: #fff;
-  padding-bottom: 20px;
+#active:checked ~ .wrapper{
+    clip-path: circle(75%);
 }
-
-  #active:checked ~ .menu-btn{
-    color: #fff;
-  }
-  #active:checked ~ .menu-btn i:before{
-    content: "\f00d";
-  }
-  .wrapper ul{
+.wrapper ul{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     list-style: none;
     text-align: center;
-  }
-  .wrapper ul li{
+}
+.wrapper ul li{
     margin: 15px 0;
-  }
-  .wrapper ul li a{
-    color: none;
+}
+.wrapper ul li a{
     text-decoration: none;
     font-size: 30px;
     font-weight: 500;
@@ -164,12 +155,12 @@ header div {
     position: relative;
     line-height: 50px;
     transition: all 0.3s ease;
-  }
-  .wrapper ul li a:after{
+}
+.wrapper ul li a:after{
     position: absolute;
     content: "";
     background: #fff;
-     background: linear-gradient(rgb(72, 140, 151), rgb(76, 197, 207), rgb(167, 227, 233));
+    background: linear-gradient(rgb(72, 140, 151), rgb(76, 197, 207), rgb(167, 227, 233));
     width: 104%;
     height: 110%;
     left: -2%;
@@ -179,189 +170,24 @@ header div {
     z-index: -1;
     animation: rotate 1.5s linear infinite;
     transition: transform 0.3s ease;
-  }
-  .wrapper ul li a:hover:after{
+}
+.wrapper ul li a:hover:after{
     transform: scaleY(1);
-  }
-  .wrapper ul li a:hover{
+}
+.wrapper ul li a:hover{
     color: #fff;
-  }
-  input[type="checkbox"]{
+}
+input[type="checkbox"]{
     display: none;
-  }
-  .content{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-    text-align: center;
-    width: 100%;
-    color: #202020;
-  }
-  .content .title{
-    font-size: 40px;
-    font-weight: 700;
-  }
-  .content p{
-    font-size: 35px;
-    font-weight: 600;
-  }
-  
-  @keyframes rotate {
+}
+
+@keyframes rotate {
     0%{
       filter: hue-rotate(0deg);
     }
     100%{
       filter: hue-rotate(360deg);
     }
-  }
-
-  .StudentsTable {
-    text-align: center;
-    width: 80%;
-    margin: 5% auto;
-    border-spacing: 20px;
-    border-collapse: separate;
-    table-layout: fixed;
-  }
-
-  .StudentsTable td {
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    background-color:#b5e2ff;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    padding: 10vh 0vw 10vh 0vw;
-    width: 20vw;
-    border-radius: 10px;
-  }
-
-  .StudentsTable td:hover {
-    transform: scale(1.1);
-    background-color: #9cd3ff;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    box-shadow: 0px 0px 10px rgb(72, 140, 151);
-}
-
-  .container {
-    display: flex;
-    justify-content: space-around; 
-    align-items: center;
-  }
-
-  .box-images {
-    display: flex;
-    justify-content: center;  
-    align-items: center;     
-    width: 100%;
-  }
-  
-  .box-images img {
-    width: 30%;
-    height: auto;
-    border-radius: 100%;
-  }
-
-  .button-timer {
-    font-size: 20px;
-    font-weight: 500;
-    padding: 5px 30px;
-    color: #fff;
-    border-radius: 50px;
-    background: #000;
-    position: relative;
-    line-height: 30px;
-    transition: all 0.3s ease;
-    border: none; 
-    cursor: pointer; 
-}
-
-.button-timer:after {
-    position: absolute;
-    content: "";
-    background: #fff;
-    background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
-    width: 104%;
-    height: 110%;
-    left: -2%;
-    top: -5%;
-    border-radius: 50px;
-    transform: scaleY(0);
-    z-index: -1;
-    animation: rotate 1.5s linear infinite;
-    transition: transform 0.3s ease;
-}
-
-.button-timer:hover:after {
-    transform: scaleY(1);
-}
-
-.button-timer:hover {
-    color: #fff;
-}
-
-@keyframes rotate {
-    0% {
-        filter: hue-rotate(0deg);
-    }
-    100% {
-        filter: hue-rotate(360deg);
-    }
-}
-
-.digit {
-  font-size: 150px;
-  color: #fff;
-}
-
-.txt {
-  font-size: 30px;
-  color: #fffcd6;
-}
-
-.button-addstudent {
-  align-items: center;
-  font-size: 20px;
-  font-weight: 500;
-  padding: 5px 30px;
-  color: #fff;
-  border-radius: 50px;
-  background: #000;
-  position: relative;
-  line-height: 40px;
-  transition: all 0.3s ease;
-  border: none; 
-  cursor: pointer; 
-}
-
-.button-addstudent:after {
-  position: absolute;
-  content: "";
-  background: #fff;
-  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
-  width: 104%;
-  height: 110%;
-  left: -2%;
-  top: -5%;
-  border-radius: 50px;
-  transform: scaleY(0);
-  z-index: -1;
-  animation: rotate 1.5s linear infinite;
-  transition: transform 0.3s ease;
-}
-
-.button-addstudent:hover:after {
-  transform: scaleY(1);
-}
-
-.button-addstudent:hover {
-  color: #fff;
-}
-
-.addStudentbutton {
-  text-align: center;
-  margin: 20px;
 }
 
 .the-visual-homepage{
@@ -372,34 +198,38 @@ header div {
   object-fit: cover;
 }
 
-.login-button{
-  position: absolute; 
-  top: 80%; 
-  left: 30%;
-  width: 20%;
-  height: 10%; 
-  transform: translate(-50%, -50%); 
-  padding: 10px 20px;
-  background-color: rgb(72, 140, 151); 
-  color: white;
+.login-button {
+  font-family: 'Raleway', sans-serif;
+  font-size: 2vw;
+  background: #7fd6e0;
+  color: #fff;
   border: none;
+  border-radius: 15px;
+  padding: 1vw 3vw;
+  box-shadow: 0 8px 0 #3a7e8c;
   cursor: pointer;
-  border-radius: 5px;
-  font-size: 30px;
-  font-family: 'Roboto';
+  margin-top: 2vw;
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-bottom: 1vw;
+}
+.login-button:hover {
+  background: #3a7e8c;
+  box-shadow: 0 4px 0 #7fd6e0;
 }
 
-.welcome-text{
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 40px; 
-  text-align: center; 
-  background-color: rgb(72, 140, 151); 
-  padding: 10px;
-  border-radius: 5px; 
+.homo-logo {
+  background: #fff;
+  border-radius: 25px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 2vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18vw;
+  height: 18vw;
+  min-width: 200px;
+  min-height: 200px;
+  margin-left: 4vw;
 }
 
 .learn-morebutton{
@@ -417,6 +247,7 @@ header div {
   border-radius: 5px;
   font-size: 30px;
   font-family: 'Roboto';
+  margin-bottom: 1vw;
 }
 
 .Learn-more-section {
@@ -447,10 +278,15 @@ header div {
 }
 
 .homepage-visual {
-  text-align: center;
-  position: relative;
-  height: 80vh;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 90vh;
+  gap: 4vw;
+  padding-left: 6vw;
+  padding-right: 6vw;
+  position: relative; /* Ensure children with absolute positioning are relative to this */
+  overflow: hidden;   /* Prevents scrollbars from parallax image overflow */
 }
 
 .parallax-image {
@@ -463,19 +299,95 @@ header div {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  z-index: -1;
+  z-index: -1; /* Ensure it's behind the content */
+  pointer-events: none; /* Allow clicks to pass through */
+  background-color: #488c97; /* fallback color if image is missing */
 }
 
-.login-button, .learn-morebutton, .welcome-text {
-  position: absolute;
+.homepage-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1;
+  min-width: 350px;
+  z-index: 1;
 }
 
-.login-button, .learn-morebutton {
-  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+.homepage-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 300px;
+  z-index: 1;
 }
 
-.login-button:hover, .learn-morebutton:hover {
-  background-color: rgb(181, 226, 255);
+.welcome-text {
+  position: static;
+  font-family: 'Cooper Bt', 'Chewy', cursive, sans-serif;
+  font-size: 4vw;
+  color: #fff;
+  background: rgba(0,0,0,0.08);
+  border-radius: 20px;
+  padding: 1vw 2vw;
+  box-shadow: 0 0 0 4px #7fd6e0;
+  border: 2px solid #7fd6e0;
+  display: inline-block;
+  margin-bottom: 2vw;
+  text-shadow: 2px 2px 0 #3a7e8c;
+  margin-top: 0;
+}
+
+.login-button {
+  position: static;
+  display: block;
+  margin: 2vw 0 1vw 0;
+  width: 320px;
+  max-width: 90%;
+  font-size: 2.5vw;
+  left: auto;
+  transform: none;
+}
+
+.learn-morebutton {
+  position: static;
+  display: block;
+  margin: 0;
+  margin-top: 1vw;
+  width: 320px;
+  max-width: 90%;
+  font-size: 2vw;
+  left: auto;
+  transform: none;
+}
+
+/* The Learn More section and table remain unchanged */
+.Learn-more-section {
+  text-align: center;
+  width: 80%;
+  margin: 5% auto;
+  border-spacing: 20px;
+  border-collapse: separate;
+  table-layout: fixed;
+}
+
+.Learn-more-section td {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background-color:rgb(181, 226, 255);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  padding: 10px;
+  width: 150px;
+  border-radius: 10px;
+}
+
+.Learn-more-section td:hover {
+  transform: scale(1.1);
+  background-color: #9cd3ff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 10px rgba(255, 0, 166, 0.8);
 }
 
 .homepage-learnmore {
@@ -515,152 +427,94 @@ header div {
   border-radius: 5%;
 }
 
-@media (max-width: 480px) {
-  body {
-    padding-top: 60px; /* Adjust padding for smaller screens */
-  }
+/* Remove absolute positioning for homepage buttons/text */
+.login-button, .learn-morebutton, .welcome-text {
+  position: static;
+}
 
-  header {
-    padding: 5px 10px;
-    height: 60px;
-  }
-
-  .logo img {
-    max-width: 15%; /* Make logo larger on small screens */
-  }
-
-  .website-name {
-    font-size: 150%; /* Decrease website name size */
-  }
-
-  .menu-btn {
-    top: 10px;
-    right: 10px;
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    padding: 5px;
-  }
-
-  .menu-btn img {
-    width: 20px;
-    height: 20px;
-  }
-
-  .wrapper {
-    font-size: 24px; 
-    padding: 5px 20px;
-    line-height: 40px;
-    clip-path: circle(25px at calc(90% + 15px) 35px); 
-  }
-
+/* Responsive adjustments */
+@media (max-width: 900px) {
   .homepage-visual {
-    height: auto; 
-    padding-bottom: 20px;
-  }
-
-  .parallax-image {
-    background-attachment: scroll; 
-    height: 60vh;
-  }
-
-  .login-button {
-    position: static; 
-    width: 80%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     height: auto;
-    transform: translate(0, 0);
-    margin: 20px auto 10px; 
-    padding: 15px 25px;
-    font-size: 24px;
-    display: block;
-    left: auto;
+    gap: 2vw;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
-
-  .welcome-text {
-    position: static;
-    font-size: 28px;
-    transform: translate(0, 0);
-    margin: 20px auto;
-    width: 80%;
-    padding: 15px;
+  .homepage-left, .homepage-right {
+    min-width: 0;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
   }
+  .welcome-text, .login-button, .learn-morebutton {
+    font-size: 5vw;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+  }
+  .homo-logo {
+    width: 40vw;
+    height: 40vw;
+    min-width: 120px;
+    min-height: 120px;
+    margin: 0 auto;
+  }
+}
 
-  .learn-morebutton {
-    position: static;
-    width: 80%;
+@media (max-width: 480px) {
+  .homepage-visual {
+    flex-direction: column;
+    gap: 2vw;
     height: auto;
-    transform: translate(0, 0);
-    margin: 10px auto 20px;
-    padding: 15px 25px;
-    font-size: 24px;
-    display: block; 
-    right: auto;
+    padding: 10px;
   }
-
-  .homepage-learnmore h1 {
-    font-size: 30px;
+  .homepage-left, .homepage-right {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
   }
-
+  .welcome-text, .login-button, .learn-morebutton {
+    font-size: 6vw;
+    width: 95%;
+    max-width: 95vw;
+    text-align: center;
+    margin: 10px auto;
+    padding: 10px;
+  }
+  .homo-logo {
+    width: 60vw;
+    height: 60vw;
+    min-width: 80px;
+    min-height: 80px;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  /* Learn More section responsive tweaks */
   .Learn-more-section {
     width: 95%;
     margin: 5% auto;
     border-spacing: 10px;
   }
-
   .Learn-more-section td {
     display: block;
     width: 100%;
     margin-bottom: 15px; 
   }
-
   .learn-more-content {
     flex-direction: column; 
     align-items: stretch; 
-
+  }
   .learn-more-text {
     width: 100%;
     font-size: 18px;
     padding-right: 0; 
     margin-bottom: 15px;
   }
-
   .learn-more-image {
     width: 100%;
     margin-bottom: 15px; 
   }
-  .menu-btn {
-    right: 10px;
-    top: 10px;
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    padding: 5px;
-  }
-    margin-right: 20px;
-  }
-}
-
-.students-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.student-card {
-  width: 200px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 1rem;
-  text-align: center;
-  background: #f9f9f9;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.student-card img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
 }
