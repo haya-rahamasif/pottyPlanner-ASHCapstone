@@ -14,7 +14,7 @@ html, body {
 header {
   position: fixed;
   width: 100%;
-  background: rgb(72, 140, 151);
+  background: rgb(76, 197, 207);
   color: #fff;
   display: flex;
   align-items: center;
@@ -421,23 +421,22 @@ header div {
 
 .Learn-more-section {
   text-align: center;
-  width: 100%;
-  margin: 0 auto;
+  width: 80%;
+  margin: 5% auto;
   border-spacing: 20px;
   border-collapse: separate;
-  table-layout: fixed; /* Add this line */
+  table-layout: fixed;
 }
 
 .Learn-more-section td {
   text-align: center;
-  vertical-align: top;
   justify-content: center;
   align-items: center;
-  background-color: rgb(181, 226, 255);
+  background-color:rgb(181, 226, 255);
   transition: transform 0.3s ease, background-color 0.3s ease;
-  /* Remove fixed width */
+  padding: 10px;
+  width: 150px;
   border-radius: 10px;
-  padding: 32px 16px;    /* Optional: increase padding for a bigger look */
 }
 
 .Learn-more-section td:hover {
@@ -497,38 +496,23 @@ header div {
   align-items: center; 
 }
 
-.box-for-the-table {
-  background: #fff;
-  color: rgb(72, 140, 151);
-  justify-content: center; 
-  align-items: center; 
-  width: 95%;           
-  max-width: 1200px;   
-  padding: 32px 24px;   
-  border-radius: 20px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  margin: 40px auto;    /* Center the box and add vertical spacing */
-}
-
-.learn-more-info-about-the-website {
-  width: 100%; 
-  text-align: center;
+.learn-more-text {
+  width: 50%; 
+  text-align: justify;
   font-family: 'Open Sans', sans-serif;
   color: rgb(72, 140, 151);
-  font-size: 25px;
-  padding-right: 5%;
-  padding-left: 5%; 
-  margin-top: 60px;
+  font-size: 22px;
+  padding-right: 20px; 
+  margin: 1%;
+  margin-top: 3%;
   margin-bottom: 3%;
 }
 
-.header-for-learn-more-section {
-  text-align: center;
-  font-size: 40px;
-  color: rgb(72, 140, 151);
-  font-weight: bold;
-  margin-top: 60px; /* Use a fixed value instead of % */
-
+.learn-more-image {
+  width: 50%; 
+  height: auto;
+  display: block;
+  border-radius: 5%;
 }
 
 @media (max-width: 480px) {
@@ -641,6 +625,10 @@ header div {
     margin-bottom: 15px;
   }
 
+  .learn-more-image {
+    width: 100%;
+    margin-bottom: 15px; 
+  }
   .menu-btn {
     right: 10px;
     top: 10px;
