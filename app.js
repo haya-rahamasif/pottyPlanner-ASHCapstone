@@ -5,7 +5,6 @@ import Student from './models/students.js';
 import path from 'path';
 
 const __dirname = path.resolve();
-let id = 0;
 
 // Initialize the application
 const app = express();
@@ -33,7 +32,7 @@ function checkWhichPeriod(startTime) {
 let mongoConnection = null;
 async function getMongoConnection() {
     if (!mongoConnection) {
-        mongoConnection = await mongoose.connect(dbURL);
+        mongoConnection = await mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
     }
     return mongoConnection;
 }
@@ -63,6 +62,51 @@ app.get('/moreStats', (req, res) => {
     const studentName = decodeURIComponent(req.query.studentName || 'Unknown Student');
     res.render('../public/views/moreStats.ejs', { studentName });
 });
+app.get('/getStudentStats', async (req, res) => {
+    try {
+        const studentName = decodeURIComponent(req.query.studentName || 'Unknown Student');
+        await getMongoConnection();
+
+        const student = await Student.findOne({ studentName });
+        
+
+        // Combine absences from all periods
+        const allAbsences = [
+            ...(student.absenceP1 || []),
+            ...(student.absenceP2 || []),
+            ...(student.absenceP3 || []),
+            ...(student.absenceP4 || [])
+        ];
+
+        // Aggregate durations by date
+        const dailyTotals = {};
+        allAbsences.forEach(absence => {
+            const startTime = new Date(absence[0]);
+            const endTime = new Date(absence[1]);
+            const durationMs = endTime - startTime;
+            if (durationMs < 0) return; // Skip invalid durations
+
+            // Get date in YYYY-MM-DD format
+            const date = startTime.toISOString().split('T')[0];
+            
+            if (!dailyTotals[date]) {
+                dailyTotals[date] = 0;
+            }
+            dailyTotals[date] += durationMs;
+        });
+
+        // Convert durations to minutes and format response
+        const stats = Object.entries(dailyTotals).map(([date, totalMs]) => ({
+            date,
+            totalMinutes: Math.round(totalMs / 60000) // Convert to minutes
+        }));
+
+        res.json({ stats });
+    } catch (err) {
+        console.error('Error in /getStudentStats:', err);
+        res.status(500).json({ error: 'Failed to fetch stats: ' + err.message });
+    }
+});
 
 app.post('/viewAbsences', (req, res) => {
     let names = req.body.data;
@@ -74,89 +118,62 @@ app.post('/timestamp', async (req, res) => {
     try {
         let time = req.body.data;
         console.log('Received timestamp:', time);
-        let startTime = time[1];
-        
-        const period = checkWhichPeriod(startTime);
+
+        // Defensive: Check for valid ISO strings and valid time array
+        if (!Array.isArray(time) || time.length < 3 || !time[1] || !time[2]) {
+            return res.status(400).json({ error: 'Invalid time data sent from client.' });
+        }
+        if (isNaN(Date.parse(time[1])) || isNaN(Date.parse(time[2]))) {
+            return res.status(400).json({ error: 'Invalid date format.' });
+        }
+
+        const period = checkWhichPeriod(time[1]);
+        console.log('Calculated period:', period, 'for startTime:', time[1]);
         if (!period) {
             return res.status(400).json({ error: 'Time is outside of valid periods' });
         }
 
         await getMongoConnection();
-        const doc = await Student.findOne({ studentName: time[0] });
-        
-        if (!doc) {
-            const entry = new Student({
-                studentName: time[0],
-                studentID: ++id,
-                absenceP1: [],
-                absenceP2: [],
-                absenceP3: [],
-                absenceP4: []
-            });
 
-            const absence = [time[1], time[2]];
-            switch (period) {
-                case 1: entry.absenceP1 = [absence]; break;
-                case 2: entry.absenceP2 = [absence]; break;
-                case 3: entry.absenceP3 = [absence]; break;
-                case 4: entry.absenceP4 = [absence]; break;
-            }
+        // Ensure student exists (upsert), but do NOT $push in the same update as $setOnInsert
+        const studentName = time[0];
+        const absence = [time[1], time[2]];
 
-            await entry.save();
-            res.json({ status: 'saved' });
-        } else {
-            const absence = [time[1], time[2]];
-            const updateField = {};
-            switch (period) {
-                case 1: updateField.absenceP1 = absence; break;
-                case 2: updateField.absenceP2 = absence; break;
-                case 3: updateField.absenceP3 = absence; break;
-                case 4: updateField.absenceP4 = absence; break;
-            }
+        // Step 1: Ensure student exists
+        await Student.updateOne(
+            { studentName },
+            {
+                $setOnInsert: {
+                    studentName,
+                    studentID: Date.now(),
+                    absenceP1: [],
+                    absenceP2: [],
+                    absenceP3: [],
+                    absenceP4: []
+                }
+            },
+            { upsert: true }
+        );
 
-            await Student.updateOne(
-                { studentName: time[0] },
-                { $push: updateField }
-            );
-            res.json({ status: 'updated' });
+        // Step 2: Push absence to the right period field (separate update to avoid conflict)
+        let pushField = {};
+        switch (period) {
+            case 1: pushField = { absenceP1: absence }; break;
+            case 2: pushField = { absenceP2: absence }; break;
+            case 3: pushField = { absenceP3: absence }; break;
+            case 4: pushField = { absenceP4: absence }; break;
         }
+
+        await Student.updateOne(
+            { studentName },
+            { $push: pushField }
+        );
+
+        res.json({ status: 'updated' });
+
     } catch (err) {
         console.error('Error in /timestamp:', err);
-        res.status(500).json({ error: 'Failed to process request' });
-    }
-});
-
-// New endpoint to retrieve all timestamps for a student
-app.get('/timestamps/:studentName', async (req, res) => {
-    const studentName = decodeURIComponent(req.params.studentName);
-    try {
-        await mongoose.connect(dbURL);
-        const student = await Student.findOne({ studentName });
-        if (!student) {
-            return res.status(404).json({ error: 'Student not found' });
-        }
-
-        // Combine all absence arrays
-        const timestamps = [
-            ...(student.absenceP1 || []),
-            ...(student.absenceP2 || []),
-            ...(student.absenceP3 || []),
-            ...(student.absenceP4 || [])
-        ].map(absence => ({
-            startTime: absence[0],
-            endTime: absence[1],
-            duration: Math.floor((new Date(absence[1]) - new Date(absence[0])) / 60000) // Duration in minutes
-        }));
-
-        // Sort by startTime
-        timestamps.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
-
-        res.json(timestamps);
-    } catch (err) {
-        console.error('Error fetching timestamps:', err);
-        res.status(500).json({ error: 'Failed to fetch timestamps' });
-    } finally {
-        await mongoose.disconnect();
+        res.status(500).json({ error: 'Failed to process request: ' + err.message });
     }
 });
 

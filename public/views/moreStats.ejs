@@ -9,124 +9,167 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow-y: auto;
-        overflow-x: hidden;
-        font-family: Arial, sans-serif;
-    }
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+        }
 
-    .container {
-        padding: 20px;
-        position: relative;
-        z-index: 1;
-    }
+        .container {
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-    header {
-        text-align: center;
-        margin-bottom: 30px;
-    }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-    header .logo img {
-        width: 50px;
-    }
+        header .logo img {
+            width: 50px;
+        }
 
-    header .website-name {
-        font-size: 24px;
-        font-weight: bold;
-    }
+        header .website-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-    a {
-        color: #007BFF;
-        text-decoration: none;
-        font-weight: bold;
-    }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    a:hover {
-        color: #0056b3;
-    }
+        a:hover {
+            color: #0056b3;
+        }
 
-    .btn {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #f0f0f0;
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.2s, transform 0.1s;
-        margin: 10px 5px;
-        position: relative;
-        z-index: 2; /* Ensure buttons are clickable */
-    }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin: 10px 5px;
+            position: relative;
+            z-index: 400;
+        }
 
-    .btn:active {
-        transform: scale(0.98);
-    }
+        .btn:active {
+            transform: scale(0.98);
+        }
 
-    .btn.active {
-        background-color: #007bff;
-        color: white;
-        border-color: #0056b3;
-    }
+        .btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
 
-    h1, h2, h3 {
-        text-align: center;
-    }
+        h1, h2, h3 {
+            text-align: center;
+        }
 
-    .img-container {
-        text-align: center;
-        margin-bottom: 30px;
-        position: relative;
-        z-index: 1;
-    }
+        .img-container {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
 
-    #durationChart {
-        max-width: 600px;
-        max-height: 400px;
-        margin: 0 auto 30px auto;
-        position: relative;
-        z-index: 1;
-    }
+        #durationChart {
+            max-width: 600px;
+            max-height: 400px;
+            margin: 0 auto 30px auto;
+            position: relative;
+            z-index: 1;
+        }
 
-    #datetime {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 18px;
-    }
+        #datetime {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
 
-    #savedTimes {
-        list-style-type: none;
-        padding-left: 0;
-    }
+        #savedTimes {
+            list-style-type: none;
+            padding-left: 0;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+        }
 
-    #savedTimes li {
-        padding: 5px;
-        background-color: #f9f9f9;
-        border: 1px solid #ccc;
-        margin-bottom: 5px;
-    }
+        #savedTimes li {
+            padding: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
+            text-align: center;
+        }
 
-    .error-message {
-        color: red;
-        text-align: center;
-        margin: 10px 0;
-    }
-</style>
+        .error-message {
+            color: red;
+            text-align: center;
+            margin: 10px 0;
+        }
 
+        .wrapper {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            z-index: 1001;
+            min-width: 150px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .wrapper.open {
+            display: block;
+        }
+
+        .menu-btn {
+            cursor: pointer;
+            z-index: 200;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background: none;
+            border: none;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <header>
+    <header style="position: relative; z-index: 1000;">
         <div class="logo">
             <a href="/"><img src="/images/logo.png" alt="Logo"></a>
         </div>
         <div class="website-name">PottyPlanner</div>
-        <input type="checkbox" id="active">
-        <label for="active" class="menu-btn">
+        <button id="menuBtn" class="menu-btn" type="button">
             <img src="/images/ham-menu.svg" alt="Menu Icon">
-        </label>
-        <div class="wrapper">
+        </button>
+        <div class="wrapper" id="menuWrapper">
             <ul>
                 <li><a href="/profiles">Profile</a></li>
                 <li><a href="/feedback">Feedback</a></li>
@@ -134,19 +177,10 @@
             </ul>
         </div>
     </header>
-
     <div class="container">
         <section>
             <br><br>
             <center><h1>Student: <span id="studentName"><%= studentName %></span></h1></center>
-        </section>
-
-        <section>
-            <h3>Session Durations</h3>
-            <div class="img-container">
-                <canvas id="durationChart"></canvas>
-                <p id="errorMessage" class="error-message"></p>
-            </div>
         </section>
 
         <section>
@@ -155,188 +189,234 @@
             <p id="datetime"></p>
 
             <button class="btn" id="playBtn" onclick="handleButtonClick('play')">Start</button>
-            
             <button class="btn" onclick="saveSession()">Save Time</button>
 
+            <h3>Saved Sessions</h3>
             <ul id="savedTimes"></ul>
+            <p id="errorMessage" class="error-message"></p>
+
+            <h3>Daily Total Time</h3>
+            <table id="dailyTotalsTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Time (Minutes)</th>
+                    </tr>
+                </thead>
+                <tbody id="dailyTotalsBody"></tbody>
+            </table>
+
+            <h3>Daily Time Chart</h3>
+            <canvas id="durationChart"></canvas>
         </section>
     </div>
 
     <script>
-        let intervalId = null;
-        let startTime = null;
-        let chart = null;
+    let intervalId = null;
+    let startTime = null;
+    let chart = null;
 
-        function updateDateTime() {
-            const now = new Date();
-            document.getElementById('datetime').textContent = now.toLocaleString();
+    function updateDateTime() {
+        const now = new Date();
+        document.getElementById('datetime').textContent = now.toLocaleString();
+    }
+
+    function startTimer() {
+        if (!intervalId && !startTime) {
+            startTime = new Date();
+            updateDateTime();
+            intervalId = setInterval(updateDateTime, 1000);
+            console.log("Timer started at", startTime.toLocaleTimeString());
+        }
+    }
+
+    function pauseClock() {
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+    }
+
+    function saveSession() {
+        if (!startTime || !intervalId) {
+            alert("Please click 'Start' before saving.");
+            return;
         }
 
-        function startTimer() {
-            if (!intervalId && !startTime) { // Only start if not already running and not already started
-                startTime = new Date();
-                updateDateTime();
-                intervalId = setInterval(updateDateTime, 1000);
-                console.log("Timer started at", startTime.toLocaleTimeString());
-            }
-        }
+        const endTime = new Date();
+        const durationMs = endTime - startTime;
+        const durationMin = Math.floor(durationMs / 60000);
+        const durationSec = Math.floor((durationMs % 60000) / 1000);
 
-        function pauseClock() {
-            if (intervalId) {
-                clearInterval(intervalId);
-                intervalId = null;
-            }
-        }
+        const li = document.createElement('li');
+        li.textContent = `Start: ${startTime.toLocaleTimeString()} – End: ${endTime.toLocaleTimeString()} | Duration: ${durationMin} min ${durationSec} sec`;
+        document.getElementById('savedTimes').appendChild(li);
 
-        function saveSession() {
-            if (!startTime || !intervalId) { // Only allow save if timer is running
-                alert("Please click 'Start' before saving.");
-                return;
-            }
+        const studentName = document.getElementById('studentName').textContent;
 
-            const endTime = new Date();
-            const durationMs = endTime - startTime;
-            const durationMin = Math.floor(durationMs / 60000);
-            const durationSec = Math.floor((durationMs % 60000) / 1000);
-
-            const li = document.createElement('li');
-            li.textContent = `Start: ${startTime.toLocaleTimeString()} – End: ${endTime.toLocaleTimeString()} | Duration: ${durationMin} min ${durationSec} sec`;
-            document.getElementById('savedTimes').appendChild(li);
-
-            const studentName = document.getElementById('studentName').textContent;
-
-            fetch('/timestamp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    data: [studentName, startTime.toISOString(), endTime.toISOString()]
-                })
+        fetch('/timestamp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                data: [studentName, startTime.toISOString(), endTime.toISOString()]
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'saved' || data.status === 'updated') {
-                    // Dynamically add new data point to line chart
-                    if (chart) {
-                        chart.data.labels.push(startTime.toLocaleTimeString());
-                        chart.data.datasets[0].data.push(durationMin);
-                        chart.update();
-                    } else {
-                        // If chart hasn't been initialized yet
-                        fetchTimestamps(studentName);
-                    }
-                } else {
-                    document.getElementById('errorMessage').textContent = 'Failed to save session.';
-                }
-            })
-            .catch(err => {
-                console.error('Error saving timestamp:', err);
-                document.getElementById('errorMessage').textContent = 'Error saving session.';
-            });
-
-            startTime = null;
-            pauseClock();
-            document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
-        }
-
-
-        function handleButtonClick(action) {
-            document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
-
-            if (action == 'play') {
-                document.getElementById('playBtn').classList.add('active');
-                startTimer();
-            } else if (action == 'pause') {
-                document.getElementById('pauseBtn').classList.add('active');
-                pauseClock();
-            }
-        }
-
-        function fetchTimestamps(studentName) {
-    document.getElementById('errorMessage').textContent = ''; // Clear previous errors
-    fetch(`/timestamps/${encodeURIComponent(studentName)}`)
+        })
         .then(response => response.json())
         .then(data => {
-            if (data.error) {
-                document.getElementById('errorMessage').textContent = data.error;
-                return;
+            if (data.status !== 'updated') {
+                document.getElementById('errorMessage').textContent = data.error || 'Failed to save session.';
+            } else {
+                // Refresh stats after saving
+                fetchStudentStats();
             }
-            if (data.length === 0) {
-                document.getElementById('errorMessage').textContent = 'No sessions recorded yet.';
-                if (chart) chart.destroy();
-                return;
-            }
+        })
+        .catch(err => {
+            console.error('Error saving timestamp:', err);
+            document.getElementById('errorMessage').textContent = 'Error saving session.';
+        });
 
-            const labels = data.map(row => row.startTime);
-            const durations = data.map(row => row.duration);
+        startTime = null;
+        pauseClock();
+        document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+    }
 
-            if (chart) chart.destroy();
+    function handleButtonClick(action) {
+        document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+        if (action === 'play') {
+            document.getElementById('playBtn').classList.add('active');
+            startTimer();
+        }
+    }
 
-            const ctx = document.getElementById('durationChart').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Session Duration (Minutes)',
-                        data: durations,
-                        fill: false,
-                        borderColor: 'rgba(0, 123, 255, 1)',
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Duration (Minutes)'
-                            }
+    function updateStudentName(newName) {
+        const studentNameElement = document.getElementById('studentName');
+        if (studentNameElement && newName) {
+            studentNameElement.textContent = newName;
+        }
+    }
+
+    function fetchStudentStats() {
+        const studentName = document.getElementById('studentName').textContent;
+        fetch(`/getStudentStats?studentName=${encodeURIComponent(studentName)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('errorMessage').textContent = data.error;
+                    return;
+                }
+                updateDailyTotalsTable(data.stats);
+                updateChart(data.stats);
+            })
+            .catch(err => {
+                console.error('Error fetching stats:', err);
+                document.getElementById('errorMessage').textContent = 'Error fetching stats.';
+            });
+    }
+
+    // Helper function to convert decimal minutes to MM:SS format
+    function formatMinutesToMMSS(decimalMinutes) {
+        const minutes = Math.floor(decimalMinutes);
+        const seconds = Math.round((decimalMinutes - minutes) * 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function updateDailyTotalsTable(stats) {
+        const tbody = document.getElementById('dailyTotalsBody');
+        tbody.innerHTML = ''; // Clear existing rows
+        stats.forEach(stat => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${stat.date}</td>
+                <td>${formatMinutesToMMSS(stat.totalMinutes)}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function updateChart(stats) {
+        const ctx = document.getElementById('durationChart').getContext('2d');
+        if (chart) {
+            chart.destroy(); // Destroy existing chart to prevent overlap
+        }
+        chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: stats.map(s => s.date),
+                datasets: [{
+                    label: 'Total Time (MM:SS)',
+                    data: stats.map(s => s.totalMinutes),
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Time (MM:SS)'
                         },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Start Time'
+                        ticks: {
+                            callback: function(value) {
+                                return formatMinutesToMMSS(value);
                             }
                         }
                     },
-                    plugins: {
-                        legend: {
-                            display: true
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
                         }
                     }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Menu toggle logic
+        const menuBtn = document.getElementById('menuBtn');
+        const menuWrapper = document.getElementById('menuWrapper');
+        if (menuBtn && menuWrapper) {
+            menuBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                menuWrapper.classList.toggle('open');
+            });
+            document.addEventListener('click', function (e) {
+                if (!menuWrapper.contains(e.target) && e.target !== menuBtn) {
+                    menuWrapper.classList.remove('open');
                 }
             });
-        })
-        .catch(err => {
-            console.error('Error fetching timestamps:', err);
-            document.getElementById('errorMessage').textContent = 'Error loading session data.';
-        });
-}
-
-
-        function updateStudentName(newName) {
-            const studentNameElement = document.getElementById('studentName');
-            if (studentNameElement && newName) {
-                studentNameElement.textContent = newName;
-            }
+            menuWrapper.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function () {
+                    menuWrapper.classList.remove('open');
+                });
+            });
         }
 
-        window.onload = function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            let studentName = urlParams.get('studentName') || 'Unknown Student';
-            const storedStudents = JSON.parse(localStorage.getItem('students')) || [];
-            const student = storedStudents.find(s => s.name === decodeURIComponent(studentName));
-            if (student) {
-                studentName = student.name;
-            }
-            studentName = decodeURIComponent(studentName);
-            updateStudentName(studentName);
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            fetchTimestamps(studentName);
-        };
-    </script>
+        // Initialize student name
+        const urlParams = new URLSearchParams(window.location.search);
+        let studentName = urlParams.get('studentName') || 'Unknown Student';
+        const storedStudents = JSON.parse(localStorage.getItem('students')) || [];
+        const student = storedStudents.find(s => s.name === decodeURIComponent(studentName));
+        if (student) {
+            studentName = student.name;
+        }
+        studentName = decodeURIComponent(studentName);
+        updateStudentName(studentName);
+
+        // Initialize datetime and stats
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        fetchStudentStats();
+    });
+</script>
 </body>
 </html>
