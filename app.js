@@ -17,19 +17,25 @@ app.use(express.json());
 
 // Function to check which period the time falls under
 function checkWhichPeriod(startTime) {
-    let time = new Date(`1/1/1999 ${startTime}`);
-    if (time > new Date("1/1/1999 8:20:00") && time < new Date("1/1/1999 9:45:00")) {
-        return 1;
+    const time = new Date(startTime);
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const timeInMinutes = hours * 60 + minutes;
+
+    if (timeInMinutes >= 500 && timeInMinutes <= 585) return 1; // 8:20 - 9:45
+    if (timeInMinutes >= 590 && timeInMinutes <= 665) return 2; // 9:50 - 11:05
+    if (timeInMinutes >= 715 && timeInMinutes <= 790) return 3; // 11:55 - 13:10
+    if (timeInMinutes >= 795 && timeInMinutes <= 870) return 4; // 13:15 - 14:30
+    return null;
+}
+
+// Create a single mongoose connection
+let mongoConnection = null;
+async function getMongoConnection() {
+    if (!mongoConnection) {
+        mongoConnection = await mongoose.connect(dbURL);
     }
-    if (time > new Date("1/1/1999 9:50:00") && time < new Date("1/1/1999 11:05:00")) {
-        return 2;
-    }
-    if (time > new Date("1/1/1999 11:55:00") && time < new Date("1/1/1999 13:10:00")) {
-        return 3;
-    }
-    if (time > new Date("1/1/1999 13:15:00") && time < new Date("1/1/1999 14:30:00")) {
-        return 4;
-    }
+    return mongoConnection;
 }
 
 // Routing paths
@@ -64,97 +70,94 @@ app.post('/viewAbsences', (req, res) => {
     res.json({ status: 'received' });
 });
 
-app.post('/timestamp', (req, res) => {
-    let time = req.body.data;
-    console.log('Received timestamp:', time);
-    let startTime = time[1];
+app.post('/timestamp', async (req, res) => {
+    try {
+        let time = req.body.data;
+        console.log('Received timestamp:', time);
+        let startTime = time[1];
+        
+        const period = checkWhichPeriod(startTime);
+        if (!period) {
+            return res.status(400).json({ error: 'Time is outside of valid periods' });
+        }
 
-    mongoose
-        .connect(dbURL)
-        .then(() => {
-            console.log(`Connected to MongoDB, now looking for ${time[0]}`);
-            Student.find({ studentName: time[0] })
-                .then((doc) => {
-                    if (!doc.length) {
-                        console.log("Student does not exist in DB");
-                        let entry = new Student({
-                            studentName: time[0],
-                            studentID: ++id,
-                            absenceP1: [],
-                            absenceP2: [],
-                            absenceP3: [],
-                            absenceP4: []
-                        });
+        await getMongoConnection();
+        const doc = await Student.findOne({ studentName: time[0] });
+        
+        if (!doc) {
+            const entry = new Student({
+                studentName: time[0],
+                studentID: ++id,
+                absenceP1: [],
+                absenceP2: [],
+                absenceP3: [],
+                absenceP4: []
+            });
 
-                        let absence = [time[1], time[2]];
-                        switch (checkWhichPeriod(startTime)) {
-                            case 1:
-                                entry.absenceP1 = [absence];
-                                break;
-                            case 2:
-                                entry.absenceP2 = [absence];
-                                break;
-                            case 3:
-                                entry.absenceP3 = [absence];
-                                break;
-                            case 4:
-                                entry.absenceP4 = [absence];
-                                break;
-                        }
+            const absence = [time[1], time[2]];
+            switch (period) {
+                case 1: entry.absenceP1 = [absence]; break;
+                case 2: entry.absenceP2 = [absence]; break;
+                case 3: entry.absenceP3 = [absence]; break;
+                case 4: entry.absenceP4 = [absence]; break;
+            }
 
-                        entry
-                            .save()
-                            .then(() => {
-                                console.log('Student saved');
-                                res.json({ status: 'saved' });
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                                res.status(500).json({ error: 'Failed to save student' });
-                            });
-                    } else {
-                        console.log(`Updating ${time[0]}'s profile`);
-                        let absence = [time[1], time[2]];
-                        let updateField = {};
-                        switch (checkWhichPeriod(startTime)) {
-                            case 1:
-                                updateField.absenceP1 = absence;
-                                break;
-                            case 2:
-                                updateField.absenceP2 = absence;
-                                break;
-                            case 3:
-                                updateField.absenceP3 = absence;
-                                break;
-                            case 4:
-                                updateField.absenceP4 = absence;
-                                break;
-                        }
+            await entry.save();
+            res.json({ status: 'saved' });
+        } else {
+            const absence = [time[1], time[2]];
+            const updateField = {};
+            switch (period) {
+                case 1: updateField.absenceP1 = absence; break;
+                case 2: updateField.absenceP2 = absence; break;
+                case 3: updateField.absenceP3 = absence; break;
+                case 4: updateField.absenceP4 = absence; break;
+            }
 
-                        Student.updateOne(
-                            { studentName: time[0] },
-                            { $push: updateField },
-                            { new: true }
-                        )
-                            .then(() => {
-                                console.log(`Added absence to ${time[0]}'s profile`);
-                                res.json({ status: 'updated' });
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                                res.status(500).json({ error: 'Failed to update student' });
-                            });
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                    res.status(500).json({ error: 'Database query failed' });
-                });
-        })
-        .catch((err) => {
-            console.error('Could not connect to MongoDB:', err);
-            res.status(500).json({ error: 'Database connection failed' });
-        });
+            await Student.updateOne(
+                { studentName: time[0] },
+                { $push: updateField }
+            );
+            res.json({ status: 'updated' });
+        }
+    } catch (err) {
+        console.error('Error in /timestamp:', err);
+        res.status(500).json({ error: 'Failed to process request' });
+    }
+});
+
+// New endpoint to retrieve all timestamps for a student
+app.get('/timestamps/:studentName', async (req, res) => {
+    const studentName = decodeURIComponent(req.params.studentName);
+    try {
+        await mongoose.connect(dbURL);
+        const student = await Student.findOne({ studentName });
+        if (!student) {
+            return res.status(404).json({ error: 'Student not found' });
+        }
+
+        // Combine all absence arrays
+        const timestamps = [
+            ...(student.absenceP1 || []),
+            ...(student.absenceP2 || []),
+            ...(student.absenceP3 || []),
+            ...(student.absenceP4 || [])
+        ].map(absence => ({
+            startTime: absence[0],
+            endTime: absence[1],
+            duration: Math.floor((new Date(absence[1]) - new Date(absence[0])) / 60000) // Duration in minutes
+        }));
+
+        // Sort by startTime
+        timestamps.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+
+        res.json(timestamps);
+    } catch (err) {
+        console.error('Error fetching timestamps:', err);
+        res.status(500).json({ error: 'Failed to fetch timestamps' });
+    } finally {
+        await mongoose.disconnect();
+    }
 });
 
 // MongoDB URL connection

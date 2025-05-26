@@ -6,106 +6,122 @@
     <title>PottyPlanner - More Stats</title>
     <link rel="icon" class="favicon" type="image/x-icon" href="/images/logo.png">
     <link rel="stylesheet" href="/css/stats.css">
-    <script src="/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
-            font-family: Arial, sans-serif;
-        }
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+    }
 
-        .container {
-            padding: 20px;
-        }
+    .container {
+        padding: 20px;
+        position: relative;
+        z-index: 1;
+    }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+    header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-        header .logo img {
-            width: 50px;
-        }
+    header .logo img {
+        width: 50px;
+    }
 
-        header .website-name {
-            font-size: 24px;
-            font-weight: bold;
-        }
+    header .website-name {
+        font-size: 24px;
+        font-weight: bold;
+    }
 
-        a {
-            color: #007BFF;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    a {
+        color: #007BFF;
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-        a:hover {
-            color: #0056b3;
-        }
+    a:hover {
+        color: #0056b3;
+    }
 
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #f0f0f0;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            margin: 10px 0;
-        }
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #f0f0f0;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+        margin: 10px 5px;
+        position: relative;
+        z-index: 2; /* Ensure buttons are clickable */
+    }
 
-        .btn:active {
-            transform: scale(0.98);
-        }
+    .btn:active {
+        transform: scale(0.98);
+    }
 
-        .btn.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #0056b3;
-        }
+    .btn.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #0056b3;
+    }
 
-        h1, h2, h3 {
-            text-align: center;
-        }
+    h1, h2, h3 {
+        text-align: center;
+    }
 
-        .img-container {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+    .img-container {
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+    }
 
-        img {
-            max-width: 100%;
-            height: auto;
-        }
+    #durationChart {
+        max-width: 600px;
+        max-height: 400px;
+        margin: 0 auto 30px auto;
+        position: relative;
+        z-index: 1;
+    }
 
-        #datetime {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
+    #datetime {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
 
-        #savedTimes {
-            list-style-type: none;
-            padding-left: 0;
-        }
+    #savedTimes {
+        list-style-type: none;
+        padding-left: 0;
+    }
 
-        #savedTimes li {
-            padding: 5px;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            margin-bottom: 5px;
-        }
-    </style>
+    #savedTimes li {
+        padding: 5px;
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        margin-bottom: 5px;
+    }
+
+    .error-message {
+        color: red;
+        text-align: center;
+        margin: 10px 0;
+    }
+</style>
+
 </head>
 <body>
     <header>
         <div class="logo">
             <a href="/"><img src="/images/logo.png" alt="Logo"></a>
         </div>
-        <div class="website-name">Potty Planner</div>
+        <div class="website-name">PottyPlanner</div>
         <input type="checkbox" id="active">
         <label for="active" class="menu-btn">
             <img src="/images/ham-menu.svg" alt="Menu Icon">
@@ -126,23 +142,10 @@
         </section>
 
         <section>
-            <h3>Week 1</h3>
+            <h3>Session Durations</h3>
             <div class="img-container">
-                <img src="/images/Minutes.png" width="400" height="400">
-            </div>
-        </section>
-
-        <section>
-            <h3>Week 2</h3>
-            <div class="img-container">
-                <img src="/images/Minutes.png" width="400" height="400">
-            </div>
-        </section>
-
-        <section>
-            <h3>Week 3</h3>
-            <div class="img-container">
-                <img src="/images/Minutes.png" width="400" height="400">
+                <canvas id="durationChart"></canvas>
+                <p id="errorMessage" class="error-message"></p>
             </div>
         </section>
 
@@ -152,7 +155,7 @@
             <p id="datetime"></p>
 
             <button class="btn" id="playBtn" onclick="handleButtonClick('play')">Start</button>
-            <button class="btn" id="pauseBtn" onclick="handleButtonClick('pause')">Pause</button>
+            
             <button class="btn" onclick="saveSession()">Save Time</button>
 
             <ul id="savedTimes"></ul>
@@ -162,18 +165,19 @@
     <script>
         let intervalId = null;
         let startTime = null;
+        let chart = null;
 
         function updateDateTime() {
             const now = new Date();
-            const currentDateTime = now.toLocaleString();
-            document.getElementById('datetime').textContent = currentDateTime;
+            document.getElementById('datetime').textContent = now.toLocaleString();
         }
 
         function startTimer() {
-            if (!intervalId) {
+            if (!intervalId && !startTime) { // Only start if not already running and not already started
                 startTime = new Date();
                 updateDateTime();
                 intervalId = setInterval(updateDateTime, 1000);
+                console.log("Timer started at", startTime.toLocaleTimeString());
             }
         }
 
@@ -185,8 +189,8 @@
         }
 
         function saveSession() {
-            if (!startTime) {
-                alert("Clock hasn't been started.");
+            if (!startTime || !intervalId) { // Only allow save if timer is running
+                alert("Please click 'Start' before saving.");
                 return;
             }
 
@@ -199,34 +203,119 @@
             li.textContent = `Start: ${startTime.toLocaleTimeString()} – End: ${endTime.toLocaleTimeString()} | Duration: ${durationMin} min ${durationSec} sec`;
             document.getElementById('savedTimes').appendChild(li);
 
-            // Save to server
             const studentName = document.getElementById('studentName').textContent;
+
             fetch('/timestamp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    data: [studentName, startTime.toLocaleTimeString(), endTime.toLocaleTimeString()]
+                    data: [studentName, startTime.toISOString(), endTime.toISOString()]
                 })
-            }).then(response => response.json()).catch(err => console.error('Error saving timestamp:', err));
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'saved' || data.status === 'updated') {
+                    // Dynamically add new data point to line chart
+                    if (chart) {
+                        chart.data.labels.push(startTime.toLocaleTimeString());
+                        chart.data.datasets[0].data.push(durationMin);
+                        chart.update();
+                    } else {
+                        // If chart hasn't been initialized yet
+                        fetchTimestamps(studentName);
+                    }
+                } else {
+                    document.getElementById('errorMessage').textContent = 'Failed to save session.';
+                }
+            })
+            .catch(err => {
+                console.error('Error saving timestamp:', err);
+                document.getElementById('errorMessage').textContent = 'Error saving session.';
+            });
 
             startTime = null;
             pauseClock();
             document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
         }
 
+
         function handleButtonClick(action) {
             document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
 
-            if (action === 'play') {
+            if (action == 'play') {
                 document.getElementById('playBtn').classList.add('active');
                 startTimer();
-            } else if (action === 'pause') {
+            } else if (action == 'pause') {
                 document.getElementById('pauseBtn').classList.add('active');
                 pauseClock();
             }
         }
 
-        // Update student name from localStorage or query parameter
+        function fetchTimestamps(studentName) {
+    document.getElementById('errorMessage').textContent = ''; // Clear previous errors
+    fetch(`/timestamps/${encodeURIComponent(studentName)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('errorMessage').textContent = data.error;
+                return;
+            }
+            if (data.length === 0) {
+                document.getElementById('errorMessage').textContent = 'No sessions recorded yet.';
+                if (chart) chart.destroy();
+                return;
+            }
+
+            const labels = data.map(row => row.startTime);
+            const durations = data.map(row => row.duration);
+
+            if (chart) chart.destroy();
+
+            const ctx = document.getElementById('durationChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Session Duration (Minutes)',
+                        data: durations,
+                        fill: false,
+                        borderColor: 'rgba(0, 123, 255, 1)',
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Duration (Minutes)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Start Time'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(err => {
+            console.error('Error fetching timestamps:', err);
+            document.getElementById('errorMessage').textContent = 'Error loading session data.';
+        });
+}
+
+
         function updateStudentName(newName) {
             const studentNameElement = document.getElementById('studentName');
             if (studentNameElement && newName) {
@@ -234,7 +323,6 @@
             }
         }
 
-        // Get student name from query parameter or localStorage
         window.onload = function () {
             const urlParams = new URLSearchParams(window.location.search);
             let studentName = urlParams.get('studentName') || 'Unknown Student';
@@ -243,9 +331,11 @@
             if (student) {
                 studentName = student.name;
             }
-            updateStudentName(decodeURIComponent(studentName));
+            studentName = decodeURIComponent(studentName);
+            updateStudentName(studentName);
             updateDateTime();
             setInterval(updateDateTime, 1000);
+            fetchTimestamps(studentName);
         };
     </script>
 </body>
