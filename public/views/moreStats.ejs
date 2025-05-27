@@ -184,7 +184,8 @@
         </section>
 
         <section>
-            <h3><a href="/stats">Go back</a></h3>
+          <center><a href="/stats" class="btn">Go back</a></center> 
+          <br>
             <h3>Current Date and Time:</h3>
             <p id="datetime"></p>
 
@@ -206,7 +207,7 @@
                 <tbody id="dailyTotalsBody"></tbody>
             </table>
 
-            <h3>Daily Time Chart</h3>
+            <h3>Daily Time Chart rounded in minutes</h3>
             <canvas id="durationChart"></canvas>
         </section>
     </div>
@@ -282,7 +283,7 @@
 
     function handleButtonClick(action) {
         document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
-        if (action === 'play') {
+        if (action == 'play') {
             document.getElementById('playBtn').classList.add('active');
             startTimer();
         }
@@ -334,51 +335,51 @@
     }
 
     function updateChart(stats) {
-        const ctx = document.getElementById('durationChart').getContext('2d');
-        if (chart) {
-            chart.destroy(); // Destroy existing chart to prevent overlap
-        }
-        chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: stats.map(s => s.date),
-                datasets: [{
-                    label: 'Total Time (MM:SS)',
-                    data: stats.map(s => s.totalMinutes),
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Time (MM:SS)'
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return formatMinutesToMMSS(value);
-                            }
-                        }
+    const ctx = document.getElementById('durationChart').getContext('2d');
+    if (chart) {
+        chart.destroy(); // Destroy existing chart to prevent overlap
+    }
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: stats.map(s => s.date),
+            datasets: [{
+                label: 'Time (Minutes)',
+                data: stats.map(s => s.totalMinutes),
+                backgroundColor: 'rgba(54, 162, 235, 1)',
+                borderColor: 'rgba(255, 255, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Time (Minutes)'
                     },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Date'
+                    ticks: {
+                        callback: function(value) {
+                            return formatMinutesToMMSS(value);
                         }
                     }
                 },
-                plugins: {
-                    legend: {
-                        display: true
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
                     }
                 }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                }
             }
-        });
-    }
+        }
+    });
+}
 
     document.addEventListener('DOMContentLoaded', function () {
         // Menu toggle logic

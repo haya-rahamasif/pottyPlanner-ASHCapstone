@@ -68,7 +68,9 @@ app.get('/getStudentStats', async (req, res) => {
         await getMongoConnection();
 
         const student = await Student.findOne({ studentName });
-        
+        if (!student) {
+            return res.json({ stats: [] }); // Or handle as you wish
+        }
 
         // Combine absences from all periods
         const allAbsences = [
@@ -77,6 +79,8 @@ app.get('/getStudentStats', async (req, res) => {
             ...(student.absenceP3 || []),
             ...(student.absenceP4 || [])
         ];
+
+        // ...existing code...
 
         // Aggregate durations by date
         const dailyTotals = {};
