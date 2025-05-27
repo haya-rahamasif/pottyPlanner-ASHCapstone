@@ -99,40 +99,25 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/viewAbsences', async (req, res) => {
-    let names = req.body.data
-    console.log('in view absence route')
-    console.log(names)
+    let names = req.body.data;
+    console.log('in view absence route');
+    console.log(names);
 
     try {
-    await mongoose
-    .connect(dbURL)
-    .then((result) => {
-        return new Promise((resolve, reject) => {
-            let entries = []
-            for (let i=0; i<names.length-1;i++) {
-            let singleName = names[i]
-            Student.find({studentName: singleName}) // finding info on each student
-            .then((doc) => {
-                entries.push(doc)
-                console.log(entries)
-            })
-            }
+        await mongoose.connect(dbURL);
 
-            resolve(entries)
-        })
+        // Wait for all find() queries to finish
+        const entries = await Promise.all(
+            names.map(name => Student.find({ studentName: name }))
+        );
 
-    })
+        res.json({ message: entries });
 
-    const data = {message: entries}
-    res.json(data)
-
+    } catch (err) {
+        console.log(`error: ${err}`);
+        res.status(500).json({ error: 'Internal server error' });
     }
-    catch (err) {
-        console.log(`error: ${err}`)
-    }
-    
-
-})
+});
 
 
 app.post('/timestamp', (req, res) => {

@@ -15,7 +15,7 @@ html, body {
 header {
   position: fixed;
   width: 100%;
-  background: rgb(76, 197, 207);
+  background: rgb(72, 140, 151);
   color: #fff;
   display: flex;
   align-items: center;
@@ -70,7 +70,24 @@ header div {
     font-family: 'Oswald', sans-serif;
 }
 
-.menu-btn{
+  .wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+    background: rgb(136 208 217); 
+    background: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);
+    clip-path: circle(25px at calc(0% + 45px) 45px); 
+    background: rgb(136 208 217);
+    clip-path: circle(25px at calc(100% - 45px) 45px);
+    transition: all 0.3s ease-in-out;
+  }
+  #active:checked ~ .wrapper{
+    clip-path: circle(75%);
+  }
+  .menu-btn{
     position: absolute;
     z-index: 1002;
     right: 20px;
@@ -83,7 +100,7 @@ header div {
     font-size: 17px;
     color: rgb(252, 249, 249);
     cursor: pointer;
-    background: rgb(72, 140, 151);
+    background: rgb(253 254 246);
     transition: all 0.3s ease-in-out;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     padding: 10px;
@@ -251,22 +268,23 @@ input[type="checkbox"]{
 
 .Learn-more-section {
   text-align: center;
-  width: 80%;
-  margin: 5% auto;
+  width: 100%;
+  margin: 0 auto;
   border-spacing: 20px;
   border-collapse: separate;
-  table-layout: fixed;
+  table-layout: fixed; /* Add this line */
 }
 
 .Learn-more-section td {
   text-align: center;
+  vertical-align: top;
   justify-content: center;
   align-items: center;
-  background-color:rgb(181, 226, 255);
+  background-color: rgb(181, 226, 255);
   transition: transform 0.3s ease, background-color 0.3s ease;
-  padding: 10px;
-  width: 150px;
+  /* Remove fixed width */
   border-radius: 10px;
+  padding: 32px 16px;    /* Optional: increase padding for a bigger look */
 }
 
 .Learn-more-section td:hover {
@@ -407,23 +425,38 @@ input[type="checkbox"]{
   align-items: center; 
 }
 
-.learn-more-text {
-  width: 50%; 
-  text-align: justify;
+.box-for-the-table {
+  background: #fff;
+  color: rgb(72, 140, 151);
+  justify-content: center; 
+  align-items: center; 
+  width: 95%;           
+  max-width: 1200px;   
+  padding: 32px 24px;   
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  margin: 40px auto;    /* Center the box and add vertical spacing */
+}
+
+.learn-more-info-about-the-website {
+  width: 100%; 
+  text-align: center;
   font-family: 'Open Sans', sans-serif;
   color: rgb(72, 140, 151);
-  font-size: 22px;
-  padding-right: 20px; 
-  margin: 1%;
-  margin-top: 3%;
+  font-size: 25px;
+  padding-right: 5%;
+  padding-left: 5%; 
+  margin-top: 60px;
   margin-bottom: 3%;
 }
 
-.learn-more-image {
-  width: 50%; 
-  height: auto;
-  display: block;
-  border-radius: 5%;
+.header-for-learn-more-section {
+  text-align: center;
+  font-size: 40px;
+  color: rgb(72, 140, 151);
+  font-weight: bold;
+  margin-top: 60px; /* Use a fixed value instead of % */
+
 }
 
 .login-button, .learn-morebutton, .welcome-text {
@@ -574,6 +607,7 @@ input[type="checkbox"]{
     padding-right: 0; 
     margin-bottom: 15px;
   }
+    
   .learn-more-image {
     width: 100%;
     margin-bottom: 15px; 
@@ -588,4 +622,29 @@ input[type="checkbox"]{
     padding: 5px;
   }
 }
+    margin-right: 20px;
+  }
+}
+
+.students-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.student-card {
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  background: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.student-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
