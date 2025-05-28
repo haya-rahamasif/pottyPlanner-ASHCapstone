@@ -4,7 +4,7 @@ let buttonStates = [];
 let columnToggle = 0;
 let idCounter = 0; 
 let absence = []
-let classList = [];
+let classList = Array;
 
 const postData = data => {
   const body = JSON.stringify(data);
@@ -46,9 +46,27 @@ function sleep(ms) {
 }
 
 function viewStudentAbsences() {
-    classList = JSON.parse(document.getElementById('classListData').textContent);
-   console.log(classList)
+    const [file] = document.querySelector("input[type=file]").files;
+    const reader = new FileReader();
 
+    reader.addEventListener(
+      "load",
+      () => {
+        // this will then display a text file
+        let names = String(reader.result)
+        let classList = names.split("\n")
+        postClassList({data: classList})
+                .then(json => {
+                    console.log(json.message);
+                })
+                .catch(e => console.log(e));
+      },
+      false,
+    );
+  
+    if (file) {
+      reader.readAsText(file);
+    }
 }
 
 function timerFunc(index) {
@@ -160,7 +178,7 @@ function addStudent(name) {
         let newRow;
         let newCell;
 
-        if (columnToggle % 2 === 0 || table.rows.length === 0) {
+        if (columnToggle % 2 === 0) {
             newRow = table.insertRow();
             newCell = newRow.insertCell();
         } else {
@@ -186,34 +204,19 @@ function addStudent(name) {
         columnToggle++;
 }
 
-function viewStudents() {
+function loadStudentsFromFile() {
     console.log("displaying students")
-    document.querySelector('.StudentsTable').innerHTML = '';
     const [file] = document.querySelector("input[type=file]").files;
     const reader = new FileReader();
   
     reader.addEventListener(
-      "load", async () => {
+      "load",
+      () => {
         // this will then display a text file
         let names = String(reader.result)
         classList = names.split("\n")
         for (let i=0; i < classList.length; i++) {
             addStudent(classList[i])
-        }
-
-        try {
-            const res = await fetch('/upload-students', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ students: classList })
-            });
-
-            const data = await res.json();
-            console.log('Saved new class list:', data);
-        } catch (error) {
-            console.error('Failed to save new class list:', error);
         }
       },
       false,
@@ -230,12 +233,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-window.onload = function () {
-    classList = JSON.parse(document.getElementById('classListData').textContent);
-    console.log("Loaded classList:", classList);
-};
-
-
 //Scrolling to the Learn More Section
 document.addEventListener('DOMContentLoaded', function() {
     const learnMoreButton = document.getElementById('learn-more-button');
@@ -247,111 +244,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// For Retaining the Student List for every profile 
+async function viewStudents() {
+  const fileInput = document.querySelector('input[type=file]');
+  const file = fileInput.files[0];
+  if (!file) return;
 
-let studentCount = 0;
+  const text = await file.text();
+  const names = text.split('\n').map(name => name.trim()).filter(Boolean);
 
-// Load students from localStorage on page load
-window.onload = function () {
-  const storedStudents = JSON.parse(localStorage.getItem("students")) || [];
-  storedStudents.forEach((student, index) => {
-    studentCount++;
-    addStudent(true, student.name, studentCount, index + 1);
+  await fetch('/upload-students', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ students: names })
   });
-};
 
-// Add a new student or load a student from localStorage
-function addStudent(fromStorage = false, name = null, count = null, id = null) {
-  if (!fromStorage) {
-    studentCount++;
-    id = studentCount;
-    name = "Change name here";
-  }
-
-  const table = document.getElementById("studentTable");
-  const newCell = document.createElement("td");
-
-  newCell.innerHTML = `
-    <div class="student-container">
-      <input type="text" id="studentName${id}" value="${name}" class="student-name" 
-             oninput="updateStudentName(${id})" placeholder="Change name here" />
-      <div class="box-images">
-        <img src="/images/Minutes.png" alt="Student Icon">
-      </div>
-      <a href="/moreStats" class="gtext" onclick="openMoreStats(${id}, event)">Click here to see timer</a>
-      <button class="remove-btn" onclick="removeStudent(${id})">Remove</button>
-    </div>
-  `;
-
-  if (table.rows.length === 0 || table.rows[table.rows.length - 1].cells.length === 2) {
-    const newRow = table.insertRow();
-    newRow.appendChild(newCell);
-  } else {
-    table.rows[table.rows.length - 1].appendChild(newCell);
-  }
-
-  if (!fromStorage) {
-    saveStudentsToLocalStorage();
-  }
+  // Refresh the page to see updated list in correct layout
+  window.location.reload();
 }
 
-// Update the name of the student in localStorage
-function updateStudentName(id) {
-  const input = document.getElementById(`studentName${id}`);
-  const name = input.value;
-
-  let students = JSON.parse(localStorage.getItem("students")) || [];
-  while (students.length < id) {
-    students.push({ name: "" });
-  }
-  students[id - 1] = { name, id };
-  localStorage.setItem("students", JSON.stringify(students));
-}
-
-// Remove a student from the table and localStorage
-function removeStudent(id) {
-  const table = document.getElementById("studentTable");
-  for (let i = 0; i < table.rows.length; i++) {
-    const cell = table.rows[i].cells[0];
-    if (cell.querySelector(`#studentName${id}`)) {
-      table.deleteRow(i);
-      break;
-    }
-  }
-
-  let students = JSON.parse(localStorage.getItem("students")) || [];
-  students = students.filter((_, index) => index !== id - 1);
-  localStorage.setItem("students", JSON.stringify(students));
-
-  rebuildTable();
-}
-
-// Rebuild the table after removal or on load
-function rebuildTable() {
-  const students = JSON.parse(localStorage.getItem("students")) || [];
-  studentCount = 0;
-  const table = document.getElementById("studentTable");
-  table.innerHTML = "";
-
-  students.forEach((student, index) => {
-    studentCount++;
-    addStudent(true, student.name, studentCount, index + 1);
-  });
-}
-
-// Save the student list to localStorage
-function saveStudentsToLocalStorage() {
-  const students = [];
-  const inputs = document.querySelectorAll('.student-name');
-  inputs.forEach((input, index) => {
-    students.push({ name: input.value, id: index + 1 });
-  });
-  localStorage.setItem("students", JSON.stringify(students));
-}
-
-// Navigate to moreStats with student name
-function openMoreStats(id, event) {
-  event.preventDefault();
-  const input = document.getElementById(`studentName${id}`);
-  const studentName = encodeURIComponent(input.value || "Change name here");
-  window.location.href = `/moreStats?studentName=${studentName}`;
-}
