@@ -3,11 +3,14 @@ body {
     padding-top: 100px; 
 }
 
+.favicon{
+  width: 500%;
+}
+
 html, body {
   overflow-x: hidden; 
   overscroll-behavior: none;
 }
-
 header {
   position: fixed;
   width: 100%;
@@ -19,6 +22,10 @@ header {
   gap: 20px;
   z-index: 1000; 
   top: 0;
+}
+
+header div {
+  align-items: center;
 }
 
 .logo {
@@ -54,7 +61,7 @@ header {
     font-family: 'Lato', sans-serif;
     font-family: 'Oswald', sans-serif;
   }
-  .wrapper {
+  .wrapper{
     position: fixed;
     top: 0;
     left: 0;
@@ -108,11 +115,26 @@ header {
 .menu-btn img {
     width: 30px; 
     height: 30px; 
-    position: relative; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%); 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
+
+.file-input {
+  width: 100%;
+  margin-top: 5%;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.file-input p {
+  font-size: 20px;
+  color: #fff;
+  padding-bottom: 20px;
+}
+
   #active:checked ~ .menu-btn{
     color: #fff;
   }
@@ -147,7 +169,7 @@ header {
     position: absolute;
     content: "";
     background: #fff;
-     background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+     background: linear-gradient(rgb(72, 140, 151), rgb(76, 197, 207), rgb(167, 227, 233));
     width: 104%;
     height: 110%;
     left: -2%;
@@ -194,7 +216,6 @@ header {
       filter: hue-rotate(360deg);
     }
   }
-
   .graphsTable {
     text-align: center;
     width: 80%;
@@ -251,7 +272,62 @@ header {
     margin-bottom: 30px;
 }
 
+
+@media (max-width: 480px) {
+    header {
+      padding: 5px 10px;
+      height: 60px;
+    }
+    .logo img {
+      max-width: 15%;
+      height: auto;
+    }
+    .website-name {
+      font-size: 150%;
+      left: 50%;
+      transform: translateX(-50%); 
+    }
+    .graphsTable {
+        width: 100%;
+        font-size: 14px;
+    }
+    .graphsTable td {
+        width: 80px;
+    }
+    .container h1{
+      font-size: 20px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    .gtext{
+      font-size: 14px;
+      margin-right: 10px;
+    }
+      .menu-btn {
+    top: 10px;
+    right: 10px;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .menu-btn img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .wrapper {
+    font-size: 24px; 
+    padding: 5px 20px;
+    line-height: 40px;
+    clip-path: circle(25px at calc(90% + 15px) 35px); 
+}
+}
+
 input[type=checkbox] {
   display: none;
 }
+
 
