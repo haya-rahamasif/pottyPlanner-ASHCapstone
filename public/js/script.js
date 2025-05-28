@@ -4,7 +4,7 @@ let buttonStates = [];
 let columnToggle = 0;
 let idCounter = 0; 
 let absence = []
-let classList = Array;
+let classList = [];
 
 const postData = data => {
   const body = JSON.stringify(data);
@@ -45,29 +45,121 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function viewStudentAbsences() {
-    const [file] = document.querySelector("input[type=file]").files;
-    const reader = new FileReader();
+/*function viewStudentAbsences() {
+    console.log(classList)
 
-    reader.addEventListener(
-      "load",
-      () => {
-        // this will then display a text file
-        let names = String(reader.result)
-        let classList = names.split("\n")
-        postClassList({data: classList})
-                .then(json => {
-                    console.log(json.message);
-                })
-                .catch(e => console.log(e));
+
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    const myChart = new Chart(ctx, {
+      type: 'bar', // Chart type (e.g., 'bar', 'line', 'pie')
+      borderColor: 'white',
+      data: {
+          labels: ['Period 1', 'Period 2', 'Period 3', 'Period'], // X-axis labels
+          datasets: [{
+              label: 'Student Name',
+              data: [10, 20, 15, 4], // Data values from absences
+              backgroundColor: ['red', 'blue', 'green', 'orange'], // Bar colors
+              borderWidth: 1,
+              borderColor: 'white'
+          }]
       },
-      false,
-    );
-  
-    if (file) {
-      reader.readAsText(file);
-    }
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true // Start y-axis at 0
+              }
+          }
+      }
+  });
+
+}*/
+
+async function viewStudentAbsences() {
+  try {
+      // Send classList to the server
+      const response = await fetch('/viewAbsences', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ data: classList }) // <- key is "data" to match your backend
+      });
+
+      const result = await response.json();
+      const entries = result.message;
+
+      console.log(entries)
+
+      // Transform the data into the format we want for the chart
+      const chartLabels = [];
+      const periodCount = 4; // Assuming 4 periods
+      const periodTotals = Array(periodCount).fill().map(() => []); // [ [], [], [], [] ]
+
+      for (let i = 0; i < entries.length; i++) {
+          const studentEntries = entries[i];
+          if (studentEntries.length === 0) continue;
+
+          chartLabels.push(studentEntries[0].studentName);
+
+          // Create an array of 0s in case periods are missing
+          const absenceCountByPeriod = Array(periodCount).fill(0);
+
+          studentEntries.forEach(entry => {
+              const periodIndex = entry.period - 1; // assuming 1-based period in DB
+              if (periodIndex >= 0 && periodIndex < periodCount) {
+                  absenceCountByPeriod[periodIndex]++;
+              }
+          });
+
+          // Add counts for this student into each period dataset
+          for (let j = 0; j < periodCount; j++) {
+              periodTotals[j].push(absenceCountByPeriod[j]);
+          }
+      }
+
+      // Create datasets for Chart.js
+      const datasets = periodTotals.map((data, i) => ({
+          label: `Period ${i + 1}`,
+          data,
+          backgroundColor: getRandomColor(),
+          borderWidth: 1
+      }));
+
+      // Render chart
+      const ctx = document.getElementById('myChart').getContext('2d');
+      const myChart = new Chart(ctx, {
+        type: 'bar', // Chart type (e.g., 'bar', 'line', 'pie')
+        data: {
+            labels: ['Label 1', 'Label 2', 'Label 3'], // X-axis labels
+            datasets: [{
+                label: 'My Dataset',
+                data: [10, 20, 15], // Data values
+                backgroundColor: ['red', 'blue', 'green'], // Bar colors
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true // Start y-axis at 0
+                }
+            }
+        }
+    });
+
+  } catch (err) {
+      console.error("Error fetching absence data:", err);
+  }
 }
+
+function getRandomColor() {
+  const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+
 
 function timerFunc(index) {
     let startBtn = document.getElementById('start' + index);
@@ -258,6 +350,8 @@ async function viewStudents() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ students: names })
   });
+
+  return names
 
   // Refresh the page to see updated list in correct layout
   window.location.reload();

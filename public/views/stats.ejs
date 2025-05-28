@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/stats.css">
     <script src="/js/script.js"></script>
     <script src="/hayaraham-asif/pottyPlanner-ASHCapstone/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script id="classListData" type="application/json">
         <%- JSON.stringify(students) %>
       </script>
@@ -43,6 +44,7 @@
     <div class="container">
         <table class="graphsTable" id="studentTable"></table>
     </div>
+    <canvas id="myChart" width="400" height="200"></canvas>
 
 </body>
 </html>

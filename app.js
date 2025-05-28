@@ -6,7 +6,6 @@ import Student from './models/students.js'
 
 import path from 'path';
 
-
 // Login
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
@@ -116,12 +115,52 @@ app.post('/viewAbsences', async (req, res) => {
         );
 
         res.json({ message: entries });
+        console.log(entries)
 
     } catch (err) {
         console.log(`error: ${err}`);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+/*app.post('/viewAbsences', async (req, res) => {
+  console.log('In /viewAbsences route');
+
+  try {
+      await mongoose.connect(dbURL);
+      
+      const students = await Student.find({});
+
+      const result = students.map(student => {
+          const calculateTotalMinutes = (period) => {
+              return period.reduce((sum, [start, end]) => {
+                  const startTime = new Date(start);
+                  const endTime = new Date(end);
+                  const diffInMs = endTime - startTime;
+                  const diffInMinutes = Math.floor(diffInMs / 60000); // 60000 ms in a minute
+                  return sum + (diffInMinutes > 0 ? diffInMinutes : 0); // Avoid negative durations
+              }, 0);
+          };
+
+          return {
+              name: student.studentName,
+              absences: [
+                  calculateTotalMinutes(student.absenceP1),
+                  calculateTotalMinutes(student.absenceP2),
+                  calculateTotalMinutes(student.absenceP3),
+                  calculateTotalMinutes(student.absenceP4)
+              ]
+          };
+      });
+
+      res.json(result);
+
+  } catch (err) {
+      console.error(`Error in /viewAbsences: ${err}`);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});*/
+
 
 
 app.post('/timestamp', (req, res) => {
