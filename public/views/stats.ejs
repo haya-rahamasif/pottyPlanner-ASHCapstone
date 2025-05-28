@@ -8,8 +8,11 @@
     <link rel="stylesheet" href="/css/stats.css">
     <script src="/js/script.js"></script>
     <script src="/hayaraham-asif/pottyPlanner-ASHCapstone/app.js"></script>
+    <script id="classListData" type="application/json">
+        <%- JSON.stringify(students) %>
+      </script>
 </head>
-<body>
+<body onload="viewStudentAbsences()">
     
     <header>
         <div class="logo">
@@ -37,57 +40,9 @@
             </ul>
         </div>
     </header>
-    <div class="file-input">
-        <br>
-        <p>Please upload a .txt file of your class list of names, each seperated by a new line to see their class absence data</p>
-        <input type="file" onchange="viewStudentAbsences()" />
-    </div>
     <div class="container">
-        <input type="checkbox" id="zoomCheck">
-        <label for="zoomCheck">
-    <table class="graphsTable">
-        <tr>
-            <td>
-                <div class="box-images">
-                    <img src="/images/graph1.png">
-                </div>
-                <div class="container">
-                    <h1>Student A</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-                </div>
-            </td>
-            <td>
-                <div class="box-images">
-                    <img src="/images/graph2.png">
-                </div>
-                <div class="container">
-                    <h1>Student B</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="box-images">
-                    <img src="/images/graph3.png">
-                </div>
-                <div class="container">
-                    <h1>Student C</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-                </div>
-            </td>
-            <td>
-                <div class="box-images">
-                    <img src="/images/graph4.png">
-                </div>
-                <div class="container">
-                </label>
-            </div>
-                    <h1>Student D</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-                </div>
-            </td>
-        </tr>
+        <table class="graphsTable" id="studentTable"></table>
+    </div>
 
 </body>
 </html>

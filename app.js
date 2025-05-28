@@ -81,8 +81,12 @@ app.get('/profiles', isAuthenticated, async (req, res) => {
 });
 
 
-app.get('/stats', isAuthenticated, (req, res) => {
-    res.render('../public/views/stats.ejs');
+app.get('/stats', isAuthenticated, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render('../public/views/stats.ejs', {
+      students: user.students || [],
+      userId: req.session.userId
+  });
 });
 
 app.get('/feedback', isAuthenticated, (req, res) => {
@@ -316,3 +320,56 @@ app.post('/upload-students', isAuthenticated, async (req, res) => {
   }
 });
 
+app.get('/moreStats', (req, res) => {
+  const studentName = decodeURIComponent(req.query.studentName || 'Unknown Student');
+  res.render('../public/views/moreStats.ejs', { studentName });
+});
+app.get('/getStudentStats', async (req, res) => {
+  try {
+      const studentName = decodeURIComponent(req.query.studentName || 'Unknown Student');
+      await getMongoConnection();
+
+      const student = await Student.findOne({ studentName });
+      if (!student) {
+          return res.json({ stats: [] }); // Or handle as you wish
+      }
+
+      // Combine absences from all periods
+      const allAbsences = [
+          ...(student.absenceP1 || []),
+          ...(student.absenceP2 || []),
+          ...(student.absenceP3 || []),
+          ...(student.absenceP4 || [])
+      ];
+
+      // ...existing code...
+
+      // Aggregate durations by date
+      const dailyTotals = {};
+      allAbsences.forEach(absence => {
+          const startTime = new Date(absence[0]);
+          const endTime = new Date(absence[1]);
+          const durationMs = endTime - startTime;
+          if (durationMs < 0) return; // Skip invalid durations
+
+          // Get date in YYYY-MM-DD format
+          const date = startTime.toISOString().split('T')[0];
+          
+          if (!dailyTotals[date]) {
+              dailyTotals[date] = 0;
+          }
+          dailyTotals[date] += durationMs;
+      });
+
+      // Convert durations to minutes and format response
+      const stats = Object.entries(dailyTotals).map(([date, totalMs]) => ({
+          date,
+          totalMinutes: Math.round(totalMs / 60000) // Convert to minutes
+      }));
+
+      res.json({ stats });
+  } catch (err) {
+      console.error('Error in /getStudentStats:', err);
+      res.status(500).json({ error: 'Failed to fetch stats: ' + err.message });
+  }
+});
