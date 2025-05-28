@@ -33,6 +33,7 @@ const postData = data => {
         headers: {
             'Content-Type': 'application/json',
         },
+        body: JSON.stringify(data),
         redirect: 'follow', // manual, follow, error
         referrer: 'no-referrer', // no-referrer, client
         body
@@ -47,6 +48,7 @@ function sleep(ms) {
 function viewStudentAbsences() {
     classList = JSON.parse(document.getElementById('classListData').textContent);
    console.log(classList)
+
 }
 
 function timerFunc(index) {
