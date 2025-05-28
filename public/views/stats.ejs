@@ -171,7 +171,7 @@
         </div>
       `;
 
-      if (table.rows.length == 0 || table.rows[table.rows.length - 1].cells.length == 2) {
+      if (table.rows.length === 0 || table.rows[table.rows.length - 1].cells.length === 2) {
         const newRow = table.insertRow();
         newRow.appendChild(newCell);
       } else {
