@@ -33,17 +33,12 @@ const postData = data => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
         redirect: 'follow', // manual, follow, error
         referrer: 'no-referrer', // no-referrer, client
         body
     })
         .then(response => response.json()) // parses JSON response into native JavaScript objects
     }
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 function viewStudentAbsences() {
     const [file] = document.querySelector("input[type=file]").files;
@@ -57,7 +52,7 @@ function viewStudentAbsences() {
         let classList = names.split("\n")
         postClassList({data: classList})
                 .then(json => {
-                    console.log(json.message);
+                    console.log(json);
                 })
                 .catch(e => console.log(e));
       },
@@ -67,6 +62,7 @@ function viewStudentAbsences() {
     if (file) {
       reader.readAsText(file);
     }
+
 }
 
 function timerFunc(index) {
@@ -244,22 +240,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// For Retaining the Student List for every profile 
-async function viewStudents() {
-  const fileInput = document.querySelector('input[type=file]');
-  const file = fileInput.files[0];
-  if (!file) return;
 
-  const text = await file.text();
-  const names = text.split('\n').map(name => name.trim()).filter(Boolean);
-
-  await fetch('/upload-students', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ students: names })
-  });
-
-  // Refresh the page to see updated list in correct layout
-  window.location.reload();
-}
 

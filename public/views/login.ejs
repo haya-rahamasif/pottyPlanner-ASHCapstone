@@ -14,10 +14,10 @@
         <div class="pplogo">
             <img src="/images/logo.png" alt="Potty Planner Logo" class="logo">
         </div>
-        <form action="/login" method="POST">
+        <form action="/profiles">   
             <h1>Login</h1>
             <div class="inputbox">
-                <input type="text" placeholder="Email" name="email" required>
+                <input type="text" placeholder="Username" name="username" required>
                 <i class='bx bxs-user'></i>
             </div>
             <div class="inputbox">
@@ -27,17 +27,10 @@
             <div class="forgot">
                 <label><input type="checkbox"> Remember me</label>
                 <a href="#" class="password">Forgot Password?</a>
-                <p>Don't have an account? <a href="/register">Register here</a></p>
-
             </div>
-        
+
             <button type="submit" class="buton">Login Here!</button>
-        
-            <% if (typeof error !== 'undefined') { %>
-              <p style="color: red;"><%= error %></p>
-            <% } %>
         </form>
-        
     </div>
 </body>
 </html>
