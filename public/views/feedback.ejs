@@ -1,46 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Feedback - PottyPlanner</title>
-  
-  <link rel="stylesheet" href="/css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-  <script defer src="/js/script.js"></script>
-
-  <style>
-    .button2 {
-      width: 10%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PottyPlanner</title>
+    <link rel="icon" class="favicon" type="image/x-icon" href="/images/logo.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <header>
-    <div class="logo">
-      <a href="/"><img src="/images/logo.png" alt="Potty Planner Logo"></a>
-    </div>
-    <div class="website-name">Potty Planner</div>
-    <nav>
-        <li><a href="/stats">Stats</a></li>
-        <br>
-        <li><a href="/profiles">Students</a></li>
-        <br>
-        <li><a href="/">Log out</a></li>
-      </ul>
-    </nav>
-  </header>
+   <header>
+        <div class="logo">
+          <a href="/"><img src="/images/logo.png"></a>
+        </div>
+        <input type="checkbox" id="active">
+        <div class="website-name" >Potty Planner</div>
+        <label for="active" class="menu-btn">
+            <img src="/images/ham-menu.svg" alt="Menu Icon">
+        </label>
+        <div class="wrapper">
+            <ul>
+            <li><a href="/">Home</a></li>
+            <% if (userId) { %>
+                <li><a href="/profiles">Students</a></li>
+                <li><a href="/stats">Stats</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/logout">Logout</a></li>
+            <% } else { %>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            <% } %>
+            </ul>
+
+        </div>
+
+      </header>
 
   <main>
     <section id="feedback-section">
       <br>
       <br>
       <br>
-      <h2>Feedback</h2>
-      <p>Submit your feedback here!</p>
+    <center><h2>Feedback</h2>
+      <p>Submit your feedback here!</p></center>  
+      <br>
+      <br>
 
       <form onsubmit="submitFeedback(event)">
         <center>
@@ -71,7 +88,7 @@
     }
 
     function goBack() {
-      window.location.href = '/';
+      window.location.href = '/profiles';
     }
   </script>
 </body>
