@@ -359,11 +359,7 @@
                         display: true,
                         text: 'Time (Minutes)'
                     },
-                    ticks: {
-                        callback: function(value) {
-                            return formatMinutesToMMSS(value);
-                        }
-                    }
+                    
                 },
                 x: {
                     title: {
@@ -406,7 +402,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         let studentName = urlParams.get('studentName') || 'Unknown Student';
         const storedStudents = JSON.parse(localStorage.getItem('students')) || [];
-        const student = storedStudents.find(s => s.name === decodeURIComponent(studentName));
+        const student = storedStudents.find(s => s.name == decodeURIComponent(studentName));
         if (student) {
             studentName = student.name;
         }
@@ -419,5 +415,11 @@
         fetchStudentStats();
     });
 </script>
+
+    <script>
+        // Ensure the chart is initialized with a white background
+        const ctx = document.getElementById('durationChart').getContext('2d');
+        ctx.canvas.style.backgroundColor = 'white';
+    </script>  // importantttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
 </body>
 </html>
