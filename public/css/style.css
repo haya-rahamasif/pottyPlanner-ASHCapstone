@@ -70,6 +70,21 @@ header div {
     font-family: 'Oswald', sans-serif;
 }
 
+  .wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+    background: rgb(16, 110, 123); 
+    background: linear-gradient(-45deg, #1956b1 0%, #147ba1 100%);
+    clip-path: circle(25px at calc(0% + 45px) 45px); 
+    background: rgb(136 208 217);
+    clip-path: circle(25px at calc(100% - 45px) 45px);
+    transition: all 0.3s ease-in-out;
+  }
+
   #active:checked ~ .wrapper{
     clip-path: circle(75%);
   }
@@ -365,34 +380,6 @@ input[type="checkbox"]{
   transform: none;
 }
 
-/* The Learn More section and table remain unchanged */
-.Learn-more-section {
-  text-align: center;
-  width: 80%;
-  margin: 5% auto;
-  border-spacing: 20px;
-  border-collapse: separate;
-  table-layout: fixed;
-}
-
-.Learn-more-section td {
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  background-color:rgb(181, 226, 255);
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  padding: 10px;
-  width: 150px;
-  border-radius: 10px;
-}
-
-.Learn-more-section td:hover {
-  transform: scale(1.1);
-  background-color: #9cd3ff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 0px 10px rgba(255, 0, 166, 0.8);
-}
-
 .homepage-learnmore {
   text-align: center;
   background-color: rgb(72, 140, 151);
@@ -647,6 +634,7 @@ input[type="checkbox"]{
     width: 100%;
     margin-bottom: 15px; 
   }
+
   .menu-btn {
     right: 10px;
     top: 10px;
@@ -656,7 +644,6 @@ input[type="checkbox"]{
     font-size: 14px;
     padding: 5px;
   }
-
 
 .students-grid {
   display: flex;

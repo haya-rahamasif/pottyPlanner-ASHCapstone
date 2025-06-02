@@ -6,23 +6,23 @@
     <title>PottyPlanner</title>
     <link rel="icon" class="favicon" type="image/x-icon" href="/images/logo.png">
     <link rel="stylesheet" href="/css/stats.css">
-    <script src="/js/script.js"></script>
-    <script src="/hayaraham-asif/pottyPlanner-ASHCapstone/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script id="classListData" type="application/json">
+        <%- JSON.stringify(students) %>
+    </script>
 </head>
-<body>
-    
-    <header>
-        <div class="logo">
-            <a href="/"><img src="/images/logo.png"></a>
-        </div>
-        <div class="website-name">Potty Planner</div>
-        <input type="checkbox" id="active">
-        <label for="active" class="menu-btn">
-            <img src="/images/ham-menu.svg" alt="Menu Icon">
-        </label>
-        <div class="wrapper">
-            <ul>
 
+<header>
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png"></a>
+    </div>
+    <div class="website-name">Potty Planner</div>
+    <input type="checkbox" id="active">
+    <label for="active" class="menu-btn">
+        <img src="/images/ham-menu.svg" alt="Menu Icon">
+    </label>
+    <div class="wrapper">
+        <ul>
             <li><a href="/">Home</a></li>
             <% if (userId) { %>
                 <li><a href="/profiles">Students</a></li>
@@ -33,61 +33,74 @@
                 <li><a href="/login">Login</a></li>
                 <li><a href="/register">Register</a></li>
             <% } %>
-
-            </ul>
-        </div>
-    </header>
-    <div class="file-input">
-        <br>
-        <p>Please upload a .txt file of your class list of names, each seperated by a new line to see their class absence data</p>
-        <input type="file" onchange="viewStudentAbsences()" />
+        </ul>
     </div>
-    <div class="container">
-        <input type="checkbox" id="zoomCheck">
-        <label for="zoomCheck">
-    <table class="graphsTable">
-        <tr>
-            <td>
-                <div class="box-images">
-                    <img src="/images/graph1.png">
-                </div>
-                <div class="container">
-                    <h1>Student A</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-                </div>
-            </td>
-            <td>
-                <div class="box-images">
-                    <img src="/images/graph2.png">
-                </div>
-                <div class="container">
-                    <h1>Student B</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="box-images">
-                    <img src="/images/graph3.png">
-                </div>
-                <div class="container">
-                    <h1>Student C</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-                </div>
-            </td>
-            <td>
-                <div class="box-images">
-                    <img src="/images/graph4.png">
-                </div>
-                <div class="container">
-                </label>
-            </div>
-                    <h1>Student D</h1>
-                    <figcaption class="gtext">Total Time Out: [time out]</figcaption>
-                </div>
-            </td>
-        </tr>
+</header>
 
+<body>
+    <header>
+        <!-- ...existing code... -->
+    </header>
+    <div class="container" id="statsContainer">
+        <!-- Graphs will be injected here -->
+    </div>
+    <script>
+// filepath: /workspaces/pottyPlanner-ASHCapstone/public/views/stats.ejs (inline script)
+const students = JSON.parse(document.getElementById('classListData').textContent);
+
+async function fetchStudentStats(studentName) {
+    const res = await fetch(`/getStudentStats?studentName=${encodeURIComponent(studentName)}`);
+    if (!res.ok) return null;
+    return await res.json();
+}
+
+function formatMinutes(mins) {
+    if (mins < 1) return `${Math.round(mins * 60)} sec`;
+    return `${mins.toFixed(1)} min`;
+}
+
+async function renderStats() {
+    const container = document.getElementById('statsContainer');
+    for (const student of students) {
+        const stats = await fetchStudentStats(student);
+        // stats should be { periods: [minutesP1, minutesP2, minutesP3, minutesP4] }
+        const periods = stats?.periods || [0,0,0,0];
+
+        // Create elements
+        const div = document.createElement('div');
+        div.className = 'student-graph';
+        div.innerHTML = `
+            <h2>${student}</h2>
+            <canvas id="chart-${student.replace(/\s/g, '')}" width="400" height="200"></canvas>
+        `;
+        container.appendChild(div);
+
+        // Draw chart
+        new Chart(document.getElementById(`chart-${student.replace(/\s/g, '')}`), {
+            type: 'bar',
+            data: {
+                labels: ['Period 1', 'Period 2', 'Period 3', 'Period 4'],
+                datasets: [{
+                    label: 'Total Potty Time (minutes)',
+                    data: periods,
+                    backgroundColor: [
+                        '#4e79a7', '#f28e2b', '#e15759', '#76b7b2'
+                    ]
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Minutes' }
+                    }
+                }
+            }
+        });
+    }
+}
+
+renderStats();
+    </script>
 </body>
 </html>

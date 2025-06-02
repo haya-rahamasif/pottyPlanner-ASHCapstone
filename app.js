@@ -81,8 +81,12 @@ app.get('/profiles', isAuthenticated, async (req, res) => {
 });
 
 
-app.get('/stats', isAuthenticated, (req, res) => {
-    res.render('../public/views/stats.ejs');
+app.get('/stats', isAuthenticated, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render('../public/views/stats.ejs', {
+      students: user.students || [],
+      userId: req.session.userId
+  });
 });
 
 app.get('/feedback', isAuthenticated, (req, res) => {
@@ -119,109 +123,84 @@ app.post('/viewAbsences', async (req, res) => {
     }
 });
 
-
 app.post('/timestamp', (req, res) => {
-    // creates a instance of the student schema to make a new field (row of data) to add to the database
-    let time = req.body.data
+    let time = req.body.data;
+    if (!time[0] || typeof time[0] !== 'string') {
+        return res.status(400).json({ error: 'Student name is required.' });
+    }
+    const normalizedName = time[0].trim();
 
-    mongoose 
-    .connect(dbURL) // connects to database
-    .then((result) => {
-        console.log('Connected to MongoDB', `now looking for ${time[0]}`)
-        Student.find({studentName: time[0]}) // finds all documents (columns) in the collection (table) and returns them. usually you can also specify a filter of some sort to only return specific data
-        .then((doc) => { // doc is the result that is returned from the .find() method
-                let startTime = time[1]
-                let endTime = time[2]
-                // storing timestamps as Date Objects
-                let eTimestamp2 = new Date (endTime[2], endTime[1], endTime[0], endTime[3], endTime[4], endTime[5])
-                let eTimestamp1 = new Date (startTime[2], startTime[1], startTime[0], startTime[3], startTime[4], startTime[5])
-                let absence = [eTimestamp1, eTimestamp2]
-                console.log(time[0], absence)
-            if (String(doc).length == 0) {
-                console.log("student not existing in db")
-                let entry = new Student ({
-                    studentName: time[0],
-                    studentID: id,
-                    absenceP1:[],
-                    absenceP2:[],
-                    absenceP3:[],
-                    absenceP4:[]
+    mongoose
+    .connect(dbURL)
+    .then(() => {
+        Student.findOne({ studentName: normalizedName })
+        .then(async (doc) => {
+            let startTime = time[1]
+            let endTime = time[2]
+            let eTimestamp1 = new Date(startTime[2], startTime[1], startTime[0], startTime[3], startTime[4], startTime[5])
+            let eTimestamp2 = new Date(endTime[2], endTime[1], endTime[0], endTime[3], endTime[4], endTime[5])
+            let absence = [eTimestamp1, eTimestamp2]
+
+            // Ignore if time is during lunch (11:05-11:55)
+            const lunchStart = new Date(eTimestamp1)
+            lunchStart.setHours(11, 5, 0, 0)
+            const lunchEnd = new Date(eTimestamp1)
+            lunchEnd.setHours(11, 55, 0, 0)
+            if ((eTimestamp1 >= lunchStart && eTimestamp1 < lunchEnd) || (eTimestamp2 > lunchStart && eTimestamp2 <= lunchEnd)) {
+                return res.json({ message: "Time during lunch, not recorded." })
+            }
+
+            let period = checkWhichPeriod(startTime)
+            if (!period) return res.json({ message: "Not in a valid period." })
+
+            if (!doc) {
+                let entry = new Student({
+                    studentName: normalizedName,
+                    studentID: id++,
+                    absenceP1: [],
+                    absenceP2: [],
+                    absenceP3: [],
+                    absenceP4: []
                 })
-                /*let sTimestamp = new Date (`${time[1][0]}`)
-                let eTimestamp = dont delete, gonna change data upload format*/
-                
-                id++
-                switch(checkWhichPeriod(startTime)) {
-                    case 1:
-                        entry.absenceP1 = [absence]
-                        break
-                    case 2:
-                        entry.absenceP2 = [absence]
-                        break
-                    case 3:
-                        entry.absenceP3 = [absence]
-                        break
-                    case 4:
-                        entry.absenceP4 = [absence]
-                        break
+                switch (period) {
+                    case 1: entry.absenceP1 = [absence]; break;
+                    case 2: entry.absenceP2 = [absence]; break;
+                    case 3: entry.absenceP3 = [absence]; break;
+                    case 4: entry.absenceP4 = [absence]; break;
                 }
-                entry 
-                    .save()
-                    .then((doc) => {
-                        console.log('student saved')
-                    })
-                    .catch((err) => {
+                entry.save()
+                    .then(() => res.json({ message: "Student created and absence saved." }))
+                    .catch(err => {
                         console.log(err)
+                        res.status(500).json({ error: err.message })
                     })
-                absence = []
             } else {
-                console.log(`updating ${time[0]}'s profile`)
-                switch(checkWhichPeriod(startTime)) {
-                    case 1:
-                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
-                        .then((doc) => {console.log(doc)})
-                        .catch((err) => {
-                            console.log(err)
-                        })
-                        console.log(`added absence to ${time[0]}'s profile in p1`)
-                        break
-                    case 2:
-                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
-                        .then((doc) => {console.log(doc)})
-                        .catch((err) => {
-                            console.log(err)
-                        })
-                        console.log(`added absence to ${time[0]}'s profile in p2`)
-                        break
-                    case 3:
-                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
-                        .then((doc) => {console.log(doc)})
-                        .catch((err) => {
-                            console.log(err)
-                        })
-                        console.log(`added absence to ${time[0]}'s profile in p3`)
-                        break
-                    case 4:
-                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
-                        .then((doc) => {console.log(doc)})
-                        .catch((err) => {
-                            console.log(err)
-                        })
-                        console.log(`added absence to ${time[0]}'s profile in p4`)
-                        break
+                let update = {}
+                switch (period) {
+                    case 1: update = { $push: { absenceP1: absence } }; break;
+                    case 2: update = { $push: { absenceP2: absence } }; break;
+                    case 3: update = { $push: { absenceP3: absence } }; break;
+                    case 4: update = { $push: { absenceP4: absence } }; break;
                 }
-                absence = []
+                Student.updateOne({ studentName: normalizedName }, update)
+                    .then(() => res.json({ message: "Absence added." }))
+                    .catch(err => {
+                        console.log(err)
+                        res.status(500).json({ error: err.message })
+                    })
             }
         })
-        .catch((err) => {
+        .catch(err => {
             console.log(err)
+            res.status(500).json({ error: err.message })
         })
     })
-    .catch((err) => {
+    .catch(err => {
         console.error('could not connect to mongodb: ', err)
+        res.status(500).json({ error: err.message })
     })
-    
 })
+
 
 // Start the server
 const PORT = process.env.PORT || 9000
@@ -316,3 +295,49 @@ app.post('/upload-students', isAuthenticated, async (req, res) => {
   }
 });
 
+app.get('/moreStats', (req, res) => {
+  const studentName = decodeURIComponent(req.query.studentName || 'Unknown Student');
+  res.render('../public/views/moreStats.ejs', { studentName });
+});
+
+app.get('/getStudentStats', async (req, res) => {
+    try {
+        let studentName = req.query.studentName;
+        if (!studentName || typeof studentName !== 'string') {
+            return res.json({ periods: [0, 0, 0, 0] });
+        }
+        studentName = decodeURIComponent(studentName).trim();
+        const student = await Student.findOne({ studentName });
+        if (!student) {
+            return res.json({ periods: [0, 0, 0, 0] });
+        }
+
+        // Helper to sum minutes for a period
+        function sumMinutes(absences) {
+            return (absences || []).reduce((sum, absence) => {
+                if (!absence[0] || !absence[1]) return sum;
+                const start = new Date(absence[0]);
+                const end = new Date(absence[1]);
+                // Ignore if any part is during lunch
+                const lunchStart = new Date(start);
+                lunchStart.setHours(11, 5, 0, 0);
+                const lunchEnd = new Date(start);
+                lunchEnd.setHours(11, 55, 0, 0);
+                if ((start >= lunchStart && start < lunchEnd) || (end > lunchStart && end <= lunchEnd)) return sum;
+                return sum + Math.max(0, (end - start) / 60000);
+            }, 0);
+        }
+
+        const periods = [
+            sumMinutes(student.absenceP1),
+            sumMinutes(student.absenceP2),
+            sumMinutes(student.absenceP3),
+            sumMinutes(student.absenceP4)
+        ];
+
+        res.json({ periods });
+    } catch (err) {
+        console.error('Error in /getStudentStats:', err);
+        res.status(500).json({ error: 'Failed to fetch stats: ' + err.message });
+    }
+});
