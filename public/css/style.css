@@ -15,7 +15,7 @@ html, body {
 header {
   position: fixed;
   width: 100%;
-  background: rgb(72, 140, 151);
+  background: rgb(114, 220, 236);
   color: #fff;
   display: flex;
   align-items: center;
@@ -84,6 +84,7 @@ header div {
     clip-path: circle(25px at calc(100% - 45px) 45px);
     transition: all 0.3s ease-in-out;
   }
+
   #active:checked ~ .wrapper{
     clip-path: circle(75%);
   }
@@ -142,7 +143,7 @@ header div {
     height: 100%;
     width: 100%;
     z-index: 1001;
-    background: linear-gradient(-45deg, #88d0d9 0%, rgb(72, 140, 151) 100%);
+    background: linear-gradient(-45deg, #0760dd 0%, #a263cc 100%);
     clip-path: circle(25px at calc(100% - 45px) 45px);
     transition: all 0.3s ease-in-out;
 }
@@ -447,7 +448,7 @@ input[type="checkbox"]{
     gap: 2vw;
     padding-top: 40px;
     padding-bottom: 40px;
-    margin-top: 60px; /* Add space for header */
+    margin-top: 60px;
   }
   .homepage-left, .homepage-right {
     min-width: 0;
@@ -526,6 +527,12 @@ input[type="checkbox"]{
     width: 24px;
     height: 24px;
   }
+  .box-for-the-table {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px 16px;
+    margin: 20px auto; /* Adjusted for mobile */
+  }
   .wrapper {
     position: fixed;
     top: 0;
@@ -549,6 +556,11 @@ input[type="checkbox"]{
     margin: 10px auto;
     padding: 10px;
   }
+   .Learn-more-section td:hover {
+    transform: none;
+    background-color: rgb(181, 226, 255);
+    box-shadow: none;
+  }
   .homo-logo {
     display:none;
     /*width: 40px;
@@ -556,18 +568,56 @@ input[type="checkbox"]{
     min-width: 0;
     min-height: 0;
     margin: 0 auto;
-    padding: 4px;
-  } */
+    padding: 4px;*/
+  }
 
-  .Learn-more-section {
-    width: 95%;
-    margin: 5% auto;
-    border-spacing: 10px;
+  /*.Learn-more-section {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    width: 100vw;
+    margin: 0;
+    border-spacing: 0;
+    border-collapse: separate;
+    table-layout: auto;
+    padding: 0 0 20px 0;
+  }
+  .Learn-more-section tr {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  .Learn-more-section td {
+    display: flex;
+    flex-direction: column;
+    min-width: 80vw;
+    max-width: 90vw;
+    margin: 0 10px 0 0;
+    width: auto;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+  }
+    */
+
+    .Learn-more-section {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    border-spacing: 0;
+    border-collapse: separate;
+    table-layout: auto;
+    padding: 0;
+  }
+  .Learn-more-section tr {
+    display: block;
+    width: 100%;
   }
   .Learn-more-section td {
     display: block;
-    width: 100%;
-    margin-bottom: 15px; 
+    width: 95vw;
+    max-width: 98vw;
+    margin: 16px auto;
+    box-sizing: border-box;
   }
   .learn-more-content {
     flex-direction: column; 
@@ -594,7 +644,6 @@ input[type="checkbox"]{
     font-size: 14px;
     padding: 5px;
   }
-}
 
 .students-grid {
   display: flex;

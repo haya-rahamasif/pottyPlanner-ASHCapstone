@@ -279,12 +279,17 @@ input[type="checkbox"] {
   .menu-btn img {
     width: 20px;
     height: 20px;
+    z-index: 104320958324852309895423805;
   }
   .wrapper {
-    font-size: 24px;
-    padding: 5px 20px;
-    line-height: 40px;
-    clip-path: circle(25px at calc(90% + 20px) 30px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    padding: 0;
+    clip-path: circle(18px at calc(100% - 28px) 28px);
   }
   .StudentsTable {
     width: 95%;
