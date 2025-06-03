@@ -45,7 +45,7 @@
 
 <table class="StudentsTable">
   <% for (let i = 0; i < students.length; i++) { %>
-    <% if (i % 2 === 0) { %>
+    <% if (i % 2 == 0) { %>
       <tr>
     <% } %>
       <td>
@@ -60,7 +60,7 @@
         </div>
         <button class="button-timer" id="start<%= i %>">Start</button>
       </td>
-    <% if (i % 2 === 1 || i === students.length - 1) { %>
+    <% if (i % 2 == 1 || i == students.length - 1) { %>
       </tr>
     <% } %>
   <% } %>
