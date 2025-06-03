@@ -11,14 +11,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     
@@ -27,7 +27,7 @@
           <a href="/"><img src="/images/logo.png"></a>
         </div>
         <input type="checkbox" id="active">
-        <div class="website-name" >Potty Planner</div>
+        <div class="website-name">Potty Planner</div>
         <label for="active" class="menu-btn">
             <img src="/images/ham-menu.svg" alt="Menu Icon">
         </label>
@@ -44,15 +44,15 @@
                 <li><a href="/register">Register</a></li>
             <% } %>
             </ul>
-
         </div>
-
-      </header>
+    </header>
     <div class="homepage-visual">
         <div class="parallax-image"></div>
         <div class="homepage-left">
-            <h1 class="welcome-text"> Welcome to the Potty Planner App! </h1>
-            <a href="/login"><button class="login-button">Login</button></a>
+            <h1 class="welcome-text">Welcome to the Potty Planner App!</h1>
+            <a href="<%= userId ? '/profiles' : '/login' %>">
+                <button class="login-button"><%= userId ? 'Go to Students' : 'Login' %></button>
+            </a>
             <button class="learn-morebutton" id="learn-more-button">Learn More</button>
         </div>
         <div class="homepage-right">
@@ -64,39 +64,39 @@
 
     <div class="Learn-More" id="learn-more-section">
         <div class="homepage-learnmore">
-            <h1> Learn More </h1>
+            <h1>Learn More</h1>
         </div>
 
-<div class="box-for-the-table">
-<table class="Learn-more-section"> 
-    <tr>
-        <td>
-            <h2 class="header-for-learn-more-section"> What is Potty Planner?</h2>
-            <div class="learn-more-info-about-the-website">
-                The Potty Planner app is a web-based tool designed to streamline bathroom break management within schools. <br><br>
-                Teachers can easily track student bathroom visits by starting and stopping timers with a simple click. <br><br>
-                This provides a clear history of each student's bathroom usage, accessible to all staff, allowing for better monitoring and support.
-            </div>
-        </td>
-        <td>
-            <h2 class="header-for-learn-more-section"> Why are we doing this?</h2>
-            <div class="learn-more-info-about-the-website">
-                The Potty Planner app aims to address the challenges of managing bathroom breaks in schools. <br><br>
-                By providing a user-friendly interface for teachers, it helps ensure that students' needs are met efficiently and effectively. <br><br>
-                The app promotes transparency and communication among staff, enhancing the overall school environment.
-        </td>
-        <td>
-            <h2 class="header-for-learn-more-section"> How does it work?</h2>
-            <div class="learn-more-info-about-the-website">
-                The Potty Planner app allows teachers to start and stop timers for each student's bathroom visits. <br><br>
-                When a student needs to use the bathroom, the teacher clicks "Start" to begin tracking the visit. <br><br>
-                Once the student returns, the teacher clicks "Stop," and the visit is logged in the system. <br><br>
-                This creates a clear history of each student's bathroom usage, accessible to all staff.
-            </div>
-        </td>
-    </tr>
-</table>
-</div>
+        <div class="box-for-the-table">
+            <table class="Learn-more-section"> 
+                <tr>
+                    <td>
+                        <h2 class="header-for-learn-more-section">What is Potty Planner?</h2>
+                        <div class="learn-more-info-about-the-website">
+                            The Potty Planner app is a web-based tool designed to streamline bathroom break management within schools. <br><br>
+                            Teachers can easily track student bathroom visits by starting and stopping timers with a simple click. <br><br>
+                            This provides a clear history of each student's bathroom usage, accessible to all staff, allowing for better monitoring and support.
+                        </div>
+                    </td>
+                    <td>
+                        <h2 class="header-for-learn-more-section">Why are we doing this?</h2>
+                        <div class="learn-more-info-about-the-website">
+                            The Potty Planner app aims to address the challenges of managing bathroom breaks in schools. <br><br>
+                            By providing a user-friendly interface for teachers, it helps ensure that students' needs are met efficiently and effectively. <br><br>
+                            The app promotes transparency and communication among staff, enhancing the overall school environment.
+                        </td>
+                    <td>
+                        <h2 class="header-for-learn-more-section">How does it work?</h2>
+                        <div class="learn-more-info-about-the-website">
+                            The Potty Planner app allows teachers to start and stop timers for each student's bathroom visits. <br><br>
+                            When a student needs to use the bathroom, the teacher clicks "Start" to begin tracking the visit. <br><br>
+                            Once the student returns, the teacher clicks "Stop," and the visit is logged in the system. <br><br>
+                            This creates a clear history of each student's bathroom usage, accessible to all staff.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
 </html>
