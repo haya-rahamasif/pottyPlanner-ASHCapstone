@@ -4,6 +4,7 @@ let buttonStates = [];
 let columnToggle = 0;
 let idCounter = 0;
 let classList = [];
+let globalInterval = null; // Single interval for all timers
 
 // Post absence data to backend
 const postData = data => {
@@ -54,6 +55,7 @@ function loadStudentsFromFile() {
         () => {
             let names = String(reader.result);
             classList = names.split("\n").map(name => name.trim()).filter(Boolean);
+            localStorage.setItem('classList', JSON.stringify(classList));
             for (let i = 0; i < classList.length; i++) {
                 addStudent(classList[i]);
             }
@@ -85,7 +87,7 @@ function addStudent(name) {
         <img src="/images/soccer.webp">
       </div>
       <div class="container">
-        <h1> ${name} </h1> 
+        <h1>${name}</h1>
       </div>
       <div class="time" id="time${idCounter}">
         <span class="hr">00</span>:<span class="min">00</span>:<span class="sec">00</span>:<span class="count">00</span>
@@ -98,116 +100,19 @@ function addStudent(name) {
     columnToggle++;
 }
 
-// Timer logic for each student
-function timerFunc(index) {
-    let startBtn = document.getElementById('start' + index);
-    let timeDiv = document.getElementById('time' + index);
+// Update timer display based on elapsed time
+function updateDisplay(index, elapsed) {
+    let hrElement = document.getElementById('time' + index)?.querySelector('.hr');
+    let minElement = document.getElementById('time' + index)?.querySelector('.min');
+    let secElement = document.getElementById('time' + index)?.querySelector('.sec');
+    let countElement = document.getElementById('time' + index)?.querySelector('.count');
 
-    if (!startBtn) return; // Defensive: skip if button not found
+    if (!hrElement || !minElement || !secElement || !countElement) return;
 
-    if (!timers[index]) {
-        timers[index] = false;
-        buttonStates[index] = 0;
-        intervals[index] = null;
-    }
-
-    startBtn.addEventListener('click', function () {
-        if (buttonStates[index] === 0) {
-            timers[index] = true;
-            stopWatch(index);
-            startBtn.textContent = 'Stop';
-            buttonStates[index] = 1;
-
-            let studentName = classList[index];
-            let absence = [];
-            absence.push(studentName);
-            let startTimestamp = new Date();
-            let t = [
-                startTimestamp.getDate(),
-                startTimestamp.getMonth(),
-                startTimestamp.getFullYear(),
-                startTimestamp.getHours(),
-                startTimestamp.getMinutes(),
-                startTimestamp.getSeconds()
-            ];
-            absence.push(t);
-            startBtn.absenceData = absence; // store start data on the button
-
-        } else if (buttonStates[index] === 1) {
-            timers[index] = false;
-            clearInterval(intervals[index]);
-            startBtn.textContent = 'Reset';
-            buttonStates[index] = 2;
-
-            // collecting timestamp data to send to server side
-            let stopTimestamp = new Date();
-            let t2 = [
-                stopTimestamp.getDate(),
-                stopTimestamp.getMonth(),
-                stopTimestamp.getFullYear(),
-                stopTimestamp.getHours(),
-                stopTimestamp.getMinutes(),
-                stopTimestamp.getSeconds()
-            ];
-            let absence = startBtn.absenceData || [];
-            absence.push(t2);
-            console.log(absence);
-            postData({ data: absence })
-                .then(json => {
-                    console.log(json);
-                })
-                .catch(e => console.log(e));
-            startBtn.absenceData = null;
-        } else if (buttonStates[index] === 2) {
-            timers[index] = false;
-            clearInterval(intervals[index]);
-            resetTimer(index);
-            startBtn.textContent = 'Start';
-            buttonStates[index] = 0;
-        }
-    });
-}
-
-// Stopwatch logic for timer
-function stopWatch(index) {
-    if (timers[index]) {
-        let hrElement = document.getElementById('time' + index).querySelector('.hr');
-        let minElement = document.getElementById('time' + index).querySelector('.min');
-        let secElement = document.getElementById('time' + index).querySelector('.sec');
-        let countElement = document.getElementById('time' + index).querySelector('.count');
-
-        let hour = parseInt(hrElement.textContent);
-        let minute = parseInt(minElement.textContent);
-        let second = parseInt(secElement.textContent);
-        let count = parseInt(countElement.textContent);
-
-        count++;
-        if (count == 100) {
-            second++;
-            count = 0;
-        }
-        if (second == 60) {
-            minute++;
-            second = 0;
-        }
-        if (minute == 60) {
-            hour++;
-            minute = 0;
-            second = 0;
-        }
-        updateDisplay(index, hour, minute, second, count);
-        intervals[index] = setTimeout(function () {
-            stopWatch(index);
-        }, 10);
-    }
-}
-
-// Update timer display
-function updateDisplay(index, hour, minute, second, count) {
-    let hrElement = document.getElementById('time' + index).querySelector('.hr');
-    let minElement = document.getElementById('time' + index).querySelector('.min');
-    let secElement = document.getElementById('time' + index).querySelector('.sec');
-    let countElement = document.getElementById('time' + index).querySelector('.count');
+    const hour = Math.floor(elapsed / (1000 * 60 * 60));
+    const minute = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+    const second = Math.floor((elapsed % (1000 * 60)) / 1000);
+    const count = Math.floor((elapsed % 1000) / 10);
 
     let hrString = hour < 10 ? "0" + hour : hour;
     let minString = minute < 10 ? "0" + minute : minute;
@@ -222,21 +127,124 @@ function updateDisplay(index, hour, minute, second, count) {
 
 // Reset timer display
 function resetTimer(index) {
-    updateDisplay(index, 0, 0, 0, 0);
+    updateDisplay(index, 0);
 }
 
-// For scrolling to the Learn More section
-document.addEventListener('DOMContentLoaded', function () {
-    const learnMoreButton = document.getElementById('learn-more-button');
-    const learnMoreSection = document.getElementById('learn-more-section');
+// Update all running timers
+function updateAllTimers() {
+    timers.forEach((isRunning, index) => {
+        if (isRunning) {
+            const timerState = JSON.parse(localStorage.getItem(`timer_${index}`)) || {};
+            if (timerState.isRunning && timerState.startTime) {
+                const elapsed = Date.now() - timerState.startTime;
+                updateDisplay(index, elapsed);
+            }
+        }
+    });
+}
 
-    if (learnMoreButton && learnMoreSection) {
-        learnMoreButton.addEventListener('click', function (event) {
-            event.preventDefault();
-            learnMoreSection.scrollIntoView({ behavior: 'smooth' });
-        });
+// Timer logic for each student
+function timerFunc(index) {
+    let startBtn = document.getElementById('start' + index);
+    if (!startBtn) return;
+
+    // Initialize timer state
+    if (!timers[index]) {
+        timers[index] = false;
+        buttonStates[index] = 0;
+        intervals[index] = null;
     }
-});
+
+    // Restore timer state from localStorage
+    const timerState = JSON.parse(localStorage.getItem(`timer_${index}`)) || {};
+    if (timerState.isRunning && timerState.startTime) {
+        timers[index] = true;
+        buttonStates[index] = 1;
+        startBtn.textContent = 'Stop';
+        startBtn.absenceData = timerState.absenceData;
+        // Start global timer update if not already running
+        if (!globalInterval) {
+            globalInterval = setInterval(updateAllTimers, 10);
+        }
+    }
+
+    startBtn.addEventListener('click', function () {
+        if (buttonStates[index] === 0) {
+            timers[index] = true;
+            buttonStates[index] = 1;
+            startBtn.textContent = 'Stop';
+
+            let studentName = classList[index];
+            let absence = [studentName];
+            let startTimestamp = new Date();
+            let t = [
+                startTimestamp.getDate(),
+                startTimestamp.getMonth(),
+                startTimestamp.getFullYear(),
+                startTimestamp.getHours(),
+                startTimestamp.getMinutes(),
+                startTimestamp.getSeconds()
+            ];
+            absence.push(t);
+            startBtn.absenceData = absence;
+
+            // Save timer state to localStorage
+            localStorage.setItem(`timer_${index}`, JSON.stringify({
+                isRunning: true,
+                startTime: startTimestamp.getTime(),
+                absenceData: absence,
+                studentName: studentName
+            }));
+
+            // Start global timer update if not already running
+            if (!globalInterval) {
+                globalInterval = setInterval(updateAllTimers, 10);
+            }
+
+        } else if (buttonStates[index] === 1) {
+            timers[index] = false;
+            buttonStates[index] = 2;
+            startBtn.textContent = 'Reset';
+
+            // Post absence data to backend
+            let stopTimestamp = new Date();
+            let t2 = [
+                stopTimestamp.getDate(),
+                stopTimestamp.getMonth(),
+                stopTimestamp.getFullYear(),
+                stopTimestamp.getHours(),
+                stopTimestamp.getMinutes(),
+                stopTimestamp.getSeconds()
+            ];
+            let absence = startBtn.absenceData || [];
+            absence.push(t2);
+            postData({ data: absence })
+                .then(json => {
+                    console.log(json);
+                })
+                .catch(e => console.log(e));
+
+            // Clear timer state from localStorage
+            localStorage.removeItem(`timer_${index}`);
+            startBtn.absenceData = null;
+
+            // Stop global interval if no timers are running
+            if (!timers.some(t => t)) {
+                clearInterval(globalInterval);
+                globalInterval = null;
+            }
+
+        } else if (buttonStates[index] === 2) {
+            timers[index] = false;
+            buttonStates[index] = 0;
+            resetTimer(index);
+            startBtn.textContent = 'Start';
+
+            // Ensure localStorage is cleared
+            localStorage.removeItem(`timer_${index}`);
+        }
+    });
+}
 
 // For retaining the student list for every profile (upload and refresh)
 async function viewStudents() {
@@ -253,20 +261,37 @@ async function viewStudents() {
         body: JSON.stringify({ students: names })
     });
 
-    // Refresh the page to see updated list in correct layout
+    localStorage.setItem('classList', JSON.stringify(names));
     window.location.reload();
 }
 
-// If students are rendered by EJS, attach timerFunc to each button
+// Initialize timers and class list on page load
 document.addEventListener('DOMContentLoaded', function () {
-    // If you have a classListData script tag, use it to set classList
+    // Restore classList from localStorage or EJS
     const classListData = document.getElementById('classListData');
     if (classListData) {
         classList = JSON.parse(classListData.textContent);
+        localStorage.setItem('classList', JSON.stringify(classList));
+    } else {
+        const storedClassList = localStorage.getItem('classList');
+        if (storedClassList) {
+            classList = JSON.parse(storedClassList);
+            if (document.querySelector('.StudentsTable').rows.length === 0) {
+                idCounter = 0;
+                columnToggle = 0;
+                classList.forEach(name => addStudent(name));
+            }
+        }
     }
 
+    // Attach timerFunc to each button and start global timer update if needed
     const buttons = document.querySelectorAll('.button-timer');
     buttons.forEach((btn, i) => {
         timerFunc(i);
     });
+
+    // Start global timer update if any timers are running
+    if (timers.some(t => t) && !globalInterval) {
+        globalInterval = setInterval(updateAllTimers, 10);
+    }
 });
