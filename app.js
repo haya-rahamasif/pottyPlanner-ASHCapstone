@@ -317,7 +317,8 @@ app.get('/getStudentStats', async (req, res) => {
                 // Only take data from that day not previous days
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                const tomorrow = today.getDate+1
+                const tomorrow = new Date(today)
+                tomorrow.setDate(today.getDate() + 1)
                 console.log(today, start, tomorrow)
                 if (start >= today && end < tomorrow) return sum;
                 return sum + Math.max(0, (end - start) / 60000);
