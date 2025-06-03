@@ -15,7 +15,7 @@ html, body {
 header {
   position: fixed;
   width: 100%;
-  background: rgb(114, 220, 236);
+  background: rgb(3, 183, 211);
   color: #fff;
   display: flex;
   align-items: center;
@@ -77,10 +77,8 @@ header div {
     height: 100%;
     width: 100%;
     z-index: 1001;
-    background: rgb(16, 110, 123); 
-    background: linear-gradient(-45deg, #1956b1 0%, #147ba1 100%);
+    background: linear-gradient(-45deg, #88d0d9 0%, rgb(72, 140, 151) 100%);
     clip-path: circle(25px at calc(0% + 45px) 45px); 
-    background: rgb(136 208 217);
     clip-path: circle(25px at calc(100% - 45px) 45px);
     transition: all 0.3s ease-in-out;
   }
@@ -143,7 +141,7 @@ header div {
     height: 100%;
     width: 100%;
     z-index: 1001;
-    background: linear-gradient(-45deg, #0760dd 0%, #a263cc 100%);
+    background: linear-gradient(-45deg, #88d0d9 0%, rgb(72, 140, 151) 100%)
     clip-path: circle(25px at calc(100% - 45px) 45px);
     transition: all 0.3s ease-in-out;
 }
