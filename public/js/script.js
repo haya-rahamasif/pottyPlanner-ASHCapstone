@@ -79,6 +79,7 @@ function sleep(ms) {
 async function viewStudentAbsences() {
   try {
       // Send classList to the server
+      console.log(`this is the classLIst ${classList}`)
       const response = await fetch('/viewAbsences', {
           method: 'POST',
           headers: {
@@ -173,6 +174,7 @@ function timerFunc(index) {
 
     startBtn.addEventListener('click', function () {
         if (buttonStates[index] === 0) {
+            console.log(`stop button pressed this is current class list ${classList}`)
             timers[index] = true;
             stopWatch(index);
             startBtn.textContent = 'Stop';
@@ -351,9 +353,13 @@ async function viewStudents() {
     body: JSON.stringify({ students: names })
   });
 
+  classList = names
+  console.log(`names -> ${names}`)
+
   return names
 
   // Refresh the page to see updated list in correct layout
   window.location.reload();
 }
 
+window.onload = viewStudents()

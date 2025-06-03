@@ -36,6 +36,7 @@ function checkWhichPeriod(startTime) {
     if (time > new Date ("1/1/1999 13:15:0") && new Date ("1/1/1999 14:30:0") > time){
         return 4
     }
+    return 1
 }
 
 dotenv.config()
@@ -107,7 +108,6 @@ app.post('/viewAbsences', async (req, res) => {
     console.log(names);
 
     try {
-        await mongoose.connect(dbURL);
 
         // Wait for all find() queries to finish
         const entries = await Promise.all(
@@ -166,7 +166,7 @@ app.post('/viewAbsences', async (req, res) => {
 app.post('/timestamp', (req, res) => {
     // creates a instance of the student schema to make a new field (row of data) to add to the database
     let time = req.body.data
-
+    console.log(`time array ${time}`)
     mongoose 
     .connect(dbURL) // connects to database
     .then((result) => {
@@ -221,7 +221,7 @@ app.post('/timestamp', (req, res) => {
                 console.log(`updating ${time[0]}'s profile`)
                 switch(checkWhichPeriod(startTime)) {
                     case 1:
-                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
+                        Student.updateOne({studentName: time[0]}, {$push: {absenceP1: absence}}, {new: true})
                         .then((doc) => {console.log(doc)})
                         .catch((err) => {
                             console.log(err)
@@ -237,7 +237,7 @@ app.post('/timestamp', (req, res) => {
                         console.log(`added absence to ${time[0]}'s profile in p2`)
                         break
                     case 3:
-                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
+                        Student.updateOne({studentName: time[0]}, {$push: {absenceP3: absence}}, {new: true})
                         .then((doc) => {console.log(doc)})
                         .catch((err) => {
                             console.log(err)
@@ -245,7 +245,7 @@ app.post('/timestamp', (req, res) => {
                         console.log(`added absence to ${time[0]}'s profile in p3`)
                         break
                     case 4:
-                        Student.updateOne({studentName: time[0]}, {$push: {absenceP2: absence}}, {new: true})
+                        Student.updateOne({studentName: time[0]}, {$push: {absenceP4: absence}}, {new: true})
                         .then((doc) => {console.log(doc)})
                         .catch((err) => {
                             console.log(err)
@@ -327,18 +327,6 @@ app.get('/logout', (req, res) => {
 
 // Protect Routes
 
-app.get('/profiles', isAuthenticated, async (req, res) => {
-  const user = await User.findById(req.session.userId);
-  res.render('../public/views/profiles.ejs', {
-    students: user.students || [],
-    userId: req.session.userId
-  });
-});
-
-  
-  app.get('/stats', isAuthenticated, (req, res) => {
-    res.render('../public/views/stats.ejs');
-  });
   
   app.get('/feedback', isAuthenticated, (req, res) => {
     res.render('../public/views/feedback.ejs');
