@@ -142,11 +142,11 @@ app.post('/timestamp', (req, res) => {
             let absence = [eTimestamp1, eTimestamp2]
 
             // Ignore if time is during lunch (11:05-11:55)
-            const lunchStart = new Date(eTimestamp1)
-            lunchStart.setHours(11, 5, 0, 0)
+            const today = new Date(eTimestamp1)
+            today.setHours(11, 5, 0, 0)
             const lunchEnd = new Date(eTimestamp1)
             lunchEnd.setHours(11, 55, 0, 0)
-            if ((eTimestamp1 >= lunchStart && eTimestamp1 < lunchEnd) || (eTimestamp2 > lunchStart && eTimestamp2 <= lunchEnd)) {
+            if ((eTimestamp1 >= today && eTimestamp1 < lunchEnd) || (eTimestamp2 > today && eTimestamp2 <= lunchEnd)) {
                 return res.json({ message: "Time during lunch, not recorded." })
             }
 
@@ -295,10 +295,6 @@ app.post('/upload-students', isAuthenticated, async (req, res) => {
   }
 });
 
-app.get('/moreStats', (req, res) => {
-  const studentName = decodeURIComponent(req.query.studentName || 'Unknown Student');
-  res.render('../public/views/moreStats.ejs', { studentName });
-});
 
 app.get('/getStudentStats', async (req, res) => {
     try {
@@ -318,12 +314,12 @@ app.get('/getStudentStats', async (req, res) => {
                 if (!absence[0] || !absence[1]) return sum;
                 const start = new Date(absence[0]);
                 const end = new Date(absence[1]);
-                // Ignore if any part is during lunch
-                const lunchStart = new Date(start);
-                lunchStart.setHours(11, 5, 0, 0);
-                const lunchEnd = new Date(start);
-                lunchEnd.setHours(11, 55, 0, 0);
-                if ((start >= lunchStart && start < lunchEnd) || (end > lunchStart && end <= lunchEnd)) return sum;
+                // Only take data from that day not previous days
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const tomorrow = today.getDate+1
+                console.log(today, start, tomorrow)
+                if (start >= today && end < tomorrow) return sum;
                 return sum + Math.max(0, (end - start) / 60000);
             }, 0);
         }
