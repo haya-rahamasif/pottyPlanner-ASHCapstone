@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import Student from './models/students.js'
 
 import path from 'path';
+import fs from 'fs'
 
 
 // Login
@@ -123,6 +124,20 @@ app.post('/viewAbsences', async (req, res) => {
     }
 });
 
+app.post('/feedbackData', (req, res) => {
+  let feedback = req.body.data
+  let content = `Name: ${feedback[0]}\n Feedback: ${feedback[1]}`
+
+  fs.appendFile('feedback.txt', content, (err) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(`text appended`)
+    }
+  })
+
+})
+
 app.post('/timestamp', (req, res) => {
     let time = req.body.data;
     if (!time[0] || typeof time[0] !== 'string') {
@@ -133,6 +148,7 @@ app.post('/timestamp', (req, res) => {
     mongoose
     .connect(dbURL)
     .then(() => {
+      console.log(`looking for ${normalizedName}`)
         Student.findOne({ studentName: normalizedName })
         .then(async (doc) => {
             let startTime = time[1]
@@ -154,6 +170,7 @@ app.post('/timestamp', (req, res) => {
             if (!period) return res.json({ message: "Not in a valid period." })
 
             if (!doc) {
+              console.log(`student not found, creating new entry`)
                 let entry = new Student({
                     studentName: normalizedName,
                     studentID: id++,
@@ -175,6 +192,7 @@ app.post('/timestamp', (req, res) => {
                         res.status(500).json({ error: err.message })
                     })
             } else {
+              console.log('student found, updating...')
                 let update = {}
                 switch (period) {
                     case 1: update = { $push: { absenceP1: absence } }; break;
@@ -280,6 +298,8 @@ app.get('/profiles', isAuthenticated, async (req, res) => {
     res.render('../public/views/feedback.ejs');
   });
 
+  
+
 
 app.post('/upload-students', isAuthenticated, async (req, res) => {
   const { students } = req.body; // Array of names
@@ -319,9 +339,10 @@ app.get('/getStudentStats', async (req, res) => {
                 today.setHours(0, 0, 0, 0);
                 const tomorrow = new Date(today)
                 tomorrow.setDate(today.getDate() + 1)
-                console.log(today, start, tomorrow)
-                if (start >= today && end < tomorrow) return sum;
-                return sum + Math.max(0, (end - start) / 60000);
+                if (start >= today && start < tomorrow) {
+                  return sum + Math.max(0, (end - start) / 60000);
+                }
+                return sum;
             }, 0);
         }
 

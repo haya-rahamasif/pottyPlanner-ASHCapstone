@@ -6,6 +6,7 @@ let idCounter = 0;
 let classList = [];
 let globalInterval = null; // Single interval for all timers
 
+
 // Post absence data to backend
 const postData = data => {
     const body = JSON.stringify(data);
@@ -24,9 +25,8 @@ const postData = data => {
     .then(response => response.json());
 };
 
-// Post class list to backend (if needed)
-const postClassList = data => {
-    return fetch('/viewAbsences', {
+const postFeedback = data => {
+    return fetch('/feedbackData', {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -295,6 +295,28 @@ document.addEventListener('DOMContentLoaded', function () {
         globalInterval = setInterval(updateAllTimers, 10);
     }
 });
+
+
+function submitFeedback(event) {
+    event.preventDefault();
+    const name = document.getElementById('name').value;
+    const feedback = document.getElementById('feedback').value;
+
+    alert(`Thank you, ${name}, for your feedback!\n\n"${feedback}"`);
+    document.querySelector('form').reset();
+    const content = [name, feedback]
+
+    postFeedback({ data: content })
+                .then(json => {
+                    console.log(json);
+                })
+                .catch(e => console.log(e));
+
+  }
+
+  function goBack() {
+    window.location.href = '/';
+  }
 
 // Smooth scroll for Learn More button
 document.addEventListener('DOMContentLoaded', function () {
