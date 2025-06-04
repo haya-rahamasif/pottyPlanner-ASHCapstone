@@ -11,6 +11,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <script defer src="/js/script.js"></script>
+  <script src="https://smtpjs.com/v3/smtp.js">
+  </script>
 
   <style>
     .button2 {
@@ -72,20 +74,5 @@
       </center>
     </section>
   </main>
-
-  <script>
-    function submitFeedback(event) {
-      event.preventDefault();
-      const name = document.getElementById('name').value;
-      const feedback = document.getElementById('feedback').value;
-
-      alert(`Thank you, ${name}, for your feedback!\n\n"${feedback}"`);
-      document.querySelector('form').reset();
-    }
-
-    function goBack() {
-      window.location.href = '/';
-    }
-  </script>
 </body>
 </html>

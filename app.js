@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import Student from './models/students.js'
 
 import path from 'path';
+import fs from 'fs'
 
 
 // Login
@@ -122,6 +123,20 @@ app.post('/viewAbsences', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+app.post('/feedbackData', (req, res) => {
+  let feedback = req.body.data
+  let content = `Name: ${feedback[0]}\n Feedback: ${feedback[1]}`
+
+  fs.appendFile('feedback.txt', content, (err) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(`text appended`)
+    }
+  })
+
+})
 
 app.post('/timestamp', (req, res) => {
     let time = req.body.data;
@@ -282,6 +297,8 @@ app.get('/profiles', isAuthenticated, async (req, res) => {
   app.get('/feedback', isAuthenticated, (req, res) => {
     res.render('../public/views/feedback.ejs');
   });
+
+  
 
 
 app.post('/upload-students', isAuthenticated, async (req, res) => {
