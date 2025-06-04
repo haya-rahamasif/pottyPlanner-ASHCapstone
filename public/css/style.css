@@ -99,7 +99,7 @@ header div {
     font-size: 17px;
     color: rgb(252, 249, 249);
     cursor: pointer;
-    background: rgb(253 254 246);
+    background: rgb(72, 140, 151);
     transition: all 0.3s ease-in-out;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     padding: 10px;
@@ -141,7 +141,7 @@ header div {
     height: 100%;
     width: 100%;
     z-index: 1001;
-    background: linear-gradient(-45deg, #88d0d9 0%, rgb(72, 140, 151) 100%)
+    background: linear-gradient(-45deg, #88d0d9 0%, rgb(72, 140, 151) 100%);
     clip-path: circle(25px at calc(100% - 45px) 45px);
     transition: all 0.3s ease-in-out;
 }
@@ -665,4 +665,15 @@ input[type="checkbox"]{
   height: 80px;
   object-fit: cover;
 }
+}
+
+.fi {
+  width: 100px !important;
+  height: 100px !important;
+  font-size: 100px !important; 
+  display: inline-block;
+  vertical-align: middle;
+  color: #fff !important;          
+  fill: #fff !important;           
+  filter: drop-shadow(0 0 2px #488c97); 
 }

@@ -295,3 +295,17 @@ document.addEventListener('DOMContentLoaded', function () {
         globalInterval = setInterval(updateAllTimers, 10);
     }
 });
+
+// Smooth scroll for Learn More button
+document.addEventListener('DOMContentLoaded', function () {
+    // ...existing code...
+
+    const learnMoreBtn = document.getElementById('learn-more-button');
+    const learnMoreSection = document.getElementById('learn-more-section');
+    if (learnMoreBtn && learnMoreSection) {
+        learnMoreBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            learnMoreSection.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+});

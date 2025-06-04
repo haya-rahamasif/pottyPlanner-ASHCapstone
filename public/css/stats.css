@@ -49,10 +49,16 @@ header div {
   font-size: 250%;
   font-weight: bold;
   white-space: nowrap;
-  font-family: cursive;  
+  font-family: Raleway, sans-serif;
   position: absolute;
   left: 50%;
-  transform: translateX(-50%); 
+  transform: translateX(-50%);
+  color: white;
+  text-shadow:
+    -1px -1px 0 #1f7e81,
+    1px -1px 0 #1f7e81,
+    -1px 1px 0 #1f7e81,
+    1px 1px 0 #1f7e81;
 }
 *{
     margin: 0;
