@@ -126,7 +126,7 @@ app.post('/viewAbsences', async (req, res) => {
 
 app.post('/feedbackData', (req, res) => {
   let feedback = req.body.data
-  let content = `Name: ${feedback[0]}\n Feedback: ${feedback[1]}`
+  let content = `\n Name: ${feedback[0]}\n Feedback: ${feedback[1]}`
 
   fs.appendFile('feedback.txt', content, (err) => {
     if (err) {
