@@ -133,6 +133,7 @@ app.post('/timestamp', (req, res) => {
     mongoose
     .connect(dbURL)
     .then(() => {
+      console.log(`looking for ${normalizedName}`)
         Student.findOne({ studentName: normalizedName })
         .then(async (doc) => {
             let startTime = time[1]
@@ -154,6 +155,7 @@ app.post('/timestamp', (req, res) => {
             if (!period) return res.json({ message: "Not in a valid period." })
 
             if (!doc) {
+              console.log(`student not found, creating new entry`)
                 let entry = new Student({
                     studentName: normalizedName,
                     studentID: id++,
@@ -175,6 +177,7 @@ app.post('/timestamp', (req, res) => {
                         res.status(500).json({ error: err.message })
                     })
             } else {
+              console.log('student found, updating...')
                 let update = {}
                 switch (period) {
                     case 1: update = { $push: { absenceP1: absence } }; break;
@@ -319,9 +322,10 @@ app.get('/getStudentStats', async (req, res) => {
                 today.setHours(0, 0, 0, 0);
                 const tomorrow = new Date(today)
                 tomorrow.setDate(today.getDate() + 1)
-                console.log(today, start, tomorrow)
-                if (start >= today && end < tomorrow) return sum;
-                return sum + Math.max(0, (end - start) / 60000);
+                if (start >= today && start < tomorrow) {
+                  return sum + Math.max(0, (end - start) / 60000);
+                }
+                return sum;
             }, 0);
         }
 
