@@ -297,6 +297,17 @@ header div {
         width: 100%;
         font-size: 14px;
     }
+    .wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    padding: 0;
+    clip-path: circle(18px at calc(100% - 28px) 28px);
+    }
+
     .graphsTable td {
         width: 80px;
     }
@@ -324,12 +335,6 @@ header div {
     height: 20px;
   }
 
-  .wrapper {
-    font-size: 24px; 
-    padding: 5px 20px;
-    line-height: 40px;
-    clip-path: circle(25px at calc(90% + 15px) 35px); 
-}
 }
 
 input[type=checkbox] {
@@ -351,13 +356,3 @@ input[type=checkbox] {
 .student-graph h2 {
     margin-bottom: 12px;
 }
-.wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  padding: 0;
-  clip-path: circle(18px at calc(100% - 28px) 28px);
-  }
